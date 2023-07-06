@@ -13,6 +13,8 @@ pygame.display.set_caption('SpriteSheets')
 
 My_Raccoon = Pet_Raccoon(input_pygame= pygame, screen=screen)
 My_Raccoon.walking()
+
+
 """
 sprite_sheet_images = [
     pygame.image.load('../Sprites/racoonpet.png').convert_alpha(),

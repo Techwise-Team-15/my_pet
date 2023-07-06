@@ -21,14 +21,15 @@ class Pet_Raccoon():
     def __init__(self,input_pygame,screen) -> None:
         self.my_pygame = input_pygame
         self.raccoon_screen = screen
-        raccoon_sprites =  self.my_pygame.image.load('./my_pet/Sprites/racoonpet.png').convert_alpha()
+        raccoon_sprites =  self.my_pygame.image.load('../my_pet/Sprites/racoonpet.png').convert_alpha()
         raccoons = spritesheet.SpiteSheet(raccoon_sprites)
         for x in range(self.animation_steps):
             self.animation_lists.append(raccoons.get_image(x, 96, 96, 2, self.BLACK))
     
-    def walking(self):
+    def walking(self,screen_color = (0, 0, 0)):
         frame = 0 
         while self.run:
+            self.raccoon_screen.fill(screen_color)  # Replace (0, 0, 0) with your desired background color
             current_time = self.my_pygame.time.get_ticks()
             if current_time - self.last_update >= self.animation_cooldown:
                 frame += 1
