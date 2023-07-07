@@ -28,6 +28,6 @@ If applicable, include a code snippet or specific code related to the feature.
 Add any other information or examples that can help clarify the feature request.
 
 **Priority:**
-[ ] Low
-[ ] Medium
-[ ] High
+- [ ] Low
+- [ ] Medium
+- [ ] High

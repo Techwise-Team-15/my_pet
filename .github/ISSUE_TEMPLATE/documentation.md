@@ -21,12 +21,12 @@ State the purpose or goal of the documentation task. What should the documentati
 ### Documentation Content
 Outline the key points or sections to be covered in the documentation. This can include:
 
--[ ] Overview of the feature/component
--[ ] Installation instructions
--[ ] Usage guidelines and examples
--[ ] API documentation (if applicable)
--[ ] Configuration options
--[ ] Troubleshooting tips
+- [ ] Overview of the feature/component
+- [ ] Installation instructions
+- [ ] Usage guidelines and examples
+- [ ] API documentation (if applicable)
+- [ ] Configuration options
+- [ ] Troubleshooting Tips
 
 ### Additional Context
 Include any additional information, context, or references that might be helpful for the documentation task.
@@ -34,6 +34,6 @@ Include any additional information, context, or references that might be helpful
 ### Acceptance Criteria
 Specify the criteria that must be met for this documentation task to be considered complete. For example:
 
--[ ] All key points and sections are covered in the documentation.
--[ ] The documentation is clear, concise, and well-structured.
--[ ] Screenshots or diagrams are included where necessary.
+- [ ] All key points and sections are covered in the documentation.
+- [ ] The documentation is clear, concise, and well-structured.
+- [ ] Screenshots or diagrams are included where necessary.

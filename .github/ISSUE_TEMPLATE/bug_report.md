@@ -36,6 +36,6 @@ If applicable, add screenshots or a video to help explain the issue.
 Add any other information about the issue here.
 
 **Priority:**
-[ ] Low
-[ ] Medium
-[ ] High
+- [ ] Low
+- [ ] Medium
+- [ ] High
