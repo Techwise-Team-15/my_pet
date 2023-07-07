@@ -1,18 +1,15 @@
 import pygame
-import spritesheet
 from Pet_Raccoon import Pet_Raccoon
+import Config
 
 pygame.init()
 
-SCREEN_WIDTH = 900
-SCREEN_HEIGHT = 600
-BG = (50, 50, 50)
-BLACK = (0, 0, 0)
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+screen = pygame.display.set_mode((Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT))
 pygame.display.set_caption('SpriteSheets')
 
 My_Raccoon = Pet_Raccoon(input_pygame= pygame, screen=screen)
-My_Raccoon.walking()
+My_Raccoon.animation(action=Config.action.jumping.value)
+
 
 
 """
