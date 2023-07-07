@@ -1,0 +1,4 @@
+Pet: Coco with 50% overall health
+raccoon
+50
+70
