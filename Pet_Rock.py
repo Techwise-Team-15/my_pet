@@ -4,33 +4,31 @@ from enum import Enum
 import Config
 
 
-
-class Pet_Raccoon():
-    
+class Pet_Rock():
     run = True
     animation_lists = [] 
     animation_steps = 8
     animation_cooldown = 500
     my_pygame = pygame
-    raccoon_screen = my_pygame.display
+    rock_screen = my_pygame.display
     
-    FRAME = [5,8,8,4,8,8,8,8,8,3]
-    ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768,864]
+    FRAME = [8,8,2,8,6,8,8,7,8]
+    ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768]
    
     def __init__(self,input_pygame,screen) -> None:
         self.last_update = pygame.time.get_ticks()
         self.my_pygame = input_pygame
-        self.raccoon_screen = screen
-        self.raccoon_sprites =  self.my_pygame.image.load(Config.RACCOON_PATH).convert_alpha()
-        self.raccoons = spritesheet.SpiteSheet(self.raccoon_sprites)
+        self.rock_screen = screen
+        self.rock_sprites =  self.my_pygame.image.load(Config.ROCK_PATH).convert_alpha()
+        self.rocks = spritesheet.SpiteSheet(self.rock_sprites)
         
     
     def animation(self,action):
         for x in range(self.FRAME[action]):
-            self.animation_lists.append(self.raccoons.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BLACK))
+            self.animation_lists.append(self.rocks.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BLACK))
         frame = 0 
         while self.run:
-            self.raccoon_screen.fill(Config.BLACK)  # Replace (0, 0, 0) with your desired background color
+            self.rock_screen.fill(Config.BLACK)  # Replace (0, 0, 0) with your desired background color
             current_time = self.my_pygame.time.get_ticks()
             if current_time - self.last_update >= self.animation_cooldown:
                 frame += 1
@@ -38,7 +36,7 @@ class Pet_Raccoon():
                 if frame >= len(self.animation_lists):
                     frame = 0
 
-            self.raccoon_screen.blit(self.animation_lists[frame], (350, 150))
+            self.rock_screen.blit(self.animation_lists[frame], (350, 150))
 
             for event in self.my_pygame.event.get():
                 if event.type == self.my_pygame.QUIT:
@@ -47,4 +45,3 @@ class Pet_Raccoon():
             self.my_pygame.display.update()
 
         self.my_pygame.quit()
-

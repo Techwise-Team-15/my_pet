@@ -1,15 +1,18 @@
 import pygame
 from Pet_Raccoon import Pet_Raccoon
+from Pet_Rock import Pet_Rock
+
 import Config
 
 pygame.init()
 
 screen = pygame.display.set_mode((Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT))
 pygame.display.set_caption('SpriteSheets')
+# My_Raccoon = Pet_Raccoon(input_pygame= pygame, screen=screen)
+# My_Raccoon.animation(action=Config.RaccoonActions.walking.value)
 
-My_Raccoon = Pet_Raccoon(input_pygame= pygame, screen=screen)
-My_Raccoon.animation(action=Config.action.jumping.value)
-
+My_Rock = Pet_Rock(input_pygame= pygame, screen=screen)
+My_Rock.animation(action=Config.RockActions.clean.value)
 
 
 """
