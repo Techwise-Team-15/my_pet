@@ -5,11 +5,24 @@ To ensure smooth collaboration on the `my_pet` repository and prevent interferen
 ## 1. Branching
 Create separate branches for each ticket or task. This allows team members to work independently without conflicts. Branches provide isolation and make it easier to merge changes later.
 
+```python
+# To create new branch and checkout to it
+git checkout -b <branch_name>
+# To switch to an existing branch
+git checkout <branch_name>
+```
+
 ## 2. Ticket Assignment
 Assign specific tickets or tasks to individual team members to avoid overlap or duplication of work. Clearly communicate who is responsible for each ticket.
 
 ## 3. Pull Requests
 Once a team member completes their work on a ticket, they should create a pull request (PR) to merge their changes back into the main branch. Pull requests provide an opportunity for code review and ensure that changes are properly reviewed before merging.
+
+```python
+# To push branch to github
+git push origin <branch_name>
+# Then, navigate to the repository on GitHub and create a new pull request.
+```
 
 ## 4. Code Reviews
 Encourage team members to review each other's code. Code reviews help identify potential issues, improve code quality, and maintain consistency across the project. It also facilitates knowledge sharing and learning from each other.
