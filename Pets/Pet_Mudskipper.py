@@ -23,7 +23,7 @@ class PetMudskipper():
 
         return self.animation_lists
 
-    def animation(self,action):
+    def animation(self):
         frame = 0 
         while self.run:
             self.mudskipper_screen.fill(Config.BLACK)  # Replace (0, 0, 0) with your desired background color
