@@ -1,6 +1,8 @@
 import pygame
-from Pet_Raccoon import Pet_Raccoon
-from Pet_Rock import Pet_Rock
+
+from Pets.Pet_Raccoon import Pet_Raccoon
+from Pets.Pet_Rock import Pet_Rock
+from Pets.Pet_Mudskipper import Pet_Mudskipper
 
 import Config
 
@@ -8,11 +10,15 @@ pygame.init()
 
 screen = pygame.display.set_mode((Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT))
 pygame.display.set_caption('SpriteSheets')
-# My_Raccoon = Pet_Raccoon(input_pygame= pygame, screen=screen)
+
+My_Raccoon = Pet_Raccoon(input_pygame= pygame, screen=screen)
 # My_Raccoon.animation(action=Config.RaccoonActions.walking.value)
 
 My_Rock = Pet_Rock(input_pygame= pygame, screen=screen)
-My_Rock.animation(action=Config.RockActions.clean.value)
+# My_Rock.animation(action=Config.RockActions.clean.value)
+
+My_Mudskipper = Pet_Mudskipper(input_pygame= pygame, screen=screen)
+# My_Mudskipper.animation(action=Config.MudskipperActions.walking.value)
 
 
 """

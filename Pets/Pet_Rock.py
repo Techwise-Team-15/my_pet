@@ -5,23 +5,18 @@ import Config
 
 
 class Pet_Rock():
-    run = True
-    animation_lists = [] 
-    animation_steps = 8
-    animation_cooldown = 500
-    my_pygame = pygame
-    rock_screen = my_pygame.display
-    
-    FRAME = [8,8,2,8,6,8,8,7,8]
-    ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768]
-   
     def __init__(self,input_pygame,screen) -> None:
+        self.animation_lists = [] 
+        self.animation_steps = 8
+        self.animation_cooldown = 500
+        self.FRAME = [8,8,2,8,6,8,8,7,8]
+        self.ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768]
         self.last_update = pygame.time.get_ticks()
         self.my_pygame = input_pygame
         self.rock_screen = screen
         self.rock_sprites =  self.my_pygame.image.load(Config.ROCK_PATH).convert_alpha()
         self.rocks = spritesheet.SpiteSheet(self.rock_sprites)
-        
+        self.run = True
     
     def animation(self,action):
         for x in range(self.FRAME[action]):

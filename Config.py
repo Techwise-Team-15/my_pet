@@ -13,8 +13,9 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 BG = (50, 50, 50)
 
-RACCOON_PATH = 'Sprites/racoonpet.png'
-ROCK_PATH = 'Sprites/rockpet.png'
+RACCOON_PATH = './Sprites/racoonpet.png'
+ROCK_PATH = './Sprites/rockpet.png'
+MUDSKIPPER_PATH = './Sprites/petmudskipper.png'
 class RaccoonActions(Enum):
     walking = 0 
     jumping = 1
@@ -37,3 +38,15 @@ class RockActions(Enum):
     dying = 6
     sleeping = 7
     playing = 8
+
+class MudskipperActions(Enum):
+    walking = 0
+    eating = 1
+    fighting = 2
+    idle = 3
+    jumping = 4
+    shooting = 5
+    dirty = 6
+    playing = 7
+    bubble = 8
+    clean = 9

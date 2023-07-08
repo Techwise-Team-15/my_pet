@@ -6,18 +6,15 @@ import Config
 
 
 class Pet_Raccoon():
-    
-    run = True
-    animation_lists = [] 
-    animation_steps = 8
-    animation_cooldown = 500
-    my_pygame = pygame
-    raccoon_screen = my_pygame.display
-    
-    FRAME = [5,8,8,4,8,8,8,8,8,3]
-    ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768,864]
-   
     def __init__(self,input_pygame,screen) -> None:
+        self.run = True
+        self.animation_lists = [] 
+        self.animation_steps = 8
+        self.animation_cooldown = 500
+
+        
+        self.FRAME = [5,8,8,4,8,8,8,8,8,3]
+        self.ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768,864]
         self.last_update = pygame.time.get_ticks()
         self.my_pygame = input_pygame
         self.raccoon_screen = screen
