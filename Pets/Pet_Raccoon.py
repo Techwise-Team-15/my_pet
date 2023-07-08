@@ -8,8 +8,7 @@ import Config
 class Pet_Raccoon():
     def __init__(self,input_pygame,screen) -> None:
         self.run = True
-        self.animation_lists = [] 
-        self.animation_steps = 8
+        self.animation_lists = []
         self.animation_cooldown = 500
 
         
@@ -21,10 +20,14 @@ class Pet_Raccoon():
         self.raccoon_sprites =  self.my_pygame.image.load(Config.RACCOON_PATH).convert_alpha()
         self.raccoons = spritesheet.SpiteSheet(self.raccoon_sprites)
         
-    
-    def animation(self,action):
+    def get_animation_lists(self,action)->list:
         for x in range(self.FRAME[action]):
             self.animation_lists.append(self.raccoons.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BLACK))
+        print(len(self.animation_lists))
+        return self.animation_lists
+    
+    def animation(self):
+      
         frame = 0 
         while self.run:
             self.raccoon_screen.fill(Config.BLACK)  # Replace (0, 0, 0) with your desired background color

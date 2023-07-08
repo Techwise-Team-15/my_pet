@@ -18,9 +18,15 @@ class Pet_Rock():
         self.rocks = spritesheet.SpiteSheet(self.rock_sprites)
         self.run = True
     
-    def animation(self,action):
+
+    def get_animation_lists(self,action):
         for x in range(self.FRAME[action]):
-            self.animation_lists.append(self.rocks.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BLACK))
+            self.animation_lists.append(self.raccoons.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BLACK))
+
+        return self.animation_lists
+    
+
+    def animation(self):
         frame = 0 
         while self.run:
             self.rock_screen.fill(Config.BLACK)  # Replace (0, 0, 0) with your desired background color
@@ -31,7 +37,7 @@ class Pet_Rock():
                 if frame >= len(self.animation_lists):
                     frame = 0
 
-            self.rock_screen.blit(self.animation_lists[frame], (350, 150))
+            self.rock_screen.blit(self.animation_lists[frame], (0, 150))
 
             for event in self.my_pygame.event.get():
                 if event.type == self.my_pygame.QUIT:
