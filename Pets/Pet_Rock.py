@@ -1,10 +1,9 @@
 import pygame
-import spritesheet
-from enum import Enum
-import Config
+from game_util import sprite_sheet as sprite
+from game_util.pet_config import PetConfig as Config
 
 
-class Pet_Rock():
+class PetRock():
     def __init__(self,input_pygame,screen) -> None:
         self.animation_lists = [] 
         self.animation_steps = 8
@@ -15,13 +14,13 @@ class Pet_Rock():
         self.my_pygame = input_pygame
         self.rock_screen = screen
         self.rock_sprites =  self.my_pygame.image.load(Config.ROCK_PATH).convert_alpha()
-        self.rocks = spritesheet.SpiteSheet(self.rock_sprites)
+        self.rocks = sprite.SpriteSheet(self.rock_sprites)
         self.run = True
     
 
     def get_animation_lists(self,action):
         for x in range(self.FRAME[action]):
-            self.animation_lists.append(self.raccoons.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BLACK))
+            self.animation_lists.append(self.rocks.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BLACK))
 
         return self.animation_lists
     

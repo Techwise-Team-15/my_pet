@@ -1,8 +1,7 @@
 import pygame
-from Pets.Pet_Raccoon import Pet_Raccoon
-from Pets.Pet_Rock import Pet_Rock
-#from Pets.Pet_Mudskipper import Pet_Mudskipper
-import Config
+from game_util import PetConfig as Config
+from pets import PetRaccoon, PetRock, PetMudskipper
+
 
 class Pet_Selection():
     def __init__(self) -> None:
@@ -10,15 +9,22 @@ class Pet_Selection():
         self.pet_pygame.init()
         self.screen = self.pet_pygame.display.set_mode((Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT))
         self.pet_pygame.display.set_caption('SpriteSheets')
-        #self.My_Rock = Pet_Rock(input_pygame= self.pet_pygame, screen=self.screen)
-        #self.rock_animation_list = self.My_Rock.get_animation_lists()
         self.last_update = self.pet_pygame.time.get_ticks()
         self.animation_cooldown = 500
         self.run = True
 
+    
     def create_pet_screen(self, action):
-        self.My_Raccoon = Pet_Raccoon(input_pygame= self.pet_pygame, screen=self.screen)
-        self.raccoon_animation_list = self.My_Raccoon.get_animation_lists(action)
+        # Create the raccoon
+        My_Raccoon = PetRaccoon(input_pygame= self.pet_pygame, screen=self.screen)
+        raccoon_animation_list = My_Raccoon.get_animation_lists(action)
+        # Create the rock
+        My_rock = PetRock(input_pygame= self.pet_pygame, screen=self.screen)
+        rock_animation_list = My_rock.get_animation_lists(action)
+        # Create the mudskipper
+        My_muudskipper = PetMudskipper(input_pygame= self.pet_pygame, screen=self.screen)
+        mudskipper_animation_list = My_muudskipper.get_animation_lists(action)
+        
         frame = 0 
         while self.run:
             self.screen.fill(Config.BLACK)  # Replace (0, 0, 0) with your desired background color
@@ -26,11 +32,13 @@ class Pet_Selection():
             if current_time - self.last_update >= self.animation_cooldown:
                 frame += 1
                 self.last_update = current_time
-                if frame >= len(self.raccoon_animation_list):
+                if frame >= len(raccoon_animation_list):
                     frame = 0
 
-            #self.screen.blit(self.rock_animation_list[frame], (0, 150))
-            self.screen.blit(self.raccoon_animation_list[frame], (350, 150))
+            # Animation of the pets on the screen
+            self.screen.blit(rock_animation_list[frame], (0, 150))
+            self.screen.blit(raccoon_animation_list[frame], (350, 150))
+            self.screen.blit(mudskipper_animation_list[frame], (350, 350))
 
             for event in self.pet_pygame.event.get():
                 if event.type == self.pet_pygame.QUIT:
@@ -41,6 +49,7 @@ class Pet_Selection():
 
 my_pet_screen = Pet_Selection()
 my_pet_screen.create_pet_screen(Config.RaccoonActions.walking.value)
+
 #My_Raccoon = Pet_Raccoon(input_pygame= pygame, screen=screen)
 #My_Raccoon.animation(action=Config.RaccoonActions.clean.value)
 

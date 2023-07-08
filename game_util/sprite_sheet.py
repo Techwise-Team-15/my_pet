@@ -1,9 +1,6 @@
 import pygame
 
-
-
-
-class SpiteSheet():
+class SpriteSheet():
     def __init__(self, image):
         self.sheet = image
     
