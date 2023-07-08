@@ -1,9 +1,14 @@
 from enum import Enum
 
 class PetConfig:
-    SCREEN_WIDTH = 800
-    SCREEN_HEIGHT = 600
+    SCREEN_WIDTH = 1920
+    SCREEN_HEIGHT = 1080
     FPS = 60
+
+    #theme items
+    BACKGROUND1 = '../my_pet/theme_items/general_background1.PNG'
+    BACKGROUND2 = '../my_pet/theme_items/general_background2.png'
+    FONT = '../my_pet/theme_items/Starborn.ttf'
 
     # Colors
     BLACK = (0, 0, 0)
