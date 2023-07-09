@@ -1,31 +1,20 @@
-# -*- coding: utf-8 -*-
-"""
-
-@author: donny
-"""
-
 import pygame
 import sys
 
-pygame.init()
+
 
 screen_width = 800
 screen_height = 600
-screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Pet Game")
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-
-font_title = pygame.font.Font(None, 80)
-font_options = pygame.font.Font(None, 50)
-
 
 class MenuItem:
     def __init__(self, text, pos):
         self.text = text
         self.pos = pos
-        self.rendered_text = font_options.render(text, True, WHITE)
+        self.font_options = pygame.font.Font(None, 50)
+        self.rendered_text = self.font_options.render(text, True, WHITE)
         self.rect = self.rendered_text.get_rect(center=pos)
 
     def is_mouse_selection(self, mouse_pos):
@@ -34,29 +23,33 @@ class MenuItem:
 
 class StartScreen:
     def __init__(self):
-        self.title_text = font_title.render("Pet Game", True, WHITE)
+        self.screen = pygame.display.set_mode((screen_width, screen_height))
+        self.font_title = pygame.font.Font(None, 80)
+        self.title_text = self.font_title.render("Pet Game", True, WHITE)
         self.start_button = MenuItem("Play", (screen_width // 2, screen_height // 2 + 100))
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
             if self.start_button.is_mouse_selection(mouse_pos):
-                return True  # Return True to indicate transition to the main menu
+                return True  
 
     def draw(self):
-        screen.fill(BLACK)
+        self.screen.fill(BLACK)
 
         title_text_rect = self.title_text.get_rect(center=(screen_width // 2, screen_height // 4))
-        screen.blit(self.title_text, title_text_rect)
+        self.screen.blit(self.title_text, title_text_rect)
 
-        screen.blit(self.start_button.rendered_text, self.start_button.rect)
+        self.screen.blit(self.start_button.rendered_text, self.start_button.rect)
 
         pygame.display.flip()
 
 
 class MainMenu:
     def __init__(self):
-        self.title_text = font_title.render("Game Main Menu", True, WHITE)
+        self.screen = pygame.display.set_mode((screen_width, screen_height))
+        self.font_title = pygame.font.Font(None, 80)
+        self.title_text = self.font_title.render("Game Main Menu", True, WHITE)
         self.menu_items = [
             MenuItem("Start Game", (screen_width // 2, screen_height // 2)),
             MenuItem("Load Game", (screen_width // 2, screen_height // 2 + 50)),
@@ -90,19 +83,21 @@ class MainMenu:
             sys.exit()
 
     def draw(self):
-        screen.fill(BLACK)
+        self.screen.fill(BLACK)
 
         title_text_rect = self.title_text.get_rect(center=(screen_width // 2, screen_height // 4))
-        screen.blit(self.title_text, title_text_rect)
+        self.screen.blit(self.title_text, title_text_rect)
 
         for item in self.menu_items:
-            screen.blit(item.rendered_text, item.rect)
+            self.screen.blit(item.rendered_text, item.rect)
 
         pygame.display.flip()
 
 
 class Game:
     def __init__(self):
+        pygame.init()
+        pygame.display.set_caption("Pet Game")
         self.start_screen = StartScreen()
         self.main_menu = MainMenu()
         self.show_start_screen = True
