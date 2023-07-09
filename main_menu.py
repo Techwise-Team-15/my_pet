@@ -1,13 +1,13 @@
 import pygame
 import sys
+import game_util
+from game_util import PetConfig as config
 
+screen_width = config.SCREEN_WIDTH
+screen_height = config.SCREEN_HEIGHT
 
-
-screen_width = 800
-screen_height = 600
-
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
+WHITE = config.WHITE
+BLACK = config.BLACK
 
 class MenuItem:
     def __init__(self, text, pos):
