@@ -10,7 +10,7 @@ class PetSelection():
         self.screen = self.pet_pygame.display.set_mode((Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT))
         self.pet_pygame.display.set_caption('SpriteSheets')
         self.last_update = self.pet_pygame.time.get_ticks()
-        self.animation_cooldown = 500
+        self.animation_cooldown = 100
         self.run = True
 
     
@@ -20,25 +20,22 @@ class PetSelection():
         raccoon_animation_list = My_Raccoon.get_animation_lists(action)
         # Create the rock
         My_rock = PetRock(input_pygame= self.pet_pygame, screen=self.screen)
-        rock_animation_list = My_rock.get_animation_lists(action)
+        My_rock.set_current_animation(action)
+        #rock_animation_list = My_rock.get_animation_lists(action)
         # Create the mudskipper
         My_muudskipper = PetMudskipper(input_pygame= self.pet_pygame, screen=self.screen)
         mudskipper_animation_list = My_muudskipper.get_animation_lists(action)
         
-        frame = 0 
+        
         while self.run:
             self.screen.fill(Config.BLACK)  # Replace (0, 0, 0) with your desired background color
-            current_time = self.pet_pygame.time.get_ticks()
-            if current_time - self.last_update >= self.animation_cooldown:
-                frame += 1
-                self.last_update = current_time
-                if frame >= len(raccoon_animation_list):
-                    frame = 0
 
             # Animation of the pets on the screen
-            self.screen.blit(rock_animation_list[frame], (0, 150))
-            self.screen.blit(raccoon_animation_list[frame], (350, 150))
-            self.screen.blit(mudskipper_animation_list[frame], (350, 350))
+            #self.screen.blit(rock_animation_list[frame], (0, 150))
+            self.screen.blit(My_rock.get_current_frame(), My_rock.get_location())
+            My_rock.updated_frame()
+            #self.screen.blit(raccoon_animation_list[frame], (350, 150))
+            #self.screen.blit(mudskipper_animation_list[frame], (350, 350))
 
             for event in self.pet_pygame.event.get():
                 if event.type == self.pet_pygame.QUIT:

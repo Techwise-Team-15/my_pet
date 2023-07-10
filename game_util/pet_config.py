@@ -13,6 +13,9 @@ class PetConfig:
     BLUE = (0, 0, 255)
     BG = (50, 50, 50)
 
+
+    PET_ANIMATION_COOLDOWN = 100
+
     RACCOON_PATH = 'my_pet/sprites/racoonpet.png'
     ROCK_PATH = 'my_pet/sprites/rockpet.png'
     MUDSKIPPER_PATH = 'my_pet/sprites/petmudskipper.png'

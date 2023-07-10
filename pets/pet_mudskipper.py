@@ -8,7 +8,6 @@ class PetMudskipper():
         self.my_pygame = input_pygame
         self.mudskipper_screen = screen
         self.animation_lists = [] 
-        self.animation_steps = 8
         self.animation_cooldown = 500
         self.FRAME = [8,12,10,4,9,12,10,11,9,10]
         self.ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768,864]
