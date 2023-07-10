@@ -3,7 +3,7 @@ from game_util import PetConfig as Config
 from pets import PetRaccoon, PetRock, PetMudskipper
 
 
-class Pet_Selection():
+class PetSelection():
     def __init__(self) -> None:
         self.pet_pygame = pygame
         self.pet_pygame.init()
@@ -47,7 +47,7 @@ class Pet_Selection():
         self.pet_pygame.quit()
 
 
-my_pet_screen = Pet_Selection()
+my_pet_screen = PetSelection()
 my_pet_screen.create_pet_screen(Config.RaccoonActions.walking.value)
 
 #My_Raccoon = Pet_Raccoon(input_pygame= pygame, screen=screen)

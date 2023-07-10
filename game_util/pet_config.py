@@ -13,9 +13,9 @@ class PetConfig:
     BLUE = (0, 0, 255)
     BG = (50, 50, 50)
 
-    RACCOON_PATH = '../my_pet/sprites/racoonpet.png'
-    ROCK_PATH = '../my_pet/sprites/rockpet.png'
-    MUDSKIPPER_PATH = '../my_pet/sprites/petmudskipper.png'
+    RACCOON_PATH = 'my_pet/sprites/racoonpet.png'
+    ROCK_PATH = 'my_pet/sprites/rockpet.png'
+    MUDSKIPPER_PATH = 'my_pet/sprites/petmudskipper.png'
     class RaccoonActions(Enum):
         walking = 0 
         jumping = 1
