@@ -16,6 +16,7 @@ class PetConfig:
     RACCOON_PATH = 'my_pet/sprites/racoonpet.png'
     ROCK_PATH = 'my_pet/sprites/rockpet.png'
     MUDSKIPPER_PATH = 'my_pet/sprites/petmudskipper.png'
+    TABLE_PATH = 'my_pet/sprites/table.png'
     class RaccoonActions(Enum):
         walking = 0 
         jumping = 1
@@ -50,3 +51,7 @@ class PetConfig:
         playing = 7
         bubble = 8
         clean = 9
+
+    class TableActions(Enum):
+        lamp = 0
+        vase = 1
