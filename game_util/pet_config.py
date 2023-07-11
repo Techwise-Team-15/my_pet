@@ -1,5 +1,5 @@
 from enum import Enum
-
+from game_util import os
 class PetConfig:
     SCREEN_WIDTH = 1400
     SCREEN_HEIGHT = 800
@@ -14,11 +14,13 @@ class PetConfig:
     BG = (50, 50, 50)
 
 
+
     PET_ANIMATION_COOLDOWN = 100
     
-    RACCOON_PATH = '../my_pet/sprites/racoonpet.png'
-    ROCK_PATH = '../my_pet/sprites/rockpet.png'
-    MUDSKIPPER_PATH = '../my_pet/sprites/petmudskipper.png'
+    RACCOON_PATH = '../my_pet/sprites/racoonpet.png' if os.path.exists('../my_pet/sprites/racoonpet.png') else 'my_pet/sprites/racoonpet.png'
+    ROCK_PATH = '../my_pet/sprites/rockpet.png' if os.path.exists('../my_pet/sprites/rockpet.png') else 'my_pet/sprites/rockpet.png'
+    MUDSKIPPER_PATH = '../my_pet/sprites/petmudskipper.png' if os.path.exists('../my_pet/sprites/petmudskipper.png') else 'my_pet/sprites/petmudskipper.png' 
+
     class RaccoonActions(Enum):
         walking = 0 
         jumping = 1
