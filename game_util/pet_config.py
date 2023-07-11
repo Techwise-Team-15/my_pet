@@ -19,7 +19,8 @@ class PetConfig:
     
     RACCOON_PATH = '../my_pet/sprites/racoonpet.png' if os.path.exists('../my_pet/sprites/racoonpet.png') else 'my_pet/sprites/racoonpet.png'
     ROCK_PATH = '../my_pet/sprites/rockpet.png' if os.path.exists('../my_pet/sprites/rockpet.png') else 'my_pet/sprites/rockpet.png'
-    MUDSKIPPER_PATH = '../my_pet/sprites/petmudskipper.png' if os.path.exists('../my_pet/sprites/petmudskipper.png') else 'my_pet/sprites/petmudskipper.png' 
+    MUDSKIPPER_PATH = '../my_pet/sprites/petmudskipper.png' if os.path.exists('../my_pet/sprites/petmudskipper.png') else 'my_pet/sprites/petmudskipper.png'
+    TABLE_PATH = '../my_pet/sprites/table.png' if os.path.exists('../my_pet/sprites/table.png') else 'my_pet/sprites/table.png' 
 
     class RaccoonActions(Enum):
         walking = 0 
