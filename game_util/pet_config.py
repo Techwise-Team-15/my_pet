@@ -1,8 +1,8 @@
 from enum import Enum
 
 class PetConfig:
-    SCREEN_WIDTH = 800
-    SCREEN_HEIGHT = 600
+    SCREEN_WIDTH = 1400
+    SCREEN_HEIGHT = 800
     FPS = 60
 
     # Colors

@@ -18,11 +18,16 @@ class PetRock():
         self.current_frame = 0
         self.pet_location = [0,0]
         # The current animation to play
-        self.current_selected_animation = 0
+        self.current_selected_animation = 4
         # The lists of frames for the current animation
         self.current_animation_list = self.get_animation_lists(self.current_selected_animation)
         
 
+    
+    def set_location(self, x,y):
+        self.pet_location = [x,y]
+
+    
     def get_location(self):
         return self.pet_location
 

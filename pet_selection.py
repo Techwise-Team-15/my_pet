@@ -13,18 +13,23 @@ class PetSelection():
         self.animation_cooldown = 100
         self.run = True
 
+
     
     def create_pet_screen(self, action):
         # Create the raccoon
         My_Raccoon = PetRaccoon(input_pygame= self.pet_pygame, screen=self.screen)
-        raccoon_animation_list = My_Raccoon.get_animation_lists(action)
+        My_Raccoon.set_current_animation(action)
+        My_Raccoon.set_location(300,200)
+        #raccoon_animation_list = My_Raccoon.get_animation_lists(action)
         # Create the rock
         My_rock = PetRock(input_pygame= self.pet_pygame, screen=self.screen)
+        My_rock.set_location(100,200)
         My_rock.set_current_animation(action)
         #rock_animation_list = My_rock.get_animation_lists(action)
         # Create the mudskipper
-        My_muudskipper = PetMudskipper(input_pygame= self.pet_pygame, screen=self.screen)
-        mudskipper_animation_list = My_muudskipper.get_animation_lists(action)
+        My_mudskipper = PetMudskipper(input_pygame= self.pet_pygame, screen=self.screen)
+        My_mudskipper.set_current_animation(action)
+        My_mudskipper.set_location(600,200)
         
         
         while self.run:
@@ -34,6 +39,10 @@ class PetSelection():
             #self.screen.blit(rock_animation_list[frame], (0, 150))
             self.screen.blit(My_rock.get_current_frame(), My_rock.get_location())
             My_rock.updated_frame()
+            self.screen.blit(My_Raccoon.get_current_frame(), My_Raccoon.get_location())
+            My_Raccoon.updated_frame()
+            self.screen.blit(My_mudskipper.get_current_frame(), My_mudskipper.get_location())
+            My_mudskipper.updated_frame()
             #self.screen.blit(raccoon_animation_list[frame], (350, 150))
             #self.screen.blit(mudskipper_animation_list[frame], (350, 350))
 
