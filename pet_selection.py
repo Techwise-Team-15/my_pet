@@ -1,6 +1,7 @@
 import pygame
 from game_util import PetConfig as Config
 from pets import PetRaccoon, PetRock, PetMudskipper
+from assets import Table
 
 
 class PetSelection():
@@ -31,6 +32,9 @@ class PetSelection():
         My_mudskipper.set_current_animation(action)
         My_mudskipper.set_location(600,200)
         
+        my_table = Table(my_pygame=self.pet_pygame, screen=self.screen, x=800, y=200)
+        my_table.set_current_selected_animation(Config.TableActions.lamp.value) # lamp and vase are the only two options
+
         
         while self.run:
             self.screen.fill(Config.BLACK)  # Replace (0, 0, 0) with your desired background color
@@ -43,6 +47,9 @@ class PetSelection():
             My_Raccoon.updated_frame()
             self.screen.blit(My_mudskipper.get_current_frame(), My_mudskipper.get_location())
             My_mudskipper.updated_frame()
+            self.screen.blit(my_table.get_current_frame(), my_table.get_location())
+            #my_table.update()
+            
             #self.screen.blit(raccoon_animation_list[frame], (350, 150))
             #self.screen.blit(mudskipper_animation_list[frame], (350, 350))
 
