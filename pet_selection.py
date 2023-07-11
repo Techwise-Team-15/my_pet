@@ -48,7 +48,7 @@ class PetSelection():
             self.screen.blit(My_mudskipper.get_current_frame(), My_mudskipper.get_location())
             My_mudskipper.updated_frame()
             self.screen.blit(my_table.get_current_frame(), my_table.get_location())
-            #my_table.update()
+            my_table.update()
             
             #self.screen.blit(raccoon_animation_list[frame], (350, 150))
             #self.screen.blit(mudskipper_animation_list[frame], (350, 350))
