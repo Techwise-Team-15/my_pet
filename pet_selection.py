@@ -9,7 +9,7 @@ class PetSelection():
         self.pet_pygame = pygame
         self.pet_pygame.init()
         self.screen = self.pet_pygame.display.set_mode((Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT))
-        self.background = self.pet_pygame.image.load('my_pet/load_game/background_exp.PNG')
+        self.background = self.pet_pygame.image.load('../my_pet/load_game/background_exp.PNG')
         self.bg = self.pet_pygame.transform.scale(self.background, [Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT])
         self.pet_pygame.display.set_caption('SpriteSheets')
         self.last_update = self.pet_pygame.time.get_ticks()

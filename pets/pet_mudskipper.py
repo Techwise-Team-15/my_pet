@@ -11,7 +11,7 @@ class PetMudskipper():
         self.animation_cooldown = Config.PET_ANIMATION_COOLDOWN
         self.FRAME = [8,12,10,4,9,12,10,11,9,10]
         self.ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768,864]
-        self.mudskipper_sprites =  self.my_pygame.image.load(Config.MUDSKIPPER_PATH).convert_alpha()
+        self.mudskipper_sprites =  self.my_pygame.image.load(Config.MUDSKIPPER_COLORED_PATH).convert_alpha()
         self.mudskippers = sprite.SpriteSheet(self.mudskipper_sprites)
         self.last_update = self.my_pygame.time.get_ticks()
         self.run = True
@@ -49,7 +49,7 @@ class PetMudskipper():
     
     def get_animation_lists(self,action):
         for x in range(self.FRAME[action]):
-            self.animation_lists.append(self.mudskippers.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BLACK))
+            self.animation_lists.append(self.mudskippers.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.RED))
 
         return self.animation_lists
 
