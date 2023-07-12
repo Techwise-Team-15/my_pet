@@ -12,7 +12,7 @@ class PetRock():
         self.my_pygame = input_pygame
         self.last_update = self.my_pygame.time.get_ticks()
         self.rock_screen = screen
-        self.rock_sprites =  self.my_pygame.image.load(Config.ROCK_PATH).convert_alpha()
+        self.rock_sprites =  self.my_pygame.image.load(Config.ROCK_COLORED_PATH).convert_alpha()
         self.rocks = sprite.SpriteSheet(self.rock_sprites)
         self.run = True
         self.current_frame = 0
@@ -50,7 +50,7 @@ class PetRock():
 
     def get_animation_lists(self,action):
         for x in range(self.FRAME[action]):
-            self.animation_lists.append(self.rocks.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BLACK))
+            self.animation_lists.append(self.rocks.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.RED))
 
         return self.animation_lists
     
