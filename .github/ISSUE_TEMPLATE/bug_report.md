@@ -34,8 +34,3 @@ If applicable, add screenshots or a video to help explain the issue.
 
 **Additional Information:**
 Add any other information about the issue here.
-
-**Priority:**
-- [ ] Low
-- [ ] Medium
-- [ ] High
