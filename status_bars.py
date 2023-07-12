@@ -9,6 +9,7 @@ GREEN = (0, 255, 0)
 INDIGO = (75, 0, 130)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
+ORANGE = (255,165,0)
 
 hp_drain_time = 100
 
@@ -35,22 +36,23 @@ class StatusBar():
             pygame.time.delay(hp_drain_time)
             self.hp -= 1
 
-    #def hp_drain(self):
-        #pass
 
 class PetStats():
-    health_bar = StatusBar(100, 200, 300, 40, 1000, GREEN, RED)
+    health_bar = StatusBar(100, 150, 300, 40, 1000, GREEN, RED)
     thirst_bar = StatusBar(100, 100, 300, 40, 1000, BLUE, RED)
-    hunger_bar = StatusBar(100, 300, 300, 40, 1000, YELLOW, RED)
+    hunger_bar = StatusBar(100, 200, 300, 40, 1000, ORANGE, RED)
+    happiness_bar = StatusBar(100, 250,300,40,1000, YELLOW, RED)
 
     def draw(self, surface):
         self.health_bar.draw(surface)
         self.thirst_bar.draw(surface)
         self.hunger_bar.draw(surface)
+        self.happiness_bar.draw(surface)
 
     def update(self):
         self.thirst_bar.bar_drain()
         self.hunger_bar.bar_drain()
+        self.happiness_bar.bar_drain()
         if self.health_bar.hp == 0 or self.thirst_bar.hp == 0:
             self.health_bar.bar_drain()
         elif self.health_bar.hp == 0 and self.thirst_bar.hp == 0:
