@@ -8,18 +8,48 @@ class PetMudskipper():
         self.my_pygame = input_pygame
         self.mudskipper_screen = screen
         self.animation_lists = [] 
-        self.animation_steps = 8
-        self.animation_cooldown = 500
+        self.animation_cooldown = Config.PET_ANIMATION_COOLDOWN
         self.FRAME = [8,12,10,4,9,12,10,11,9,10]
         self.ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768,864]
-        self.mudskipper_sprites =  self.my_pygame.image.load(Config.MUDSKIPPER_PATH).convert_alpha()
+        self.mudskipper_sprites =  self.my_pygame.image.load(Config.MUDSKIPPER_COLORED_PATH).convert_alpha()
         self.mudskippers = sprite.SpriteSheet(self.mudskipper_sprites)
+        self.last_update = self.my_pygame.time.get_ticks()
         self.run = True
-        self.last_update = pygame.time.get_ticks()
+        self.current_frame = 0
+        self.pet_location = [0,0]
+        # The current animation to play
+        self.current_selected_animation = 3
+        # The lists of frames for the current animation
+        self.current_animation_list = self.get_animation_lists(self.current_selected_animation)
+    
+    
+    def set_location(self, x,y):
+        self.pet_location = [x,y]
+    
+    def get_location(self):
+        return self.pet_location
+
+    def set_current_animation(self, animation_selected):
+        self.current_selected_animation = animation_selected
+        self.get_animation_lists(self.current_selected_animation)
+
+
+    def get_current_frame(self):
+        return self.current_animation_list[self.current_frame]
+
+       #FRAME[self.current_selected_animation] 
+    def updated_frame(self):
+        current_time = self.my_pygame.time.get_ticks()
+        if current_time - self.last_update >= self.animation_cooldown:
+            self.last_update = current_time
+            self.current_frame+=1
+            if self.current_frame >= self.FRAME[self.current_selected_animation]:
+                self.current_frame = 0 
+
     
     def get_animation_lists(self,action):
         for x in range(self.FRAME[action]):
-            self.animation_lists.append(self.mudskippers.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BLACK))
+            self.animation_lists.append(self.mudskippers.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.RED))
 
         return self.animation_lists
 
