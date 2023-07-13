@@ -1,6 +1,5 @@
 import pygame
 import sys
-import game_util
 from game_util import PetConfig as config
 
 pygame.init()
@@ -30,30 +29,32 @@ class MenuItem:
 
 class Button():
     def __init__(self, x, y, image):
-        self.image = start_img
+        self.image = image 
         self.rect = self.image.get_rect()
         self.rect.topleft = (x,y)
         
 
     def draw(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
-        
         pygame.display.flip()
 
     def is_mouse_on_button(self):
         mouse_pos = pygame.mouse.get_pos()
-        return self.button_rect.collidepoint(mouse_pos)
+        return self.rect.collidepoint(mouse_pos)
     
 
 class StartScreen:
     def __init__(self):
-        self.screen = screen
-        self.start_button = Button(595, 500, start_img) 
+        self.start_screen = screen
+        self.start_button = Button(0,0, start_img) 
+        self.start_button.rect.center = (screen_width / 2, (screen_height / 2)+(screen_height / 4)+50)
+        
 
     def draw(self):
-        self.screen.fill(BLACK)
+        self.start_screen.fill(BLACK)
         screen_background = pygame.image.load('../my_pet/theme_items/StartBackground.png')
-        self.screen.blit(screen_background, (0,0))
+        screen_background = pygame.transform.scale(screen_background, [screen_width, screen_height])
+        self.start_screen.blit(screen_background, (0,0))
         self.start_button.draw()
 
     def handle_event(self, event):
@@ -101,6 +102,7 @@ class MainMenu:
     def draw(self):
         self.screen.fill(BLACK)
         screen_background = pygame.image.load(background)
+        screen_background = pygame.transform.scale(screen_background, [screen_width, screen_height])
         self.screen.blit(screen_background, (0,0))
 
         title_text_rect = self.title_text.get_rect(center=(screen_width // 2, screen_height // 4))
@@ -115,7 +117,7 @@ class MainMenu:
 class Game:
     def __init__(self):
         pygame.init()
-        pygame.display.set_caption("Pet Game")
+        pygame.display.set_caption("Pet Patrol")
         self.start_screen = StartScreen()
         self.main_menu = MainMenu()
         self.show_start_screen = True
