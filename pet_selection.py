@@ -20,6 +20,9 @@ class PetSelection():
         self.text_surface = self.pet_pygame.transform.scale(self.text_surface, [Config.SCREEN_WIDTH/1.1, Config.SCREEN_HEIGHT/10])
         self.text_rect = self.text_surface.get_rect()
         self.text_rect.center = (Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/10)
+        self.pet_names = ["Raccoon", "Rock", "Mudskipper"]
+        self.pet_description = ["Rocky is an adventurous and mischievous raccoon who needs your care and attention. Help Rocky navigate through various challenges, providing nourishing meals, and engaging playtime. With your loving care, Rocky will grow into a healthy and happy raccoon companion."
+                                , "A rock that loves to be thrown", "A mudskipper that loves to swim"]
         
 
 
