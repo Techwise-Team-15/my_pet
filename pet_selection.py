@@ -14,6 +14,15 @@ class PetSelection():
         self.last_update = self.pet_pygame.time.get_ticks()
         self.animation_cooldown = 100
         self.pets_to_display = []
+        self.font = pygame.font.Font(Config.FONT, 36)
+        self.text = "Click on the pet you want to play with"
+        self.text_surface = self.font.render(self.text, True, (255, 255, 255)) 
+        self.text_surface = self.pet_pygame.transform.scale(self.text_surface, [Config.SCREEN_WIDTH/1.1, Config.SCREEN_HEIGHT/10])
+        self.text_rect = self.text_surface.get_rect()
+        self.text_rect.center = (Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/10)
+        
+
+
 
     def add_pet(self, pet):
         self.pets_to_display.append(pet)
@@ -43,4 +52,5 @@ class PetSelection():
         for pet in self.pets_to_display:
             self.screen.blit(pet.get_current_frame(),pet.get_location())
             pet.updated_frame()
+        self.screen.blit(self.text_surface, self.text_rect)
         self.pet_pygame.display.flip()
