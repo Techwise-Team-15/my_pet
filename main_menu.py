@@ -47,8 +47,11 @@ class Button():
 class StartScreen:
     def __init__(self):
         self.start_screen = screen
-        self.start_button = Button(0,0, start_img) 
-        self.start_button.rect.center = (screen_width / 2, (screen_height / 2)+(screen_height / 4)+50)
+        print("start_img size", start_img.get_size())
+        start_img_scaled = pygame.transform.scale(start_img, (start_img.get_width()/2, start_img.get_height()/2))# 765X748
+        self.start_button = Button(0,0, start_img_scaled) 
+        self.start_button.rect.center = (screen_width / 2, (screen_height / 2) + 130)
+        
         
 
     def draw(self):
