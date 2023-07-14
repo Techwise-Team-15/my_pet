@@ -1,6 +1,7 @@
 import pygame
 import sys
 from game_util import PetConfig as config
+from pet_selection import PetSelection
 
 pygame.init()
 
@@ -73,31 +74,17 @@ class MainMenu:
             MenuItem("Options", (screen_width // 2, screen_height // 2 + 100)),
             MenuItem("Quit", (screen_width // 2, screen_height // 2 + 150)),
         ]
+        self.select_option = None
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
             for item in self.menu_items:
                 if item.is_mouse_selection(mouse_pos):
-                    self.select_option(item.text)
-
-    def select_option(self, option):
-        if option == "Start Game":
-            print("Start Game clicked!")
-            # Start code goes here
-
-        elif option == "Load Game":
-            print("Load Game clicked!")
-            # Load game code goes here
-
-        elif option == "Options":
-            print("Options clicked!")
-            # Options menu code goes here
-
-        elif option == "Quit":
-            print("Quit clicked!")
-            pygame.quit()
-            sys.exit()
+                    self.select_option = item.text
+                    return
+        self.select_option = None
+    
 
     def draw(self):
         self.screen.fill(BLACK)
@@ -120,7 +107,9 @@ class Game:
         pygame.display.set_caption("Pet Patrol")
         self.start_screen = StartScreen()
         self.main_menu = MainMenu()
-        self.show_start_screen = True
+        self.my_pet_screen = PetSelection(pygame, screen)
+        self.my_pet_screen.initialize_pets()
+        self.current_screen = "start"
 
     def run(self):
         running = True
@@ -130,15 +119,24 @@ class Game:
                     pygame.quit()
                     sys.exit()
 
-                if self.show_start_screen:
+                if self.current_screen == "start":
                     transition_to_menu = self.start_screen.handle_event(event)
                     if transition_to_menu:
-                        self.show_start_screen = False
+                        self.current_screen = "menu"
+
+                elif self.current_screen == "menu":
+                    self.main_menu.handle_event(event)
+                    if self.main_menu.select_option == "Choose Your Pet":
+                        self.current_screen = "pet_selection"
                 else:
                     self.main_menu.handle_event(event)
 
-            if self.show_start_screen:
+            if self.current_screen == "start":
                 self.start_screen.draw()
+            elif self.current_screen == "menu":
+                self.main_menu.draw()
+            elif self.current_screen == "pet_selection":
+                self.my_pet_screen.main_frames()
             else:
                 self.main_menu.draw()
 
