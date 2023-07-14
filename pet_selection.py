@@ -1,7 +1,7 @@
 import pygame
 from game_util import PetConfig as Config
 from pets import PetRaccoon, PetRock, PetMudskipper
-from assets import Table
+
 
 
 class PetSelection():
