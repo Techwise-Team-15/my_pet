@@ -73,10 +73,10 @@ class PetSelection():
         }
         for pets in range(len(self.pets_to_display)):
             for idx,desc in enumerate(Config.PET_DESCRIPTIONS[self.pets_to_display[pets].get_pet_id()]):
-                text_surface = desc_font.render(desc, True, (255, 255, 255))
-                text_surface = self.pet_pygame.transform.scale(text_surface, [510, 35])
+                text_surface = desc_font.render(desc, True, Config.BLACK)
+                text_surface = self.pet_pygame.transform.scale(text_surface, [525, 30])
                 text_rect = text_surface.get_rect()
-                text_rect.center = [pet_locations[pets][0],pet_locations[pets][1] + (idx*40)] #(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/10 + 50 + pets*100)
+                text_rect.center = [pet_locations[pets][0],pet_locations[pets][1] + (idx*25)] #(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/10 + 50 + pets*100)
                 self.screen.blit(text_surface, text_rect)
             
 
