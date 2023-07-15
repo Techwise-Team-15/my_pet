@@ -5,6 +5,7 @@ from game_util.pet_config import PetConfig as Config
 
 class PetRock():
     def __init__(self,input_pygame,screen) -> None:
+        self.pet_id = "rock"
         self.animation_lists = [] 
         self.animation_cooldown = Config.PET_ANIMATION_COOLDOWN
         self.FRAME = [8,8,2,8,6,8,8,7,8]
@@ -21,8 +22,13 @@ class PetRock():
         self.current_selected_animation = 4
         # The lists of frames for the current animation
         self.current_animation_list = self.get_animation_lists(self.current_selected_animation)
+        self.pet_name = "Pebble"
         
+    def get_name(self):
+        return self.pet_name
 
+    def get_pet_id(self):
+        return self.pet_id
     
     def set_location(self, x,y):
         self.pet_location = [x,y]
@@ -54,7 +60,15 @@ class PetRock():
 
         return self.animation_lists
     
-
+    def is_mouse_selection(self, mouse_pos):
+        pet_location = self.get_location()
+        pet_width = self.get_current_frame().get_width()
+        pet_height = self.get_current_frame().get_height()
+        if mouse_pos[0] >= pet_location[0] and mouse_pos[0] <= (pet_location[0] + pet_width):
+            if mouse_pos[1] >= pet_location[1] and mouse_pos[1] <= (pet_location[1] + pet_height):
+                return True
+        return False
+    
     def animation(self):
         frame = 0 
         while self.run:

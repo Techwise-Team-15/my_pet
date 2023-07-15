@@ -33,6 +33,19 @@ class PetConfig:
     RACCOON_COLORED_PATH = '../my_pet/sprites/raccoon.png' if os.path.exists('../my_pet/sprites/raccoon.png') else 'my_pet/sprites/raccoon.png'
     ROCK_COLORED_PATH = '../my_pet/sprites/rock.png' if os.path.exists('../my_pet/sprites/rock.png') else 'my_pet/sprites/rock.png'
     MUDSKIPPER_COLORED_PATH = '../my_pet/sprites/mudskipper.png' if os.path.exists('../my_pet/sprites/mudskipper.png') else 'my_pet/sprites/mudskipper.png'
+
+    # Pet names and descriptions
+    
+    PET_DESCRIPTIONS = {    
+        "raccoon":["Rocket, the adventurous and spirited raccoon, is ready for exciting journeys.",
+                    "Care for Rocket's needs, play together, and watch their adventurous spirit soar."],
+        "rock":["Pebble, the rockstar of resilience, adds a touch of glamour to your care routine.", 
+                     "Create a rockin' environment, spend quality time, and witness Pebble's unwavering charm."],
+        "mudskipper":["Splash, the energetic and aquatic marvel, brings a wave of joy to your care routine.", 
+                    "Dive into adventures, create a vibrant habitat, and marvel at Splash's agile moves."]
+    }
+    
+    # Pet actions
     class RaccoonActions(Enum):
         walking = 0 
         jumping = 1

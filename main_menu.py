@@ -47,7 +47,6 @@ class Button():
 class StartScreen:
     def __init__(self):
         self.start_screen = screen
-        print("start_img size", start_img.get_size())
         start_img_scaled = pygame.transform.scale(start_img, (start_img.get_width()/2, start_img.get_height()/2))# 765X748
         self.start_button = Button(0,0, start_img_scaled) 
         self.start_button.rect.center = (screen_width / 2, (screen_height / 2) + 130)
@@ -140,6 +139,7 @@ class Game:
                 self.main_menu.draw()
             elif self.current_screen == "pet_selection":
                 self.my_pet_screen.main_frames()
+                self.my_pet_screen.handle_events()
             else:
                 self.main_menu.draw()
 
