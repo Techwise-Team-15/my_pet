@@ -21,8 +21,11 @@ class PetMudskipper():
         self.current_selected_animation = 3
         # The lists of frames for the current animation
         self.current_animation_list = self.get_animation_lists(self.current_selected_animation)
+        self.pet_name = "Splash"
     
-    
+    def get_name(self):
+        return self.pet_name
+
     def set_location(self, x,y):
         self.pet_location = [x,y]
     
@@ -53,6 +56,15 @@ class PetMudskipper():
 
         return self.animation_lists
 
+    def is_mouse_selection(self, mouse_pos):
+        pet_location = self.get_location()
+        pet_width = self.get_current_frame().get_width()
+        pet_height = self.get_current_frame().get_height()
+        if mouse_pos[0] >= pet_location[0] and mouse_pos[0] <= pet_location[0] + pet_width:
+            if mouse_pos[1] >= pet_location[1] and mouse_pos[1] <= pet_location[1] + pet_height:
+                return True
+        return False
+    
     def animation(self):
         frame = 0 
         while self.run:

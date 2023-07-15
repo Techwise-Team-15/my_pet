@@ -16,7 +16,7 @@ class PetSelection():
         self.pets_to_display = []
         self.font = pygame.font.Font(Config.FONT, 36)
         self.headline = "Click on the pet you want to play with today! 😊"
-        self.pet_names = Config.PET_NAMES
+        
         self.pet_description = Config.PET_DESCRIPTIONS
 
         # Pets:
@@ -53,8 +53,8 @@ class PetSelection():
             1: (prime_meridian + x_offset, equator + y_offset ),
             2: ((prime_meridian/2 + x_offset)+prime_meridian, self.My_rock.get_location()[1]+ y_offset)
         }
-        for pets in range(len(self.pet_names)):
-            text_surface = self.font.render(self.pet_names[pets], True, (255, 255, 255))
+        for pets in range(len(self.pets_to_display)):
+            text_surface = self.font.render(self.pets_to_display[pets].get_name(), True, (255, 255, 255))
             text_surface = self.pet_pygame.transform.scale(text_surface, [192, 96])
             text_rect = text_surface.get_rect()
             text_rect.center = pet_locations[pets] #(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/10 + 50 + pets*100)
@@ -80,3 +80,20 @@ class PetSelection():
             pet.updated_frame()
         
         self.pet_pygame.display.flip()
+    
+    
+
+    def handle_events(self):
+        for event in self.pet_pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.pet_pygame.quit()
+                return None
+            
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                for pet in self.pets_to_display:
+
+                    if pet.is_mouse_selection(mouse_pos):
+                        print("You selected the " + pet.get_name() + "!")
+                        return pet
+        return None

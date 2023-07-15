@@ -24,7 +24,10 @@ class PetRaccoon():
         self.current_selected_animation = 9
         # The lists of frames for the current animation
         self.current_animation_list = self.get_animation_lists(self.current_selected_animation)
-        
+        self.pet_name = "Rocket"
+    
+    def get_name(self):
+        return self.pet_name
         
         
     def set_location(self, x,y):
@@ -55,7 +58,16 @@ class PetRaccoon():
             self.animation_lists.append(self.raccoons.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.RED))
         
         return self.animation_lists
-    
+
+    def is_mouse_selection(self, mouse_pos):
+        pet_location = self.get_location()
+        pet_width = self.get_current_frame().get_width()
+        pet_height = self.get_current_frame().get_height()
+        if mouse_pos[0] >= pet_location[0] and mouse_pos[0] <= pet_location[0] + pet_width:
+            if mouse_pos[1] >= pet_location[1] and mouse_pos[1] <= pet_location[1] + pet_height:
+                return True
+        return False
+
     def animation(self,screenToDraw,action):
         self.raccoon_screen = screenToDraw
         self.animation_lists = self.get_animation_lists(action)
