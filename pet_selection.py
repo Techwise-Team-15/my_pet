@@ -14,24 +14,6 @@ class PetSelection():
         self.last_update = self.pet_pygame.time.get_ticks()
         self.animation_cooldown = 100
         self.pets_to_display = []
-        self.font = pygame.font.Font(Config.FONT, 36)
-        self.headline = "Click on the pet you want to play with today! 😊"
-        
-        self.pet_description = Config.PET_DESCRIPTIONS
-
-        # Pets:
-            # Create the raccoon
-        self.My_Raccoon = PetRaccoon(input_pygame=self.pet_pygame, screen=self.screen)
-        self.My_Raccoon.set_current_animation(Config.RaccoonActions.idle.value)
-        self.My_Raccoon.set_location(Config.SCREEN_WIDTH/16, 400)
-            # Create the rock
-        self.My_rock = PetRock(input_pygame=self.pet_pygame, screen=self.screen)
-        self.My_rock.set_current_animation(Config.RockActions.jumping.value)
-        self.My_rock.set_location(600, 600)
-            # Create the mudskipper
-        self.My_mudskipper = PetMudskipper(input_pygame=self.pet_pygame, screen=self.screen)
-        self.My_mudskipper.set_current_animation(Config.MudskipperActions.idle.value)
-        self.My_mudskipper.set_location(Config.SCREEN_WIDTH - 4*(Config.SCREEN_WIDTH/16), 400)
 
     def add_pet(self, pet):
         self.pets_to_display.append(pet)
@@ -97,7 +79,6 @@ class PetSelection():
         for pet in self.pets_to_display:
             self.screen.blit(pet.get_current_frame(),pet.get_location())
             pet.updated_frame()
-        
         self.pet_pygame.display.flip()
     
     
