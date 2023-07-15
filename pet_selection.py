@@ -15,45 +15,68 @@ class PetSelection():
         self.animation_cooldown = 100
         self.pets_to_display = []
         self.font = pygame.font.Font(Config.FONT, 36)
-        self.text = "Click on the pet you want to play with"
-        self.text_surface = self.font.render(self.text, True, (255, 255, 255)) 
-        self.text_surface = self.pet_pygame.transform.scale(self.text_surface, [Config.SCREEN_WIDTH/1.1, Config.SCREEN_HEIGHT/10])
-        self.text_rect = self.text_surface.get_rect()
-        self.text_rect.center = (Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/10)
-        self.pet_names = ["Raccoon", "Rock", "Mudskipper"]
-        self.pet_description = ["Rocky is an adventurous and mischievous raccoon who needs your care and attention. Help Rocky navigate through various challenges, providing nourishing meals, and engaging playtime. With your loving care, Rocky will grow into a healthy and happy raccoon companion."
-                                , "A rock that loves to be thrown", "A mudskipper that loves to swim"]
-        
+        self.headline = "Click on the pet you want to play with today! 😊"
+        self.pet_names = Config.PET_NAMES
+        self.pet_description = Config.PET_DESCRIPTIONS
 
-
+        # Pets:
+            # Create the raccoon
+        self.My_Raccoon = PetRaccoon(input_pygame=self.pet_pygame, screen=self.screen)
+        self.My_Raccoon.set_current_animation(Config.RaccoonActions.idle.value)
+        self.My_Raccoon.set_location(Config.SCREEN_WIDTH/16, 400)
+            # Create the rock
+        self.My_rock = PetRock(input_pygame=self.pet_pygame, screen=self.screen)
+        self.My_rock.set_current_animation(Config.RockActions.jumping.value)
+        self.My_rock.set_location(600, 600)
+            # Create the mudskipper
+        self.My_mudskipper = PetMudskipper(input_pygame=self.pet_pygame, screen=self.screen)
+        self.My_mudskipper.set_current_animation(Config.MudskipperActions.idle.value)
+        self.My_mudskipper.set_location(Config.SCREEN_WIDTH - 4*(Config.SCREEN_WIDTH/16), 400)
 
     def add_pet(self, pet):
         self.pets_to_display.append(pet)
-    
+
+    def pet_screen_header(self):
+        text_surface = self.font.render(self.headline, True, (255, 255, 255)) 
+        text_surface = self.pet_pygame.transform.scale(text_surface, [Config.SCREEN_WIDTH/1.1, Config.SCREEN_HEIGHT/10])
+        text_rect = text_surface.get_rect()
+        text_rect.center = (Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/10)
+        self.screen.blit(text_surface, text_rect)
+
+    def pet_informations(self):
+        y_offset = 70
+        x_offset = -160
+        prime_meridian = Config.SCREEN_WIDTH/2
+        equator = Config.SCREEN_HEIGHT/2
+        pet_locations = {
+            0: (prime_meridian/2 + x_offset, self.My_rock.get_location()[1]+ y_offset),
+            1: (prime_meridian + x_offset, equator + y_offset ),
+            2: ((prime_meridian/2 + x_offset)+prime_meridian, self.My_rock.get_location()[1]+ y_offset)
+        }
+        for pets in range(len(self.pet_names)):
+            text_surface = self.font.render(self.pet_names[pets], True, (255, 255, 255))
+            text_surface = self.pet_pygame.transform.scale(text_surface, [192, 96])
+            text_rect = text_surface.get_rect()
+            text_rect.center = pet_locations[pets] #(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/10 + 50 + pets*100)
+            self.screen.blit(text_surface, text_rect)
+
+
+
+
     def initialize_pets(self):
-        
-        # Create the raccoon
-        My_Raccoon = PetRaccoon(input_pygame=self.pet_pygame, screen=self.screen)
-        My_Raccoon.set_current_animation(Config.RaccoonActions.idle.value)
-        My_Raccoon.set_location(100, 400)
-        self.add_pet(My_Raccoon)
-
-        # Create the rock
-        My_rock = PetRock(input_pygame=self.pet_pygame, screen=self.screen)
-        My_rock.set_location(600, 600)
-        My_rock.set_current_animation(Config.RockActions.jumping.value)
-        self.add_pet(My_rock)
-
-        # Create the mudskipper
-        My_mudskipper = PetMudskipper(input_pygame=self.pet_pygame, screen=self.screen)
-        My_mudskipper.set_current_animation(Config.MudskipperActions.idle.value)
-        My_mudskipper.set_location(1100, 400)
-        self.add_pet(My_mudskipper)
+        # Add the raccoon
+        self.add_pet(self.My_Raccoon)
+        # Add the rock
+        self.add_pet(self.My_rock)
+        # Add the mudskipper
+        self.add_pet(self.My_mudskipper)
     
     def main_frames(self):
         self.screen.blit(self.bg, (0,0))
+        self.pet_screen_header()
+        self.pet_informations()
         for pet in self.pets_to_display:
             self.screen.blit(pet.get_current_frame(),pet.get_location())
             pet.updated_frame()
-        self.screen.blit(self.text_surface, self.text_rect)
+        
         self.pet_pygame.display.flip()
