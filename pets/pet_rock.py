@@ -5,6 +5,7 @@ from game_util.pet_config import PetConfig as Config
 
 class PetRock():
     def __init__(self,input_pygame,screen) -> None:
+        self.pet_id = "rock"
         self.animation_lists = [] 
         self.animation_cooldown = Config.PET_ANIMATION_COOLDOWN
         self.FRAME = [8,8,2,8,6,8,8,7,8]
@@ -26,6 +27,8 @@ class PetRock():
     def get_name(self):
         return self.pet_name
 
+    def get_pet_id(self):
+        return self.pet_id
     
     def set_location(self, x,y):
         self.pet_location = [x,y]

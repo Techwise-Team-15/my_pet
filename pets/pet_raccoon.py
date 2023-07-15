@@ -7,9 +7,9 @@ from game_util.pet_config import PetConfig as Config
 
 class PetRaccoon():
     def __init__(self,input_pygame,screen) -> None:
+        self.pet_id = "raccoon"
         self.animation_lists = []
         self.animation_cooldown = Config.PET_ANIMATION_COOLDOWN
-        
         self.FRAME = [5,8,8,4,8,8,8,8,8,3]
         self.ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768,864]
         self.my_pygame = input_pygame
@@ -28,7 +28,9 @@ class PetRaccoon():
     
     def get_name(self):
         return self.pet_name
-        
+    
+    def get_pet_id(self):
+        return self.pet_id
         
     def set_location(self, x,y):
         self.pet_location = [x,y]

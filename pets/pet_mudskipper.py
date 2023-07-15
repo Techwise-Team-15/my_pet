@@ -5,6 +5,7 @@ from game_util.pet_config import PetConfig as Config
 
 class PetMudskipper():
     def __init__(self,input_pygame,screen) -> None:
+        self.pet_id = "mudskipper"
         self.my_pygame = input_pygame
         self.mudskipper_screen = screen
         self.animation_lists = [] 
@@ -25,6 +26,9 @@ class PetMudskipper():
     
     def get_name(self):
         return self.pet_name
+    
+    def get_pet_id(self):
+        return self.pet_id
 
     def set_location(self, x,y):
         self.pet_location = [x,y]

@@ -43,8 +43,8 @@ class PetSelection():
         text_rect.center = (Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/10)
         self.screen.blit(text_surface, text_rect)
 
-    def pet_informations(self):
-        y_offset = 70
+    def display_pet_names(self):
+        y_offset = 10
         x_offset = -160
         prime_meridian = Config.SCREEN_WIDTH/2
         equator = Config.SCREEN_HEIGHT/2
@@ -60,7 +60,25 @@ class PetSelection():
             text_rect.center = pet_locations[pets] #(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/10 + 50 + pets*100)
             self.screen.blit(text_surface, text_rect)
 
-
+    def display_pet_descriptions(self):
+        y_offset = 70
+        x_offset = -20
+        prime_meridian = Config.SCREEN_WIDTH/2
+        equator = Config.SCREEN_HEIGHT/2
+        desc_font = pygame.font.Font(None, 36)
+        pet_locations = {
+            0: [prime_meridian/2 + x_offset, self.My_rock.get_location()[1]+ y_offset],
+            1: [prime_meridian + x_offset, equator + y_offset ],
+            2: [(prime_meridian/2 + x_offset)+prime_meridian, self.My_rock.get_location()[1]+ y_offset]
+        }
+        for pets in range(len(self.pets_to_display)):
+            for idx,desc in enumerate(Config.PET_DESCRIPTIONS[self.pets_to_display[pets].get_pet_id()]):
+                text_surface = desc_font.render(desc, True, (255, 255, 255))
+                text_surface = self.pet_pygame.transform.scale(text_surface, [510, 35])
+                text_rect = text_surface.get_rect()
+                text_rect.center = [pet_locations[pets][0],pet_locations[pets][1] + (idx*40)] #(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/10 + 50 + pets*100)
+                self.screen.blit(text_surface, text_rect)
+            
 
 
     def initialize_pets(self):
@@ -74,7 +92,8 @@ class PetSelection():
     def main_frames(self):
         self.screen.blit(self.bg, (0,0))
         self.pet_screen_header()
-        self.pet_informations()
+        self.display_pet_names()
+        self.display_pet_descriptions()
         for pet in self.pets_to_display:
             self.screen.blit(pet.get_current_frame(),pet.get_location())
             pet.updated_frame()
