@@ -2,6 +2,8 @@ import pygame
 import sys
 from game_util import PetConfig as config
 from pet_selection import PetSelection
+from game_over import GameOver
+from pets import PetRaccoon
 
 pygame.init()
 
@@ -111,6 +113,12 @@ class Game:
         self.main_menu = MainMenu()
         self.my_pet_screen = PetSelection(pygame, screen)
         self.my_pet_screen.initialize_pets()
+        self.My_Raccoon = PetRaccoon(input_pygame=pygame, screen=screen)
+        self.My_Raccoon.set_current_animation(config.RaccoonActions.dying.value)
+        x_location = config.SCREEN_WIDTH/2 - self.My_Raccoon.get_current_frame().get_width()/2
+        y_location = config.SCREEN_HEIGHT/2 + self.My_Raccoon.get_current_frame().get_height()/3
+        self.My_Raccoon.set_location(x_location, y_location)
+        self.game_over_screen = GameOver(pygame, screen, self.My_Raccoon)
         self.current_screen = "start"
 
     def run(self):
@@ -138,8 +146,9 @@ class Game:
             elif self.current_screen == "menu":
                 self.main_menu.draw()
             elif self.current_screen == "pet_selection":
-                self.my_pet_screen.main_frames()
-                self.my_pet_screen.handle_events()
+                # self.my_pet_screen.main_frames()
+                # self.my_pet_screen.handle_events()
+                self.game_over_screen.main_frames()
             else:
                 self.main_menu.draw()
 

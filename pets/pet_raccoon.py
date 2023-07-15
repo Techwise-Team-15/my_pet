@@ -1,4 +1,4 @@
-import pygame
+
 from game_util import sprite_sheet as sprite
 from game_util.pet_config import PetConfig as Config
 
