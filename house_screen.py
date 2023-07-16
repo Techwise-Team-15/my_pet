@@ -3,6 +3,7 @@ from game_util import PetConfig as Config
 from pets import PetRaccoon, PetRock, PetMudskipper
 from game_util import PetConfig as config
 from pet_selection import PetSelection
+from src import Table
 
 pygame.init()
 

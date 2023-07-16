@@ -84,3 +84,13 @@ class PetConfig:
     class TableActions(Enum):
         lamp = 0
         vase = 1
+        flower = 2
+        watering_can = 3
+        broccoli = 4
+        plant = 5 
+        spray_flower_pink = 6
+        spray_tulip = 7
+        water_bucket = 8
+        full_cup = 9
+        half_cup = 10
+        plate = 11
