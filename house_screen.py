@@ -77,13 +77,11 @@ class PetStats():
         elif self.health_bar.hp == 0 and self.thirst_bar.hp == 0:
             self.health_bar.bar_drain()
 
+
 house = HouseScreen()
 pet_stats = PetStats()
-
 last_update = pygame.time.get_ticks()
 animation_cooldown = 100
-#pets_to_display = []
-
 My_rock = PetRock(pygame, screen)
 My_rock.set_location(600, 600)
 My_rock.set_current_animation(Config.RockActions.jumping.value)
