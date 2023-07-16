@@ -1,0 +1,57 @@
+import pygame
+from game_util.sprite_sheet import SpriteSheet
+from game_util.pet_config import PetConfig
+
+pygame.init()
+window_width = 800
+window_height = 600
+window = pygame.display.set_mode((window_width, window_height))
+pygame.display.set_caption('Eating Example')
+
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+
+box_width = 200
+box_height = 150
+box_x = (window_width - box_width) // 2
+box_y = (window_height - box_height) // 2
+box_rect = pygame.Rect(box_x, box_y, box_width, box_height)
+
+eating_animation_frames = []
+
+spritesheet = SpriteSheet(PetConfig.ROCK_PATH)  # Replace with your own sprite sheet path
+for frame in range(8):
+    image = spritesheet.get_image(frame, 0, 96, 96, 2, PetConfig.BLACK)
+    eating_animation_frames.append(image)
+
+current_frame_index = 0
+animation_cooldown = 100
+last_frame_update = pygame.time.get_ticks()
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if box_rect.collidepoint(event.pos):
+                # Trigger eating animation
+                current_frame_index = 0
+                last_frame_update = pygame.time.get_ticks()
+
+    window.fill(WHITE)
+    pygame.draw.rect(window, BLACK, box_rect)
+
+    current_time = pygame.time.get_ticks()
+    if current_time - last_frame_update >= animation_cooldown:
+        current_frame_index = (current_frame_index + 1) % len(eating_animation_frames)
+        last_frame_update = current_time
+
+    current_frame = eating_animation_frames[current_frame_index]
+    window.blit(current_frame, (box_x, box_y))
+
+    pygame.display.flip()
+
+pygame.quit()
+
+
