@@ -30,5 +30,5 @@ Start playing Pet Patrol now and have a fantastic time taking care of your virtu
 
 You can find more information about Pet Patrol in the following documents:
 
-- [Collaboration Guide](collabGuide.md): Guidelines for collaborating with your team on the development of Pet Patrol.
+- [Collaboration Guide](CollabGuide.md): Guidelines for collaborating with your team on the development of Pet Patrol.
 - [Game Overview](overview.md): An overview of Pet Patrol, including its features and gameplay.
