@@ -146,9 +146,9 @@ class Game:
             elif self.current_screen == "menu":
                 self.main_menu.draw()
             elif self.current_screen == "pet_selection":
-                # self.my_pet_screen.main_frames()
-                # self.my_pet_screen.handle_events()
-                self.game_over_screen.main_frames()
+                self.my_pet_screen.main_frames()
+                self.my_pet_screen.handle_events()
+                #self.game_over_screen.main_frames()
             else:
                 self.main_menu.draw()
 

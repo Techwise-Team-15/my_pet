@@ -12,9 +12,19 @@ class GameOver():
         self.bg = self.game_over_pygame.transform.scale(self.background, [config.SCREEN_WIDTH, config.SCREEN_HEIGHT])
         self.game_over_pygame.display.set_caption('Game Over')
         self.last_update = self.game_over_pygame.time.get_ticks()
-        self.animation_cooldown = 100
+        self.animation_cooldown = config.PET_ANIMATION_COOLDOWN 
         self.loser_pet = lost_pet 
+        
         self.game_over_delay = 10 #seconds to display game over message
+
+        self.set_loser_pet_location()
+        
+        
+
+    def set_loser_pet_location(self):
+        x_location = config.SCREEN_WIDTH/2 - self.loser_pet.get_current_frame().get_width()/2
+        y_location = config.SCREEN_HEIGHT/2 + self.loser_pet.get_current_frame().get_height()/3
+        self.loser_pet.set_location(x_location, y_location)
 
     def display_game_over_message(self):
         
@@ -32,7 +42,6 @@ class GameOver():
         self.screen.blit(self.loser_pet.get_current_frame(), self.loser_pet.get_location())
         self.loser_pet.updated_frame()
         self.game_over_pygame.display.flip()
-        #self.game_over_pygame.display.update()
         #self.game_over_pygame.time.delay(1000 * self.game_over_delay)
         #self.game_over_pygame.quit()
         #quit()

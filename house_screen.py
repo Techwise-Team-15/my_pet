@@ -3,6 +3,7 @@ from game_util import PetConfig as Config
 from pets import PetRaccoon, PetRock, PetMudskipper
 from game_util import PetConfig as config
 from pet_selection import PetSelection
+from game_over import GameOver
 
 pygame.init()
 
@@ -53,7 +54,7 @@ class StatusBar():
     def bar_drain(self):
         if self.hp > 0:
             pygame.time.delay(hp_drain_time)
-            self.hp -= 1
+            self.hp -= 20
 
 
 class PetStats():
@@ -62,6 +63,9 @@ class PetStats():
     hunger_bar = StatusBar(950, 150, 200, 40, 1000, ORANGE, RED)
     happiness_bar = StatusBar(950, 200, 200,40,1000, YELLOW, RED)
 
+    def get_pet_health(self):
+        return self.health_bar.hp
+    
     def draw(self, surface):
         self.health_bar.draw(surface)
         self.thirst_bar.draw(surface)
@@ -86,21 +90,34 @@ animation_cooldown = 100
 
 My_rock = PetRock(pygame, screen)
 My_rock.set_location(600, 600)
-My_rock.set_current_animation(Config.RockActions.jumping.value)
+My_rock.set_current_animation(Config.RockActions.idle.value)
 
+game_over = GameOver(pygame, screen, My_rock)
 
+pet_died = False
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    if(pet_stats.get_pet_health() == 0 and pet_died == False):
+        print("pet died")
+        My_rock.set_current_animation(Config.RockActions.dying.value)
+        pet_died = True
+        
+        
+    if(pet_died == False):
+        house.draw()
+        pet_stats.update()
+        pet_stats.draw(screen)
+        screen.blit(My_rock.get_current_frame(),My_rock.get_location())
+        My_rock.updated_frame()
+        pygame.display.flip()
+    else:
+        game_over.main_frames()
+    
+    pygame.display.update()
 
-    house.draw()
-    pet_stats.update()
-    pet_stats.draw(screen)
-    screen.blit(My_rock.get_current_frame(),My_rock.get_location())
-    My_rock.updated_frame()
-
-    pygame.display.flip()
+    
 
 pygame.quit()
