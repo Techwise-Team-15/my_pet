@@ -26,3 +26,9 @@ To take care of your selected pet, you'll need to attend to its various needs. T
 
 Start playing Pet Patrol now and have a fantastic time taking care of your virtual pets!
 
+## Additional Information
+
+You can find more information about Pet Patrol in the following documents:
+
+- [Collaboration Guide](collabGuide.md): Guidelines for collaborating with your team on the development of Pet Patrol.
+- [Game Overview](overview.md): An overview of Pet Patrol, including its features and gameplay.
