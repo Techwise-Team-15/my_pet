@@ -26,7 +26,7 @@ class PetSelection():
         self.My_Raccoon.set_location(Config.SCREEN_WIDTH/16, 400)
             # Create the rock
         self.My_rock = PetRock(input_pygame=self.pet_pygame, screen=self.screen)
-        self.My_rock.set_current_animation(Config.RockActions.jumping.value)
+        self.My_rock.set_current_animation(Config.RockActions.idle.value)
         self.My_rock.set_location(600, 600)
             # Create the mudskipper
         self.My_mudskipper = PetMudskipper(input_pygame=self.pet_pygame, screen=self.screen)

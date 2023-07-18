@@ -3,7 +3,8 @@ import sys
 from game_util import PetConfig as config
 from pet_selection import PetSelection
 from game_over import GameOver
-from pets import PetRaccoon
+from pets import PetRaccoon, PetRock, PetMudskipper
+from house_screen import RockHouse
 
 pygame.init()
 
@@ -113,13 +114,15 @@ class Game:
         self.main_menu = MainMenu()
         self.my_pet_screen = PetSelection(pygame, screen)
         self.my_pet_screen.initialize_pets()
-        self.My_Raccoon = PetRaccoon(input_pygame=pygame, screen=screen)
-        self.My_Raccoon.set_current_animation(config.RaccoonActions.dying.value)
-        x_location = config.SCREEN_WIDTH/2 - self.My_Raccoon.get_current_frame().get_width()/2
-        y_location = config.SCREEN_HEIGHT/2 + self.My_Raccoon.get_current_frame().get_height()/3
-        self.My_Raccoon.set_location(x_location, y_location)
-        self.game_over_screen = GameOver(pygame, screen, self.My_Raccoon)
+        self.my_rock = PetRock(input_pygame=pygame, screen=screen)
+        self.my_rock.set_current_animation(config.RockActions.dying.value)
+        x_location = config.SCREEN_WIDTH/2 - self.my_rock.get_current_frame().get_width()/2
+        y_location = config.SCREEN_HEIGHT/2 + self.my_rock.get_current_frame().get_height()/3
+        self.my_rock.set_location(x_location, y_location)
+        self.game_over_screen = GameOver(pygame, screen, self.my_rock)
         self.current_screen = "start"
+        self.pet_rock_house = RockHouse()
+        
 
     def run(self):
         running = True
@@ -147,8 +150,11 @@ class Game:
                 self.main_menu.draw()
             elif self.current_screen == "pet_selection":
                 self.my_pet_screen.main_frames()
-                self.my_pet_screen.handle_events()
-                #self.game_over_screen.main_frames()
+                scan_clicked_pet = self.my_pet_screen.handle_events()
+                if scan_clicked_pet != None and scan_clicked_pet.get_pet_id() == self.my_rock.get_pet_id():
+                    self.current_screen = "rock_house"
+            elif self.current_screen == "rock_house":
+                self.pet_rock_house.main_frames()
             else:
                 self.main_menu.draw()
 
