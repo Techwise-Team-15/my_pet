@@ -81,43 +81,40 @@ class PetStats():
         elif self.health_bar.hp == 0 and self.thirst_bar.hp == 0:
             self.health_bar.bar_drain()
 
-house = HouseScreen()
-pet_stats = PetStats()
+class RockHouse:
+    def __init__(self):
+        self.house = HouseScreen()
+        self.pet_stats = PetStats()
 
-last_update = pygame.time.get_ticks()
-animation_cooldown = 100
-#pets_to_display = []
+        self.last_update = pygame.time.get_ticks()
+        self.animation_cooldown = 100
+        #pets_to_display = []
 
-My_rock = PetRock(pygame, screen)
-My_rock.set_location(600, 600)
-My_rock.set_current_animation(Config.RockActions.idle.value)
+        self.my_rock = PetRock(pygame, screen)
+        self.my_rock.set_location(600, 600)
+        self.my_rock.set_current_animation(Config.RockActions.idle.value)
 
-game_over = GameOver(pygame, screen, My_rock)
+        self.game_over = GameOver(pygame, screen, self.my_rock)
 
-pet_died = False
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-    if(pet_stats.get_pet_health() == 0 and pet_died == False):
-        print("pet died")
-        My_rock.set_current_animation(Config.RockActions.dying.value)
-        pet_died = True
-        
-        
-    if(pet_died == False):
-        house.draw()
-        pet_stats.update()
-        pet_stats.draw(screen)
-        screen.blit(My_rock.get_current_frame(),My_rock.get_location())
-        My_rock.updated_frame()
-        pygame.display.flip()
-    else:
-        game_over.main_frames()
+        self.pet_died = False
+        self.running = True
     
-    pygame.display.update()
+    def main_frames(self):
+                
+        if(self.pet_stats.get_pet_health() == 0 and self.pet_died == False):
+            print("pet died")
+            self.my_rock.set_current_animation(Config.RockActions.dying.value)
+            self.pet_died = True
+            
+            
+        if(self.pet_died == False):
+            self.house.draw()
+            self.pet_stats.update()
+            self.pet_stats.draw(screen)
+            screen.blit(self.my_rock.get_current_frame(),self.my_rock.get_location())
+            self.my_rock.updated_frame()
+            pygame.display.flip()
+        else:
+            self.game_over.main_frames()
+        pygame.display.update()
 
-    
-
-pygame.quit()
