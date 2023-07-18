@@ -1,10 +1,10 @@
-# Welcome to Pet Patrol!
+# Welcome to Paw Patrol!
 
-Pet Patrol is an exciting Tamagotchi-style game where you can take care of adorable virtual pets. Currently, the available pets are the Pet Rock, Pet Raccoon, and Mudskipper.
+Paw Patrol is an exciting Tamagotchi-style game where you can take care of adorable virtual pets. Currently, the available pets are the Pet Rock, Pet Raccoon, and Mudskipper.
 
 ## Objective
 
-Your objective in Pet Patrol is to select and take care of one of these charming pets. Each pet requires different care and attention. You'll need to ensure their needs are met to keep them happy and healthy.
+Your objective in Paw Patrol is to select and take care of one of these charming pets. Each pet requires different care and attention. You'll need to ensure their needs are met to keep them happy and healthy.
 
 ## Available Pets
 
@@ -24,11 +24,11 @@ The Mudskipper is an aquatic pet that thrives in water. Create a suitable aquati
 
 To take care of your selected pet, you'll need to attend to its various needs. This includes feeding, playing, cleaning, and keeping an eye on its overall well-being. Don't forget to give your pet plenty of love and attention!
 
-Start playing Pet Patrol now and have a fantastic time taking care of your virtual pets!
+Start playing Paw Patrol now and have a fantastic time taking care of your virtual pets!
 
 ## Additional Information
 
-You can find more information about Pet Patrol in the following documents:
+You can find more information about Paw Patrol in the following documents:
 
-- [Collaboration Guide](CollabGuide.md): Guidelines for collaborating with your team on the development of Pet Patrol.
-- [Game Overview](Overview.md): An overview of Pet Patrol, including its features and gameplay.
+- [Collaboration Guide](CollabGuide.md): Guidelines for collaborating with your team on the development of Paw Patrol.
+- [Game Overview](Overview.md): An overview of Paw Patrol, including its features and gameplay.
