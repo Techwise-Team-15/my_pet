@@ -120,6 +120,7 @@ class Game:
         self.watering_can_item = self.pet_rock_house.watering_can_item
         self.broccli_item = self.pet_rock_house.broccli_item
         self.ball_item = self.pet_rock_house.ball_item
+        self.bed_item = self.pet_rock_house.bed_item
 
     def run(self):
         running = True
@@ -132,6 +133,7 @@ class Game:
                     self.watering_can_item.handle_event(event)
                     self.broccli_item.handle_event(event)
                     self.ball_item.handle_event(event)
+                    self.bed_item.handle_event(event)
 
                 if self.current_screen == "start":
                     transition_to_menu = self.start_screen.handle_event(event)
