@@ -53,7 +53,7 @@ class StatusBar:
     def bar_drain(self):
         if self.hp > 0:
             pygame.time.delay(hp_drain_time)
-            self.hp -= 0 #TODO: change back to 20
+            self.hp -= 20 
 
 
 class PetStats:
@@ -108,19 +108,17 @@ class Item:
         self.offset = (0, 0)
 
     def is_mouse_selection(self, mouse_pos):
-        pet_location = self.item_location
-        pet_width = self.rect.width
-        pet_height = self.rect.height 
-        if mouse_pos[0] >= pet_location[0] and mouse_pos[0] <= (pet_location[0] + pet_width):
-            if mouse_pos[1] >= pet_location[1] and mouse_pos[1] <= (pet_location[1] + pet_height):
-                print("the item width and height are", pet_width, pet_height)
+        item_location = self.item_location
+        item_width = self.rect.width
+        item_height = self.rect.height 
+        if mouse_pos[0] >= item_location[0] and mouse_pos[0] <= (item_location[0] + item_width):
+            if mouse_pos[1] >= item_location[1] and mouse_pos[1] <= (item_location[1] + item_height):
                 return True
         return False
 
     def handle_event(self, event):
         if self.is_movable: 
             if event.type == MOUSEBUTTONDOWN:
-                print("Button Clicked")
                 if self.rect.collidepoint(event.pos):
                     self.is_dragging = True
                     self.offset = (
@@ -138,8 +136,7 @@ class Item:
             if event.type == MOUSEBUTTONDOWN:
                 mouse_pos = self.pygame.mouse.get_pos()
                 if self.is_mouse_selection(mouse_pos):
-                    print("You selected the bed!")
-                    self.interacting_pet.set_location(self.item_location[0],self.item_location[1])
+                    self.interacting_pet.set_location(self.item_location[0],self.item_location[1]+ self.rect.height/2.5)
                     self.interacting_pet.set_current_animation(config.RockActions.sleeping.value)
 
 
@@ -165,7 +162,7 @@ class RockHouse:
         self.ball = self.sprite_sheet.get_image(2, 288, 96, 96, 2, RED)
         self.ball_item = Item(pygame,screen, self.ball,self.my_rock,  300, 300)
         self.bed = self.sprite_sheet.get_image(0,480,96,96,6.5,RED)
-        self.bed = self.bed.subsurface(pygame.Rect(0,0,96,48))
+        #self.bed = self.bed.subsurface(pygame.Rect(0,0,96,48))
         self.bed_item = Item(pygame,screen,self.bed,self.my_rock, 875,295,False)
 
 
@@ -184,7 +181,6 @@ class RockHouse:
                 sys.exit()
 
         if self.pet_stats.get_pet_health() == 0 and not self.pet_died:
-            print("pet died")
             self.my_rock.set_current_animation(Config.RockActions.dying.value)
             self.pet_died = True
 
