@@ -4,7 +4,6 @@ from pets import PetRaccoon, PetRock, PetMudskipper
 from game_util import PetConfig as config
 from pet_selection import PetSelection
 from game_over import GameOver
-from pygame.locals import *
 
 pygame.init()
 
@@ -76,10 +75,9 @@ class PetStats:
         self.thirst_bar.bar_drain()
         self.hunger_bar.bar_drain()
         self.happiness_bar.bar_drain()
-        if self.health_bar.hp == 0 or self.thirst_bar.hp == 0:
+        if self.hunger_bar.hp == 0 and self.thirst_bar.hp == 0:
             self.health_bar.bar_drain()
-        elif self.health_bar.hp == 0 and self.thirst_bar.hp == 0:
-            self.health_bar.bar_drain()
+        
 
 
 class SpriteSheet:
@@ -105,20 +103,18 @@ class Item:
         self.offset = (0, 0)
 
     def handle_event(self, event):
-        if event.type == MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(event.pos):
                 self.is_dragging = True
                 self.offset = (
                     event.pos[0] - self.rect.x,
                     event.pos[1] - self.rect.y
                 )
-        elif event.type == MOUSEBUTTONUP:
-            if self.is_dragging:
-                self.is_dragging = False
-        elif event.type == MOUSEMOTION:
-            if self.is_dragging:
-                self.rect.x = event.pos[0] - self.offset[0]
-                self.rect.y = event.pos[1] - self.offset[1]
+        elif event.type == pygame.MOUSEBUTTONUP and self.is_dragging:
+            self.is_dragging = False
+        elif event.type == pygame.MOUSEMOTION and self.is_dragging:
+            self.rect.x = event.pos[0] - self.offset[0]
+            self.rect.y = event.pos[1] - self.offset[1]
 
 
 class RockHouse:
@@ -129,11 +125,10 @@ class RockHouse:
 
         self.last_update = pygame.time.get_ticks()
         self.animation_cooldown = 100
-        #pets_to_display = []
 
         self.my_rock = PetRock(pygame, screen)
         self.my_rock.set_location(600, 600)
-        self.my_rock.set_current_animation(Config.RockActions.idle.value)
+        self.my_rock.set_current_animation(Config.RockActions.jumping.value, True)
 
         self.brocolli = self.sprite_sheet.get_image(0,384,96,96,1,RED)
         self.broccli_item = Item(pygame, screen, self.brocolli, 475, 175)
@@ -157,7 +152,6 @@ class RockHouse:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                sys.exit()
 
         if self.pet_stats.get_pet_health() == 0 and not self.pet_died:
             print("pet died")
@@ -175,7 +169,7 @@ class RockHouse:
             screen.blit(self.bed, self.bed_item.rect.topleft)
             self.my_rock.updated_frame()
             pygame.display.flip()
-            self.clock.tick(60)
+            
         else:
             self.game_over.main_frames()
         pygame.display.update()

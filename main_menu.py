@@ -111,7 +111,6 @@ class Game:
         self.my_pet_screen = PetSelection(pygame, screen)
         self.my_pet_screen.initialize_pets()
         self.my_rock = PetRock(input_pygame=pygame, screen=screen)
-        self.my_rock.set_current_animation(config.RockActions.dying.value)
         x_location = config.SCREEN_WIDTH // 2 - self.my_rock.get_current_frame().get_width() // 2
         y_location = config.SCREEN_HEIGHT // 2 + self.my_rock.get_current_frame().get_height() // 3
         self.my_rock.set_location(x_location, y_location)
