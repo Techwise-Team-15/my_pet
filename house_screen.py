@@ -53,7 +53,7 @@ class StatusBar:
     def bar_drain(self):
         if self.hp > 0:
             pygame.time.delay(hp_drain_time)
-            self.hp -= 20
+            self.hp -= 0 #TODO: change back to 20
 
 
 class PetStats:
@@ -96,29 +96,52 @@ class SpriteSheet:
 
 
 class Item:
-    def __init__(self, pygame, screen, image, x, y):
+    def __init__(self, pygame, screen, image, pet, x, y, is_movable = True):
         self.pygame = pygame
         self.screen = screen
         self.image = image
         self.rect = self.image.get_rect(topleft=(x, y))
         self.is_dragging = False
+        self.is_movable = is_movable
+        self.interacting_pet = pet
+        self.item_location = [x,y]
         self.offset = (0, 0)
 
+    def is_mouse_selection(self, mouse_pos):
+        pet_location = self.item_location
+        pet_width = self.rect.width
+        pet_height = self.rect.height 
+        if mouse_pos[0] >= pet_location[0] and mouse_pos[0] <= (pet_location[0] + pet_width):
+            if mouse_pos[1] >= pet_location[1] and mouse_pos[1] <= (pet_location[1] + pet_height):
+                print("the item width and height are", pet_width, pet_height)
+                return True
+        return False
+
     def handle_event(self, event):
-        if event.type == MOUSEBUTTONDOWN:
-            if self.rect.collidepoint(event.pos):
-                self.is_dragging = True
-                self.offset = (
-                    event.pos[0] - self.rect.x,
-                    event.pos[1] - self.rect.y
-                )
-        elif event.type == MOUSEBUTTONUP:
-            if self.is_dragging:
-                self.is_dragging = False
-        elif event.type == MOUSEMOTION:
-            if self.is_dragging:
-                self.rect.x = event.pos[0] - self.offset[0]
-                self.rect.y = event.pos[1] - self.offset[1]
+        if self.is_movable: 
+            if event.type == MOUSEBUTTONDOWN:
+                print("Button Clicked")
+                if self.rect.collidepoint(event.pos):
+                    self.is_dragging = True
+                    self.offset = (
+                        event.pos[0] - self.rect.x,
+                        event.pos[1] - self.rect.y
+                    )
+            elif event.type == MOUSEBUTTONUP:
+                if self.is_dragging:
+                    self.is_dragging = False
+            elif event.type == MOUSEMOTION:
+                if self.is_dragging:
+                    self.rect.x = event.pos[0] - self.offset[0]
+                    self.rect.y = event.pos[1] - self.offset[1]
+        else:
+            if event.type == MOUSEBUTTONDOWN:
+                mouse_pos = self.pygame.mouse.get_pos()
+                if self.is_mouse_selection(mouse_pos):
+                    print("You selected the bed!")
+                    self.interacting_pet.set_location(self.item_location[0],self.item_location[1])
+                    self.interacting_pet.set_current_animation(config.RockActions.sleeping.value)
+
 
 
 class RockHouse:
@@ -136,13 +159,14 @@ class RockHouse:
         self.my_rock.set_current_animation(Config.RockActions.idle.value)
 
         self.brocolli = self.sprite_sheet.get_image(0,384,96,96,1,RED)
-        self.broccli_item = Item(pygame, screen, self.brocolli, 475, 175)
+        self.broccli_item = Item(pygame, screen, self.brocolli,self.my_rock, 475, 175)
         self.watering_can = self.sprite_sheet.get_image(0, 288, 96, 96, 2, RED)
-        self.watering_can_item = Item(pygame, screen, self.watering_can, 150, 600)
+        self.watering_can_item = Item(pygame, screen, self.watering_can,self.my_rock, 150, 600)
         self.ball = self.sprite_sheet.get_image(2, 288, 96, 96, 2, RED)
-        self.ball_item = Item(pygame,screen, self.ball, 300, 300)
-        self.bed = self.sprite_sheet.get_image(0,480,96,96,3,RED)
-        self.bed_item = Item(pygame,screen,self.ball,850,500)
+        self.ball_item = Item(pygame,screen, self.ball,self.my_rock,  300, 300)
+        self.bed = self.sprite_sheet.get_image(0,480,96,96,6.5,RED)
+        self.bed = self.bed.subsurface(pygame.Rect(0,0,96,48))
+        self.bed_item = Item(pygame,screen,self.bed,self.my_rock, 875,295,False)
 
 
 
