@@ -116,22 +116,22 @@ class Item:
 
     def handle_event(self, event):
         if self.is_movable: 
-            if event.type == MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.rect.collidepoint(event.pos):
                     self.is_dragging = True
                     self.offset = (
                         event.pos[0] - self.rect.x,
                         event.pos[1] - self.rect.y
                     )
-            elif event.type == MOUSEBUTTONUP:
+            elif event.type == pygame.MOUSEBUTTONUP:
                 if self.is_dragging:
                     self.is_dragging = False
-            elif event.type == MOUSEMOTION:
+            elif event.type == pygame.MOUSEMOTION:
                 if self.is_dragging:
                     self.rect.x = event.pos[0] - self.offset[0]
                     self.rect.y = event.pos[1] - self.offset[1]
         else:
-            if event.type == MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = self.pygame.mouse.get_pos()
                 if self.is_mouse_selection(mouse_pos):
                     self.interacting_pet.set_location(self.item_location[0],self.item_location[1]+ self.rect.height/2.5)

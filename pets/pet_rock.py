@@ -45,6 +45,7 @@ class PetRock():
     def set_current_animation(self, animation_selected, is_playing_once = False):
         self.current_selected_animation = animation_selected
         self.get_animation_lists(self.current_selected_animation)
+        self.current_frame = 0
         self.set_play_once(is_playing_once)
 
 
