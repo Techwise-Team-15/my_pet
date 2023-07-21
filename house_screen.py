@@ -178,6 +178,9 @@ class RockHouse:
 
         if self.pet_stats.get_pet_health() == 0 and not self.pet_died:
             self.my_rock.set_current_animation(Config.RockActions.dying.value)
+            x_location = config.SCREEN_WIDTH // 2 - self.my_rock.get_current_frame().get_width() // 2
+            y_location = config.SCREEN_HEIGHT // 2 + self.my_rock.get_current_frame().get_height() // 3
+            self.my_rock.set_location(x_location, y_location )
             self.pet_died = True
 
         if not self.pet_died:
