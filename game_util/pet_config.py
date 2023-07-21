@@ -22,7 +22,7 @@ class PetConfig:
 
 
 
-    PET_ANIMATION_COOLDOWN = 100
+    PET_ANIMATION_COOLDOWN = 170 
     
     RACCOON_PATH = '../my_pet/sprites/racoonpet.png' if os.path.exists('../my_pet/sprites/racoonpet.png') else 'my_pet/sprites/racoonpet.png'
     ROCK_PATH = '../my_pet/sprites/rockpet.png' if os.path.exists('../my_pet/sprites/rockpet.png') else 'my_pet/sprites/rockpet.png'
@@ -60,10 +60,10 @@ class PetConfig:
             
     class RockActions(Enum):
         rolling = 0 
-        fighting = 1
+        jumping = 1
         dirty = 2
         clean = 3
-        jumping = 4
+        idle = 4
         eating = 5
         dying = 6
         sleeping = 7

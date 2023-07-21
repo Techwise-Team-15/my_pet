@@ -2,6 +2,9 @@ import pygame
 import sys
 from game_util import PetConfig as config
 from pet_selection import PetSelection
+from game_over import GameOver
+from pets import PetRaccoon, PetRock, PetMudskipper
+from house_screen import RockHouse
 
 pygame.init()
 
@@ -11,7 +14,6 @@ screen_height = config.SCREEN_HEIGHT
 font = config.FONT
 screen = pygame.display.set_mode((screen_width, screen_height))
 start_img = pygame.image.load('../my_pet/theme_items/start button.png').convert_alpha()
-
 
 WHITE = config.WHITE
 BLACK = config.BLACK
@@ -32,7 +34,7 @@ class Button():
     def __init__(self, x, y, image):
         self.image = image 
         self.rect = self.image.get_rect()
-        self.rect.topleft = (x,y)
+        self.rect.topleft = (x, y)
         
 
     def draw(self):
@@ -47,17 +49,15 @@ class Button():
 class StartScreen:
     def __init__(self):
         self.start_screen = screen
-        start_img_scaled = pygame.transform.scale(start_img, (start_img.get_width()/2, start_img.get_height()/2))# 765X748
-        self.start_button = Button(0,0, start_img_scaled) 
-        self.start_button.rect.center = (screen_width / 2, (screen_height / 2) + 130)
+        start_img_scaled = pygame.transform.scale(start_img, (start_img.get_width() // 2, start_img.get_height() // 2))
+        self.start_button = Button(0, 0, start_img_scaled) 
+        self.start_button.rect.center = (screen_width // 2, (screen_height // 2) + 130)
         
-        
-
     def draw(self):
         self.start_screen.fill(BLACK)
         screen_background = pygame.image.load('../my_pet/theme_items/StartBackground.png')
         screen_background = pygame.transform.scale(screen_background, [screen_width, screen_height])
-        self.start_screen.blit(screen_background, (0,0))
+        self.start_screen.blit(screen_background, (0, 0))
         self.start_button.draw()
 
     def handle_event(self, event):
@@ -87,12 +87,11 @@ class MainMenu:
                     return
         self.select_option = None
     
-
     def draw(self):
         self.screen.fill(BLACK)
         screen_background = pygame.image.load(background)
         screen_background = pygame.transform.scale(screen_background, [screen_width, screen_height])
-        self.screen.blit(screen_background, (0,0))
+        self.screen.blit(screen_background, (0, 0))
 
         title_text_rect = self.title_text.get_rect(center=(screen_width // 2, screen_height // 4))
         self.screen.blit(self.title_text, title_text_rect)
@@ -111,7 +110,17 @@ class Game:
         self.main_menu = MainMenu()
         self.my_pet_screen = PetSelection(pygame, screen)
         self.my_pet_screen.initialize_pets()
+        self.my_rock = PetRock(input_pygame=pygame, screen=screen)
+        self.my_rock.set_current_animation(config.RockActions.dying.value)
+        x_location = config.SCREEN_WIDTH // 2 - self.my_rock.get_current_frame().get_width() // 2
+        y_location = config.SCREEN_HEIGHT // 2 + self.my_rock.get_current_frame().get_height() // 3
+        self.my_rock.set_location(x_location, y_location)
+        self.game_over_screen = GameOver(pygame, screen, self.my_rock)
         self.current_screen = "start"
+        self.pet_rock_house = RockHouse()
+        self.watering_can_item = self.pet_rock_house.watering_can_item
+        self.broccli_item = self.pet_rock_house.broccli_item
+        self.ball_item = self.pet_rock_house.ball_item
 
     def run(self):
         running = True
@@ -120,12 +129,15 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                else:
+                    self.watering_can_item.handle_event(event)
+                    self.broccli_item.handle_event(event)
+                    self.ball_item.handle_event(event)
 
                 if self.current_screen == "start":
                     transition_to_menu = self.start_screen.handle_event(event)
                     if transition_to_menu:
                         self.current_screen = "menu"
-
                 elif self.current_screen == "menu":
                     self.main_menu.handle_event(event)
                     if self.main_menu.select_option == "Choose Your Pet":
@@ -139,10 +151,13 @@ class Game:
                 self.main_menu.draw()
             elif self.current_screen == "pet_selection":
                 self.my_pet_screen.main_frames()
-                self.my_pet_screen.handle_events()
+                scan_clicked_pet = self.my_pet_screen.handle_events()
+                if scan_clicked_pet is not None and scan_clicked_pet.get_pet_id() == self.my_rock.get_pet_id():
+                    self.current_screen = "rock_house"
+            elif self.current_screen == "rock_house":
+                self.pet_rock_house.main_frames(event)  
             else:
                 self.main_menu.draw()
-
 
 game = Game()
 game.run()
