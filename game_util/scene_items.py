@@ -21,6 +21,10 @@ class StatusBar:
         if self.hp > 0:
             pygame.time.delay(config.HP_DRAIN_TIME)
             self.hp -= 20 
+    
+    def bar_fill(self):
+        if self.hp < self.max_hp:
+            self.hp +=20
 
 
 class PetStats:
@@ -31,6 +35,15 @@ class PetStats:
 
     def get_pet_health(self):
         return self.health_bar.hp
+    
+    def get_pet_thirst(self):
+        return self.thirst_bar.hp
+    
+    def get_pet_hunger(self):
+        return self.hunger_bar.hp
+    
+    def get_pet_happieness(self):
+        return self.happiness_bar.hp
     
 
     def draw(self, surface):
