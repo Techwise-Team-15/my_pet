@@ -3,6 +3,7 @@ from game_util import os
 class PetConfig:
     SCREEN_WIDTH = 1400
     SCREEN_HEIGHT = 800
+    HP_DRAIN_TIME = 100
 
     FPS = 60
 
@@ -19,11 +20,14 @@ class PetConfig:
     BLUE = (0, 0, 255)
     BG = (50, 50, 50)
     GRAY = (100, 100, 100)
+    YELLOW = (255, 255, 0)
+    ORANGE = (255, 165, 0)
+    INDIGO = (75, 0, 130)
 
 
 
     PET_ANIMATION_COOLDOWN = 170 
-    
+    ROCK_HOUSE_BG_PATH = '../my_pet/assets/rock_img/porch_for_rock.png'
     RACCOON_PATH = '../my_pet/sprites/racoonpet.png' if os.path.exists('../my_pet/sprites/racoonpet.png') else 'my_pet/sprites/racoonpet.png'
     ROCK_PATH = '../my_pet/sprites/rockpet.png' if os.path.exists('../my_pet/sprites/rockpet.png') else 'my_pet/sprites/rockpet.png'
     MUDSKIPPER_PATH = '../my_pet/sprites/petmudskipper.png' if os.path.exists('../my_pet/sprites/petmudskipper.png') else 'my_pet/sprites/petmudskipper.png'
@@ -94,3 +98,10 @@ class PetConfig:
         full_cup = 9
         half_cup = 10
         plate = 11
+
+    class ItemID(Enum):
+        broccoli = "broccoli"
+        bed = "bed"
+        ball = "ball"
+        watering_can = "watering_can"
+
