@@ -117,10 +117,6 @@ class Game:
         self.game_over_screen = GameOver(pygame, screen, self.my_rock)
         self.current_screen = "start"
         self.pet_rock_house = RockHouse()
-        self.watering_can_item = self.pet_rock_house.watering_can_item
-        self.broccli_item = self.pet_rock_house.broccli_item
-        self.ball_item = self.pet_rock_house.ball_item
-        self.bed_item = self.pet_rock_house.bed_item
 
     def run(self):
         running = True
@@ -129,11 +125,6 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                else:
-                    self.watering_can_item.handle_event(event)
-                    self.broccli_item.handle_event(event)
-                    self.ball_item.handle_event(event)
-                    self.bed_item.handle_event(event)
 
                 if self.current_screen == "start":
                     transition_to_menu = self.start_screen.handle_event(event)
@@ -156,7 +147,7 @@ class Game:
                 if scan_clicked_pet is not None and scan_clicked_pet.get_pet_id() == self.my_rock.get_pet_id():
                     self.current_screen = "rock_house"
             elif self.current_screen == "rock_house":
-                self.pet_rock_house.main_frames(event)  
+                self.pet_rock_house.main_frames()    
             else:
                 self.main_menu.draw()
 

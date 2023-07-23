@@ -23,8 +23,7 @@ class StatusBar:
             self.hp -= 20 
     
     def bar_fill(self):
-        if self.hp < self.max_hp:
-            self.hp +=20
+        self.hp = self.max_hp
 
 
 class PetStats:
@@ -45,6 +44,17 @@ class PetStats:
     def get_pet_happieness(self):
         return self.happiness_bar.hp
     
+    def fill_health(self):
+        self.health_bar.bar_fill()
+    
+    def fill_thirst(self):
+        self.thirst_bar.bar_fill()
+
+    def fill_hunger(self):
+        self.hunger_bar.bar_fill()
+    
+    def fill_happiness(self):
+        self.happiness_bar.bar_fill()
 
     def draw(self, surface):
         self.health_bar.draw(surface)
@@ -80,7 +90,18 @@ class Item:
             if mouse_pos[1] >= item_location[1] and mouse_pos[1] <= (item_location[1] + item_height):
                 return True
         return False
+    
+    def get_collision_item(self):
+        if self.item_id == config.ItemID.ball and self.rect.collidepoint(self.interacting_pet.get_location()):
+            self.interacting_pet.set_current_animation(config.RockActions.playing.value, True)
+            print("collided with the ball!!")
+            return config.ItemID.ball
+        elif self.item_id == config.ItemID.broccoli and self.rect.collidepoint(self.interacting_pet.get_location()):
+            self.interacting_pet.set_current_animation(config.RockActions.eating.value, True)
+            print("collided with the broccoli")
+            return config.ItemID.broccoli
 
+        
     def handle_event(self, event):
         if self.is_movable: 
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -90,19 +111,11 @@ class Item:
                         event.pos[0] - self.rect.x,
                         event.pos[1] - self.rect.y
                     )
-            elif event.type == pygame.MOUSEBUTTONUP:
-                if self.is_dragging:
-                    self.is_dragging = False
-            elif event.type == pygame.MOUSEMOTION:
-                if self.is_dragging:
-                    self.rect.x = event.pos[0] - self.offset[0]
-                    self.rect.y = event.pos[1] - self.offset[1]
-                    if self.item_id == config.ItemID.ball and self.rect.collidepoint(self.interacting_pet.get_location()):
-                        self.interacting_pet.set_current_animation(config.RockActions.playing.value, True)
-                        print("collided with the ball!!")
-                    elif self.item_id == config.ItemID.broccoli and self.rect.collidepoint(self.interacting_pet.get_location()):
-                        self.interacting_pet.set_current_animation(config.RockActions.eating.value, True)
-                        print("collided with the broccoli")
+            elif event.type == pygame.MOUSEBUTTONUP and self.is_dragging:
+                self.is_dragging = False
+            elif event.type == pygame.MOUSEMOTION and self.is_dragging:
+                self.rect.x = event.pos[0] - self.offset[0]
+                self.rect.y = event.pos[1] - self.offset[1]
 
         else:
             if event.type == pygame.MOUSEBUTTONDOWN:
