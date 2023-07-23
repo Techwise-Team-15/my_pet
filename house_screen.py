@@ -36,8 +36,8 @@ class RockHouse:
         self.my_rock.set_location(600, 600)
         self.my_rock.set_current_animation(Config.RockActions.jumping.value, True)
 
-        self.brocolli = self.sprite_sheet.get_image(0,384,96,96,1,config.RED)
-        self.broccli_item = scene_item.Item(config.ItemID.broccoli, pygame, self.screen, self.brocolli,self.my_rock, 475, 175)
+        self.broccoli = self.sprite_sheet.get_image(0,384,96,96,1,config.RED)
+        self.broccoli_item = scene_item.Item(config.ItemID.broccoli, pygame, self.screen, self.broccoli,self.my_rock, 475, 175)
         self.watering_can = self.sprite_sheet.get_image(0, 288, 96, 96, 2, config.RED)
         self.watering_can_item = scene_item.Item( config.ItemID.watering_can, pygame, self.screen, self.watering_can,self.my_rock, 150, 600)
         self.ball = self.sprite_sheet.get_image(2, 288, 96, 96, 2, config.RED)
@@ -54,11 +54,25 @@ class RockHouse:
         self.moving = False
         self.clock = pygame.time.Clock()
 
-    def main_frames(self, event):
+    def handle_event(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
 
+            self.watering_can_item.handle_event(event)
+            if(self.watering_can_item.get_collision_item() == config.ItemID.watering_can):
+                self.pet_stats.fill_thirst()
+            self.broccoli_item.handle_event(event)
+            if(self.broccoli_item.get_collision_item() == config.ItemID.broccoli):
+                self.pet_stats.fill_hunger()
+            self.ball_item.handle_event(event)
+            if(self.ball_item.get_collision_item() == config.ItemID.ball):
+                self.pet_stats.fill_happiness()
+            self.bed_item.handle_event(event)
+            if(self.bed_item.get_collision_item() == config.ItemID.bed):
+                self.pet_stats.fill_health()
+
+    def main_frames(self):
         if self.pet_stats.get_pet_health() == 0 and not self.pet_died:
             self.my_rock.set_current_animation(Config.RockActions.dying.value)
             x_location = config.SCREEN_WIDTH // 2 - self.my_rock.get_current_frame().get_width() // 2
@@ -72,10 +86,12 @@ class RockHouse:
             self.pet_stats.draw(self.screen)
             self.screen.blit(self.my_rock.get_current_frame(), self.my_rock.get_location())
             self.screen.blit(self.watering_can_item.image, self.watering_can_item.rect.topleft)
-            self.screen.blit(self.brocolli, self.broccli_item.rect.topleft)
+            self.screen.blit(self.broccoli, self.broccoli_item.rect.topleft)
             self.screen.blit(self.ball, self.ball_item.rect.topleft)
             self.screen.blit(self.bed, self.bed_item.rect.topleft)
             self.my_rock.updated_frame()
+
+            self.handle_event()
             pygame.display.flip()
             
         else:
