@@ -1,6 +1,7 @@
 import pygame
 from game_util import PetConfig as Config
 from pets import PetRaccoon, PetRock, PetMudskipper
+from src import table as Table
 from game_util import PetConfig as config, scene_items as scene_item
 from pet_selection import PetSelection
 from game_over import GameOver
@@ -44,7 +45,7 @@ class RockHouse:
         self.ball_item = scene_item.Item( config.ItemID.ball,pygame, self.screen, self.ball,self.my_rock,  300, 300)
         self.bed = self.sprite_sheet.get_image(0,480,96,96,6.5,config.RED)
         self.bed_item = scene_item.Item(config.ItemID.bed, pygame, self.screen,self.bed,self.my_rock, 875,295,False)
-
+        self.lamp_table = Table.Table(pygame, self.screen, 800, 350)
 
 
         self.game_over = GameOver(pygame, self.screen, self.my_rock)
@@ -89,6 +90,7 @@ class RockHouse:
             self.screen.blit(self.broccoli, self.broccoli_item.rect.topleft)
             self.screen.blit(self.ball, self.ball_item.rect.topleft)
             self.screen.blit(self.bed, self.bed_item.rect.topleft)
+            self.screen.blit(self.lamp_table.get_current_frame(), self.lamp_table.get_location())
             self.my_rock.updated_frame()
 
             self.handle_event()
