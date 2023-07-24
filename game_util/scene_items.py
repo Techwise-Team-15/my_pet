@@ -98,6 +98,9 @@ class Item:
         elif self.item_id == config.ItemID.broccoli and self.rect.collidepoint(self.interacting_pet.get_location()):
             self.interacting_pet.set_current_animation(config.RockActions.eating.value, True)
             return config.ItemID.broccoli
+        elif self.item_id == config.ItemID.full_cup and self.rect.collidepoint(self.interacting_pet.get_location()):
+            self.interacting_pet.set_current_animation(config.RockActions.drinking.value, True)
+            return config.ItemID.full_cup
 
         
     def handle_event(self, event):

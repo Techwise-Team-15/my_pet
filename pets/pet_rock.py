@@ -8,12 +8,13 @@ class PetRock():
         self.pet_id = "rock" # This is the pet id don't change this
         self.pet_name = "Pebble" # This is the pet name can change this
         self.animation_cooldown = Config.PET_ANIMATION_COOLDOWN
-        self.FRAME = [8,8,2,8,6,8,8,7,8]
-        self.ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768]
+        self.FRAME = [8,8,2,8,6,8,8,7,8,8,8,2,6,8,8,2,6,8,8,2,8,12,8,12,8,12,8]
+        self.ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768,864,960,1056,1152,1248,1344,1440,1536,1632,1728,1824,1920,2016,2112,2208,2304,2400,2496]
+        print("pet rock", len(self.FRAME),len(self.ANIMATION_HEIGHT))
         self.my_pygame = input_pygame
         self.last_update = self.my_pygame.time.get_ticks()
         self.rock_screen = screen
-        self.rock_sprites =  self.my_pygame.image.load(Config.ROCK_COLORED_PATH).convert_alpha()
+        self.rock_sprites =  self.my_pygame.image.load(Config.ROCK_SPRITES_PATH).convert_alpha()
         self.rocks = sprite.SpriteSheet(self.rock_sprites)
         self.run = True
         self.current_frame = 0

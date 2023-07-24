@@ -29,7 +29,7 @@ class PetConfig:
     PET_ANIMATION_COOLDOWN = 170 
     ROCK_HOUSE_BG_PATH = '../my_pet/assets/rock_img/porch_for_rock.png'
     RACCOON_PATH = '../my_pet/sprites/racoonpet.png' if os.path.exists('../my_pet/sprites/racoonpet.png') else 'my_pet/sprites/racoonpet.png'
-    ROCK_PATH = '../my_pet/sprites/rockpet.png' if os.path.exists('../my_pet/sprites/rockpet.png') else 'my_pet/sprites/rockpet.png'
+    ROCK_SPRITES_PATH = '../my_pet/sprites/rock_sprites.png' if os.path.exists('../my_pet/sprites/rock_sprites.png') else 'my_pet/sprites/rock_sprites.png'
     MUDSKIPPER_PATH = '../my_pet/sprites/petmudskipper.png' if os.path.exists('../my_pet/sprites/petmudskipper.png') else 'my_pet/sprites/petmudskipper.png'
     TABLE_PATH = '../my_pet/sprites/items.png' if os.path.exists('../my_pet/sprites/items.png') else 'my_pet/sprites/items.png' 
 
@@ -72,6 +72,27 @@ class PetConfig:
         dying = 6
         sleeping = 7
         playing = 8
+        very_dirty_rolling = 9
+        very_dirty_jumping = 10
+        very_dirty_dirty = 11
+        dirty_idle = 12
+        dirty_rolling = 13
+        dirty_jumping = 14
+        dirty_dirty = 15
+        dirt_idle = 16
+        dirt_rolling = 17
+        dirt_jumping = 18
+        dirt_dirt = 19
+        very_dirty_bath = 20
+        very_dirty_shower = 21
+        dirty_bath = 22
+        dirty_shower = 23
+        dirt_bath = 24
+        dirt_shower = 25
+        drinking = 26
+
+
+
 
     class MudskipperActions(Enum):
         walking = 0
@@ -104,4 +125,5 @@ class PetConfig:
         bed = "bed"
         ball = "ball"
         watering_can = "watering_can"
+        full_cup = "full_cup"
 
