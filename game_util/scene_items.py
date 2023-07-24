@@ -94,11 +94,9 @@ class Item:
     def get_collision_item(self):
         if self.item_id == config.ItemID.ball and self.rect.collidepoint(self.interacting_pet.get_location()):
             self.interacting_pet.set_current_animation(config.RockActions.playing.value, True)
-            print("collided with the ball!!")
             return config.ItemID.ball
         elif self.item_id == config.ItemID.broccoli and self.rect.collidepoint(self.interacting_pet.get_location()):
             self.interacting_pet.set_current_animation(config.RockActions.eating.value, True)
-            print("collided with the broccoli")
             return config.ItemID.broccoli
 
         

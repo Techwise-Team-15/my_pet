@@ -146,6 +146,7 @@ class Game:
                 scan_clicked_pet = self.my_pet_screen.handle_events()
                 if scan_clicked_pet is not None and scan_clicked_pet.get_pet_id() == self.my_rock.get_pet_id():
                     self.current_screen = "rock_house"
+                    self.pet_rock_house = RockHouse()
             elif self.current_screen == "rock_house":
                 self.pet_rock_house.main_frames()    
             else:
