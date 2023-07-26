@@ -27,6 +27,7 @@ class RockHouse:
         self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
         self.house = HouseScreen(self.screen)
         self.pet_stats = scene_item.PetStats()
+        self.pet_stats_bar_icon = scene_item.BarIcons(pygame, self.screen)
         self.sprite_sheet_img = pygame.image.load('../my_pet/assets/items_sheet.png').convert_alpha() #SpriteSheet('../my_pet/assets/items_sheet.png')
         self.sprite_sheet = SpriteSheet(self.sprite_sheet_img)
 
@@ -70,7 +71,7 @@ class RockHouse:
             
             if(self.watering_can_item.get_collision_item() == config.ItemID.watering_can):
                 self.started_game_time = pygame.time.get_ticks()
-                self.pet_stats.fill_thirst()
+                # self.pet_stats.fill_thirst()
             elif(self.broccoli_item.get_collision_item() == config.ItemID.broccoli):
                 self.started_game_time = pygame.time.get_ticks()
                 self.pet_stats.fill_hunger()
@@ -100,8 +101,10 @@ class RockHouse:
 
         if not self.pet_died:
             self.house.draw()
+            self.pet_stats_bar_icon.draw()
             self.pet_stats.update()
             self.pet_stats.draw(self.screen)
+            
             self.screen.blit(self.my_rock.get_current_frame(), self.my_rock.get_location())
             self.screen.blit(self.watering_can_item.image, self.watering_can_item.rect.topleft)
             self.screen.blit(self.broccoli, self.broccoli_item.rect.topleft)

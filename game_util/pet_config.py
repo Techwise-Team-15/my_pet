@@ -1,5 +1,5 @@
 from enum import Enum
-from game_util import os
+import os
 class PetConfig:
     SCREEN_WIDTH = 1400
     SCREEN_HEIGHT = 800
@@ -31,6 +31,9 @@ class PetConfig:
     RACCOON_PATH = '../my_pet/sprites/racoonpet.png' if os.path.exists('../my_pet/sprites/racoonpet.png') else 'my_pet/sprites/racoonpet.png'
     ROCK_SPRITES_PATH = '../my_pet/sprites/rock_sprites.png' if os.path.exists('../my_pet/sprites/rock_sprites.png') else 'my_pet/sprites/rock_sprites.png'
     MUDSKIPPER_PATH = '../my_pet/sprites/petmudskipper.png' if os.path.exists('../my_pet/sprites/petmudskipper.png') else 'my_pet/sprites/petmudskipper.png'
+
+    # Item Paths
+    ITEMS_SHEET_PATH = '../my_pet/assets/items_sheet.png' if os.path.exists('../my_pet/assets/items_sheet.png') else 'my_pet/assets/items_sheet.png'
     TABLE_PATH = '../my_pet/sprites/items.png' if os.path.exists('../my_pet/sprites/items.png') else 'my_pet/sprites/items.png' 
 
     # Sprites with background colors
@@ -91,9 +94,6 @@ class PetConfig:
         dirt_shower = 25
         drinking = 26
 
-
-
-
     class MudskipperActions(Enum):
         walking = 0
         eating = 1
@@ -106,6 +106,7 @@ class PetConfig:
         bubble = 8
         clean = 9
 
+    # Table actions
     class TableActions(Enum):
         lamp = 0
         vase = 1
