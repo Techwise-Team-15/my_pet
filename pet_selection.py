@@ -26,7 +26,7 @@ class PetSelection():
         self.My_Raccoon.set_location(Config.SCREEN_WIDTH/16, 400)
             # Create the rock
         self.My_rock = PetRock(input_pygame=self.pet_pygame, screen=self.screen)
-        self.My_rock.set_current_animation(Config.RockActions.jumping.value)
+        self.My_rock.set_current_animation(Config.RockActions.idle.value)
         self.My_rock.set_location(600, 600)
             # Create the mudskipper
         self.My_mudskipper = PetMudskipper(input_pygame=self.pet_pygame, screen=self.screen)
@@ -73,10 +73,10 @@ class PetSelection():
         }
         for pets in range(len(self.pets_to_display)):
             for idx,desc in enumerate(Config.PET_DESCRIPTIONS[self.pets_to_display[pets].get_pet_id()]):
-                text_surface = desc_font.render(desc, True, (255, 255, 255))
-                text_surface = self.pet_pygame.transform.scale(text_surface, [510, 35])
+                text_surface = desc_font.render(desc, True, Config.BLACK)
+                text_surface = self.pet_pygame.transform.scale(text_surface, [525, 30])
                 text_rect = text_surface.get_rect()
-                text_rect.center = [pet_locations[pets][0],pet_locations[pets][1] + (idx*40)] #(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/10 + 50 + pets*100)
+                text_rect.center = [pet_locations[pets][0],pet_locations[pets][1] + (idx*25)] #(Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/10 + 50 + pets*100)
                 self.screen.blit(text_surface, text_rect)
             
 
