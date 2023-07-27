@@ -1,4 +1,5 @@
-import pygame
+import pygame, pygame.freetype
+from .sprite_sheet import SpriteSheet as SpriteSheet
 from .pet_config import PetConfig as config
 
 class StatusBar:
@@ -25,6 +26,23 @@ class StatusBar:
     def bar_fill(self):
         self.hp = self.max_hp
 
+class BarIcons:
+    def __init__(self,pygame, screen) -> None:
+        self.pygame = pygame
+        self.screen = screen
+        self.heart_img = pygame.image.load(config.HEART_PATH).convert_alpha()
+        self.heart_img = pygame.transform.scale(self.heart_img, (40, 40))
+        self.sprite_sheet = SpriteSheet(pygame.image.load(config.ITEMS_SHEET_PATH).convert_alpha())
+        self.broccoli = self.sprite_sheet.get_image(0,384,96,96,.75,config.RED)
+        self.full_cup = self.sprite_sheet.get_image(0,864,96,96,.75,config.RED)
+        self.ball = self.sprite_sheet.get_image(2, 288, 96, 96, .75, config.RED)
+
+    def draw(self):
+        self.screen.blit(self.heart_img, (config.SCREEN_WIDTH - 240, 45))
+        self.screen.blit(self.full_cup, (config.SCREEN_WIDTH - 260, 80))
+        self.screen.blit(self.broccoli, (config.SCREEN_WIDTH - 250, 130))
+        self.screen.blit(self.ball, (config.SCREEN_WIDTH - 250, 180))
+        
 
 class PetStats:
     health_bar = StatusBar(950, 50, 200, 40, 1000, config.GREEN, config.RED)
