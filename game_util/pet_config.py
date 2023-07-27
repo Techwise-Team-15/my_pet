@@ -34,6 +34,7 @@ class PetConfig:
 
     # Item Paths
     ITEMS_SHEET_PATH = '../my_pet/assets/items_sheet.png' if os.path.exists('../my_pet/assets/items_sheet.png') else 'my_pet/assets/items_sheet.png'
+    HEART_PATH = '../my_pet/assets/heart.png' if os.path.exists('../my_pet/assets/heart.png') else 'my_pet/assets/heart.png'
     TABLE_PATH = '../my_pet/sprites/items.png' if os.path.exists('../my_pet/sprites/items.png') else 'my_pet/sprites/items.png' 
 
     # Sprites with background colors
