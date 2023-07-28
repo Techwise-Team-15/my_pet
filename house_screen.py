@@ -177,7 +177,7 @@ class RockHouse:
             elif (self.not_interacted and not self.is_rock_dirty) and self.my_rock.get_location()[0] >= 1100:
                 self.my_rock.set_current_animation(Config.RockActions.dirty.value, False)
                 self.is_rock_dirty = True
-                self.draw_thought_bubble(self.screen, self.my_rock.get_location(), self.watering_can.image, self.watering_can_item)
+                self.draw_thought_bubble(self.screen, self.my_rock.get_location(), self.watering_can, self.watering_can_item)
             self.my_rock.updated_frame()
             if self.rock_collide_table():
                 self.lamp_table.update()
