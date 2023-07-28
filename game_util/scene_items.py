@@ -41,7 +41,7 @@ class PetStats:
     def get_pet_hunger(self):
         return self.hunger_bar.hp
     
-    def get_pet_happieness(self):
+    def get_pet_happiness(self):
         return self.happiness_bar.hp
     
     def fill_health(self):

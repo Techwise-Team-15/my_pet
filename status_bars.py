@@ -37,6 +37,10 @@ class StatusBar():
             self.hp -= 1
 
 
+    def get_bar_hp(self):
+        return self.hp
+
+
 class PetStats():
     health_bar = StatusBar(100, 150, 300, 40, 1000, GREEN, RED)
     thirst_bar = StatusBar(100, 100, 300, 40, 1000, BLUE, RED)

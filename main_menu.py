@@ -116,7 +116,7 @@ class Game:
         self.my_rock.set_location(x_location, y_location)
         self.game_over_screen = GameOver(pygame, screen, self.my_rock)
         self.current_screen = "start"
-        self.pet_rock_house = RockHouse()
+        self.pet_rock_house = None
 
     def run(self):
         running = True
@@ -146,7 +146,7 @@ class Game:
                 scan_clicked_pet = self.my_pet_screen.handle_events()
                 if scan_clicked_pet is not None and scan_clicked_pet.get_pet_id() == self.my_rock.get_pet_id():
                     self.current_screen = "rock_house"
-                    self.pet_rock_house = RockHouse()
+                    self.pet_rock_house = RockHouse(screen)
             elif self.current_screen == "rock_house":
                 self.pet_rock_house.main_frames()    
             else:
