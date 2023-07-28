@@ -68,27 +68,19 @@ class RockHouse:
         self.is_thirsty = False
         self.is_sad = False
 
-    def draw_thought_bubble(self, screen, pet_rock_location,image , item): 
-        bubble_offset = (0, 50)  # Offset for the first bubble (above the rock)
-        bubble_x = pet_rock_location[0] + bubble_offset[0] - self.thought_bubble_radius
-        bubble_y = pet_rock_location[1] + bubble_offset[1] - self.thought_bubble_radius
+    def draw_thought_bubble(self, screen, pet_rock_location, image, item, bubble_offset=(0, 50), scale=1.0):
+        bubble_x = pet_rock_location[0] + bubble_offset[0] - int(self.thought_bubble_radius * scale)
+        bubble_y = pet_rock_location[1] + bubble_offset[1] - int(self.thought_bubble_radius * scale)
 
-    # Draw the first bubble (above the rock)
-        pygame.draw.circle(screen, config.WHITE, (bubble_x + self.thought_bubble_radius, bubble_y + self.thought_bubble_radius), self.thought_bubble_radius//2)
+        # Draw the thought bubble
+        pygame.draw.circle(screen, config.WHITE, (bubble_x + int(self.thought_bubble_radius * scale),
+                                                  bubble_y + int(self.thought_bubble_radius * scale)),
+                           int(self.thought_bubble_radius * scale // 2))
 
-    # Update the bubble_offset for the second bubble (below the first bubble)
-        bubble_offset = (0, -50)  
-        bubble_x = pet_rock_location[0] + bubble_offset[0] - self.thought_bubble_radius
-        bubble_y = pet_rock_location[1] + bubble_offset[1] - self.thought_bubble_radius
-
-    # Draw the second bubble (below the first bubble)
-        pygame.draw.circle(screen, config.WHITE, (bubble_x + self.thought_bubble_radius, bubble_y + self.thought_bubble_radius), self.thought_bubble_radius)
-
-    # Draw the broccoli sprite inside the main thought bubble
-        broccoli_x = bubble_x + (self.thought_bubble_radius - self.broccoli_item.rect.width // 2)
-        broccoli_y = bubble_y + (self.thought_bubble_radius - self.broccoli_item.rect.height // 2)
-        screen.blit(image, (broccoli_x, broccoli_y))
-
+        # Draw the item inside the thought bubble
+        item_x = bubble_x + (int(self.thought_bubble_radius * scale) - item.rect.width // 2)
+        item_y = bubble_y + (int(self.thought_bubble_radius * scale) - item.rect.height // 2)
+        screen.blit(image, (item_x, item_y))
 
 
 
@@ -165,7 +157,8 @@ class RockHouse:
             if self.is_rock_dirty == False and self.is_hungry == True:
                 self.draw_thought_bubble(self.screen, self.my_rock.get_location(),self.broccoli_item.image,self.broccoli_item)
             
-            #if self.is_rock_dirty == False and self.is_hungry == False and self.is_thirsty == True:
+            if self.is_rock_dirty == False and self.is_hungry == False and self.is_thirsty == True:
+                self.draw_thought_bubble(self.screen, self.my_rock.get_location(), self.full_cup, self.full_cup_item)
 
             if self.is_rock_dirty == False and self.is_hungry == False and self.is_thirsty == False and self.is_sad == True:
                 self.draw_thought_bubble(self.screen, self.my_rock.get_location(), self.ball, self.ball_item)
