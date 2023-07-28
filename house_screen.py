@@ -33,6 +33,7 @@ class RockHouse:
         self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
         self.house = HouseScreen(self.screen)
         self.pet_stats = scene_item.PetStats()
+        self.pet_stats_bar_icon = scene_item.BarIcons(pygame, self.screen)
         self.sprite_sheet_img = pygame.image.load('../my_pet/assets/items_sheet.png').convert_alpha() #SpriteSheet('../my_pet/assets/items_sheet.png')
         self.sprite_sheet = SpriteSheet(self.sprite_sheet_img)
 
@@ -49,10 +50,12 @@ class RockHouse:
         self.watering_can = self.sprite_sheet.get_image(0, 288, 96, 96, 2, config.RED)
         self.watering_can_item = scene_item.Item( config.ItemID.watering_can, pygame, self.screen, self.watering_can,self.my_rock, 150, 600)
         self.ball = self.sprite_sheet.get_image(2, 288, 96, 96, 2, config.RED)
-        self.ball_item = scene_item.Item( config.ItemID.ball,pygame, self.screen, self.ball,self.my_rock,  300, 300)
+        self.ball_item = scene_item.Item( config.ItemID.ball,pygame, self.screen, self.ball,self.my_rock,  300, 400)
         self.bed = self.sprite_sheet.get_image(0,480,96,96,6.5,config.RED)
         self.bed_item = scene_item.Item(config.ItemID.bed, pygame, self.screen,self.bed,self.my_rock, 875,295,False)
         self.lamp_table = Table.Table(pygame, self.screen, 800, 350)
+        self.full_cup = self.sprite_sheet.get_image(0,864,96,96,2, config.RED)
+        self.full_cup_item = scene_item.Item(config.ItemID.full_cup, pygame, self.screen, self.full_cup, self.my_rock, 150,400)
 
         self.started_game_time = pygame.time.get_ticks()
         self.not_interacted = False
@@ -98,10 +101,11 @@ class RockHouse:
             self.broccoli_item.handle_event(event)
             self.ball_item.handle_event(event)
             self.bed_item.handle_event(event)
+            self.full_cup_item.handle_event(event)
             
             if(self.watering_can_item.get_collision_item() == config.ItemID.watering_can):
                 self.started_game_time = pygame.time.get_ticks()
-                self.pet_stats.fill_thirst()
+                # self.pet_stats.fill_thirst()
             elif(self.broccoli_item.get_collision_item() == config.ItemID.broccoli):
                 self.started_game_time = pygame.time.get_ticks()
                 self.pet_stats.fill_hunger()
@@ -111,6 +115,9 @@ class RockHouse:
             elif(self.bed_item.get_collision_item() == config.ItemID.bed):
                 self.started_game_time = pygame.time.get_ticks()
                 self.pet_stats.fill_health()
+            elif(self.full_cup_item.get_collision_item() == config.ItemID.full_cup):
+                self.started_game_time = pygame.time.get_ticks()
+                self.pet_stats.fill_thirst()
     
     def rock_collide_table(self):
         if self.my_rock.get_location()[0] + self.my_rock.get_current_frame().get_width() >= self.lamp_table.get_location()[0] and self.my_rock.get_location()[0] <= self.lamp_table.get_location()[0] + self.lamp_table.get_current_frame().get_width():
@@ -128,13 +135,16 @@ class RockHouse:
 
         if not self.pet_died:
             self.house.draw()
+            self.pet_stats_bar_icon.draw()
             self.pet_stats.update()
             self.pet_stats.draw(self.screen)
+            
             self.screen.blit(self.my_rock.get_current_frame(), self.my_rock.get_location())
             self.screen.blit(self.watering_can_item.image, self.watering_can_item.rect.topleft)
             self.screen.blit(self.broccoli, self.broccoli_item.rect.topleft)
             self.screen.blit(self.ball, self.ball_item.rect.topleft)
             self.screen.blit(self.bed, self.bed_item.rect.topleft)
+            self.screen.blit(self.full_cup,self.full_cup_item.rect.topleft)
             self.screen.blit(self.lamp_table.get_current_frame(), self.lamp_table.get_location())
             self.current_frame = self.my_rock.get_current_frame()
             self.my_rock_rect = self.current_frame.get_rect()
