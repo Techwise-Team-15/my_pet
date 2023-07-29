@@ -57,6 +57,10 @@ class RockHouse:
         self.full_cup = self.sprite_sheet.get_image(0,864,96,96,2, config.RED)
         self.full_cup_item = scene_item.Item(config.ItemID.full_cup, pygame, self.screen, self.full_cup, self.my_rock, 150,400)
 
+        self.thought_of_watering_can = self.sprite_sheet.get_image(0, 288, 96, 96, 1, config.RED)
+        self.thought_of_ball = self.sprite_sheet.get_image(2, 288, 96, 96, 1, config.RED)
+        self.thought_of_full_cup = self.sprite_sheet.get_image(0,864,96,96,1, config.RED)
+
         self.started_game_time = pygame.time.get_ticks()
         self.not_interacted = False
         self.rock_misbehaving_time = 10 #seconds
@@ -68,7 +72,7 @@ class RockHouse:
         self.is_thirsty = False
         self.is_sad = False
 
-    def draw_thought_bubble(self, screen, pet_rock_location,image , item): 
+    def draw_thought_bubble(self, screen, pet_rock_location, image): 
         bubble_offset = (0, 50)  # Offset for the first bubble (above the rock)
         bubble_x = pet_rock_location[0] + bubble_offset[0] - self.thought_bubble_radius
         bubble_y = pet_rock_location[1] + bubble_offset[1] - self.thought_bubble_radius
@@ -85,9 +89,9 @@ class RockHouse:
         pygame.draw.circle(screen, config.WHITE, (bubble_x + self.thought_bubble_radius, bubble_y + self.thought_bubble_radius), self.thought_bubble_radius)
 
     # Draw the broccoli sprite inside the main thought bubble
-        broccoli_x = bubble_x + (self.thought_bubble_radius - self.broccoli_item.rect.width // 2)
-        broccoli_y = bubble_y + (self.thought_bubble_radius - self.broccoli_item.rect.height // 2)
-        screen.blit(image, (broccoli_x, broccoli_y))
+        item_x = bubble_x + (self.thought_bubble_radius - self.broccoli_item.rect.width // 2)
+        item_y = bubble_y + (self.thought_bubble_radius - self.broccoli_item.rect.height // 2)
+        screen.blit(image, (item_x, item_y))
 
 
 
@@ -160,16 +164,16 @@ class RockHouse:
                 self.is_sad = False
             
             if self.is_rock_dirty == True:
-                self.draw_thought_bubble(self.screen, self.my_rock.get_location(),self.watering_can, self.watering_can_item)
+                self.draw_thought_bubble(self.screen, self.my_rock.get_location(),self.thought_of_watering_can)
 
             if self.is_rock_dirty == False and self.is_hungry == True:
-                self.draw_thought_bubble(self.screen, self.my_rock.get_location(),self.broccoli_item.image,self.broccoli_item)
+                self.draw_thought_bubble(self.screen, self.my_rock.get_location(),self.broccoli_item.image)
             
             if self.is_rock_dirty == False and self.is_hungry == False and self.is_thirsty == True:
-                self.draw_thought_bubble(self.screen, self.my_rock.get_location(), self.full_cup, self.full_cup_item)
+                self.draw_thought_bubble(self.screen, self.my_rock.get_location(), self.thought_of_full_cup)
 
             if self.is_rock_dirty == False and self.is_hungry == False and self.is_thirsty == False and self.is_sad == True:
-                self.draw_thought_bubble(self.screen, self.my_rock.get_location(), self.ball, self.ball_item)
+                self.draw_thought_bubble(self.screen, self.my_rock.get_location(), self.thought_of_ball)
 
 
             if (self.not_interacted and not self.is_rock_dirty) and self.my_rock.get_location()[0] < 1100:
@@ -177,7 +181,7 @@ class RockHouse:
             elif (self.not_interacted and not self.is_rock_dirty) and self.my_rock.get_location()[0] >= 1100:
                 self.my_rock.set_current_animation(Config.RockActions.dirty.value, False)
                 self.is_rock_dirty = True
-                self.draw_thought_bubble(self.screen, self.my_rock.get_location(), self.watering_can, self.watering_can_item)
+                self.draw_thought_bubble(self.screen, self.my_rock.get_location(), self.watering_can)
             self.my_rock.updated_frame()
             if self.rock_collide_table():
                 self.lamp_table.update()
