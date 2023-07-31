@@ -125,16 +125,19 @@ class Game:
                     pygame.quit()
                     sys.exit()
 
-                if self.current_screen == "start":
-                    transition_to_menu = self.start_screen.handle_event(event)
-                    if transition_to_menu:
-                        self.current_screen = "menu"
-                elif self.current_screen == "menu":
-                    self.main_menu.handle_event(event)
-                    if self.main_menu.select_option == "Choose Your Pet":
-                        self.current_screen = "pet_selection"
-                else:
-                    self.main_menu.handle_event(event)
+            if self.current_screen == "start":
+                transition_to_menu = self.start_screen.handle_event(event)
+                if transition_to_menu:
+                    self.current_screen = "menu"
+            elif self.current_screen == "menu":
+                self.main_menu.handle_event(event)
+                if self.main_menu.select_option == "Choose Your Pet":
+                    self.current_screen = "pet_selection"
+                elif self.main_menu.select_option == "Quit":
+                    pygame.quit()
+                    sys.exit()
+            else:
+                self.main_menu.handle_event(event)
 
             if self.current_screen == "start":
                 self.start_screen.draw()
