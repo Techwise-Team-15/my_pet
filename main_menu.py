@@ -16,7 +16,6 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 start_img = pygame.image.load('../my_pet/theme_items/start button.png').convert_alpha()
 
 WHITE = config.WHITE
-BLACK = config.BLACK
 
 class MenuItem:
     def __init__(self, text, pos):
@@ -54,7 +53,7 @@ class StartScreen:
         self.start_button.rect.center = (screen_width // 2, (screen_height // 2) + 130)
         
     def draw(self):
-        self.start_screen.fill(BLACK)
+        self.start_screen.fill(config.BLACK)
         screen_background = pygame.image.load('../my_pet/theme_items/StartBackground.png')
         screen_background = pygame.transform.scale(screen_background, [screen_width, screen_height])
         self.start_screen.blit(screen_background, (0, 0))
@@ -88,7 +87,7 @@ class MainMenu:
         self.select_option = None
     
     def draw(self):
-        self.screen.fill(BLACK)
+        self.screen.fill(config.BLACK)
         screen_background = pygame.image.load(background)
         screen_background = pygame.transform.scale(screen_background, [screen_width, screen_height])
         self.screen.blit(screen_background, (0, 0))
