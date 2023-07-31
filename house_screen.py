@@ -28,7 +28,7 @@ class RockHouse:
         self.house = HouseScreen(self.screen)
         self.pet_stats = scene_item.PetStats()
         self.pet_stats_bar_icon = scene_item.BarIcons(pygame, self.screen)
-        self.sprite_sheet_img = pygame.image.load('../my_pet/assets/items_sheet.png').convert_alpha() #SpriteSheet('../my_pet/assets/items_sheet.png')
+        self.sprite_sheet_img = pygame.image.load(config.ITEM_PATH).convert_alpha() #SpriteSheet('../my_pet/assets/items_sheet.png')
         self.sprite_sheet = SpriteSheet(self.sprite_sheet_img)
 
         self.last_update = pygame.time.get_ticks()
@@ -38,17 +38,23 @@ class RockHouse:
         self.my_rock.set_location(600, 600)
         self.my_rock.set_current_animation(Config.RockActions.idle.value, True)
 
-        self.broccoli = self.sprite_sheet.get_image(0,384,96,96,1,config.RED)
-        self.broccoli_item = scene_item.Item(config.ItemID.broccoli, pygame, self.screen, self.broccoli,self.my_rock, 475, 175)
-        self.watering_can = self.sprite_sheet.get_image(0, 288, 96, 96, 2, config.RED)
-        self.watering_can_item = scene_item.Item( config.ItemID.watering_can, pygame, self.screen, self.watering_can,self.my_rock, 150, 600)
-        self.ball = self.sprite_sheet.get_image(2, 288, 96, 96, 2, config.RED)
-        self.ball_item = scene_item.Item( config.ItemID.ball,pygame, self.screen, self.ball,self.my_rock,  300, 400)
-        self.bed = self.sprite_sheet.get_image(0,480,96,96,6.5,config.RED)
-        self.bed_item = scene_item.Item(config.ItemID.bed, pygame, self.screen,self.bed,self.my_rock, 875,295,False)
-        self.lamp_table = Table.Table(pygame, self.screen, 800, 350)
-        self.full_cup = self.sprite_sheet.get_image(0,864,96,96,2, config.RED)
-        self.full_cup_item = scene_item.Item(config.ItemID.full_cup, pygame, self.screen, self.full_cup, self.my_rock, 150,400)
+        self.broccoli = self.sprite_sheet.get_image(0,384,96,96,1,config.BG_BLACK)
+        self.broccoli_location = [475, 175]
+        self.broccoli_item = scene_item.Item(config.ItemID.broccoli, pygame, self.screen, self.broccoli,self.my_rock, self.broccoli_location[0], self.broccoli_location[1])
+        self.watering_can = self.sprite_sheet.get_image(0, 288, 96, 96, 2, config.BG_BLACK)
+        self.watering_can_location = [150, 600]
+        self.watering_can_item = scene_item.Item( config.ItemID.watering_can, pygame, self.screen, self.watering_can,self.my_rock, self.watering_can_location[0], self.watering_can_location[1])
+        self.ball = self.sprite_sheet.get_image(0, 1248, 96, 96, 2, config.BG_BLACK)
+        self.ball_location = [300,400]
+        self.ball_item = scene_item.Item( config.ItemID.ball,pygame, self.screen, self.ball,self.my_rock, self.ball_location[0], self.ball_location[1])
+        self.bed = self.sprite_sheet.get_image(0,480,96,96,6.5,config.BG_BLACK)
+        self.bed_location = [875, 295]
+        self.bed_item = scene_item.Item(config.ItemID.bed, pygame, self.screen,self.bed,self.my_rock, self.bed_location[0],self.bed_location[1],False)
+        self.lamp_table_location = [800, 350]
+        self.lamp_table = Table.Table(pygame, self.screen, self.lamp_table_location[0], self.lamp_table_location[1])
+        self.full_cup = self.sprite_sheet.get_image(0,864,96,96,2, config.BG_BLACK)
+        self.cup_item_location = [150, 400]
+        self.full_cup_item = scene_item.Item(config.ItemID.full_cup, pygame, self.screen, self.full_cup, self.my_rock, self.cup_item_location[0], self.cup_item_location[1])
 
         self.started_game_time = pygame.time.get_ticks()
         self.not_interacted = False
@@ -63,11 +69,11 @@ class RockHouse:
             if event.type == pygame.QUIT:
                 pygame.quit()
 
-            self.watering_can_item.handle_event(event)
-            self.broccoli_item.handle_event(event)
-            self.ball_item.handle_event(event)
-            self.bed_item.handle_event(event)
-            self.full_cup_item.handle_event(event)
+            self.watering_can_item.handle_event(event,self.watering_can_location)
+            self.broccoli_item.handle_event(event, self.broccoli_location)
+            self.ball_item.handle_event(event, self.ball_location)
+            self.bed_item.handle_event(event, self.bed_location)
+            self.full_cup_item.handle_event(event, self.cup_item_location)
             
             if(self.watering_can_item.get_collision_item() == config.ItemID.watering_can):
                 self.started_game_time = pygame.time.get_ticks()

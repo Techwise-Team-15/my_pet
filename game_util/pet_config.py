@@ -14,6 +14,7 @@ class PetConfig:
 
     # Colors
     BLACK = (0, 0, 0)
+    BG_BLACK =(0,0,5)
     WHITE = (255, 255, 255)
     RED = (255, 0, 0)
     GREEN = (0, 255, 0)
@@ -33,9 +34,8 @@ class PetConfig:
     MUDSKIPPER_PATH = '../my_pet/sprites/petmudskipper.png' if os.path.exists('../my_pet/sprites/petmudskipper.png') else 'my_pet/sprites/petmudskipper.png'
 
     # Item Paths
-    ITEMS_SHEET_PATH = '../my_pet/assets/items_sheet.png' if os.path.exists('../my_pet/assets/items_sheet.png') else 'my_pet/assets/items_sheet.png'
     HEART_PATH = '../my_pet/assets/heart.png' if os.path.exists('../my_pet/assets/heart.png') else 'my_pet/assets/heart.png'
-    TABLE_PATH = '../my_pet/sprites/items.png' if os.path.exists('../my_pet/sprites/items.png') else 'my_pet/sprites/items.png' 
+    ITEM_PATH = '../my_pet/assets/items.png' if os.path.exists('../my_pet/assets/items.png') else 'my_pet/assets/items.png' 
 
     # Sprites with background colors
     RACCOON_COLORED_PATH = '../my_pet/sprites/raccoon.png' if os.path.exists('../my_pet/sprites/raccoon.png') else 'my_pet/sprites/raccoon.png'
@@ -111,7 +111,7 @@ class PetConfig:
     class TableActions(Enum):
         lamp = 0
         vase = 1
-        flower = 2
+        sun_flower = 2
         watering_can = 3
         broccoli = 4
         plant = 5 
@@ -121,6 +121,10 @@ class PetConfig:
         full_cup = 9
         half_cup = 10
         plate = 11
+        iris = 12
+        ball = 13
+
+
 
     class ItemID(Enum):
         broccoli = "broccoli"

@@ -6,7 +6,7 @@ class Table:
         self.my_pygame = my_pygame
         self.screen = screen
         self.table_location = [x,y]
-        self.table_img = self.my_pygame.image.load(Config.TABLE_PATH).convert_alpha()
+        self.table_img = self.my_pygame.image.load(Config.ITEM_PATH).convert_alpha()
         self.animation_lists = []
         self.FRAME = [11,11]
         self.ANIMATION_HEIGHT = [0,96]
@@ -57,7 +57,8 @@ class Table:
 
     def get_animation_lists(self,action):
         for x in range(self.FRAME[action]):
-            self.animation_lists.append(self.table_sprites.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BLACK))
+            self.animation_lists.append(self.table_sprites.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BG_BLACK))
+
 
         return self.animation_lists
     

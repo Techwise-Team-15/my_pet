@@ -32,10 +32,10 @@ class BarIcons:
         self.screen = screen
         self.heart_img = pygame.image.load(config.HEART_PATH).convert_alpha()
         self.heart_img = pygame.transform.scale(self.heart_img, (40, 40))
-        self.sprite_sheet = SpriteSheet(pygame.image.load(config.ITEMS_SHEET_PATH).convert_alpha())
-        self.broccoli = self.sprite_sheet.get_image(0,384,96,96,.75,config.RED)
-        self.full_cup = self.sprite_sheet.get_image(0,864,96,96,.75,config.RED)
-        self.ball = self.sprite_sheet.get_image(2, 288, 96, 96, .75, config.RED)
+        self.sprite_sheet = SpriteSheet(pygame.image.load(config.ITEM_PATH).convert_alpha())
+        self.broccoli = self.sprite_sheet.get_image(0,384,96,96,.75,config.BG_BLACK)
+        self.full_cup = self.sprite_sheet.get_image(0,864,96,96,.75,config.BG_BLACK)
+        self.ball = self.sprite_sheet.get_image(0, 1248, 96, 96, .75, config.BG_BLACK)
 
     def draw(self):
         self.screen.blit(self.heart_img, (config.SCREEN_WIDTH - 240, 45))
@@ -125,7 +125,7 @@ class Item:
         
 
         
-    def handle_event(self, event):
+    def handle_event(self, event, item_loc):
         if self.is_movable: 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.rect.collidepoint(event.pos):
@@ -135,6 +135,8 @@ class Item:
                         event.pos[1] - self.rect.y
                     )
             elif event.type == pygame.MOUSEBUTTONUP and self.is_dragging:
+                self.rect.x = item_loc[0]
+                self.rect.y = item_loc[1]
                 self.is_dragging = False
             elif event.type == pygame.MOUSEMOTION and self.is_dragging:
                 self.rect.x = event.pos[0] - self.offset[0]
