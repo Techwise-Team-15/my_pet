@@ -96,17 +96,19 @@ class RockHouse:
 
 
 
-    def handle_event(self):
+    def handle_event(self, is_rock_dirty):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
 
-            self.watering_can_item.handle_event(event)
-            self.broccoli_item.handle_event(event)
-            self.ball_item.handle_event(event)
-            self.bed_item.handle_event(event)
-            self.full_cup_item.handle_event(event)
-            
+            if is_rock_dirty == False:
+                self.broccoli_item.handle_event(event, is_rock_dirty)
+                self.ball_item.handle_event(event, is_rock_dirty)
+                self.bed_item.handle_event(event, is_rock_dirty)
+                self.full_cup_item.handle_event(event, is_rock_dirty)
+                
+            self.watering_can_item.handle_event(event, is_rock_dirty)
+
             if(self.watering_can_item.get_collision_item() == config.ItemID.watering_can):
                 self.started_game_time = pygame.time.get_ticks()
                 # self.pet_stats.fill_thirst()
@@ -157,7 +159,11 @@ class RockHouse:
             if self.pet_stats.get_pet_hunger()  < 50:
                 self.is_hungry = True
             if self.pet_stats.get_pet_hunger()  > 49:
-                self.is_hungry = False  
+                self.is_hungry = False 
+            if self.pet_stats.get_pet_thirst() < 50:
+                self.is_thirsty = True
+            if self.pet_stats.get_pet_thirst() > 49:
+                self.is_thirsty = False
             if self.pet_stats.get_pet_happiness()  < 50:
                 self.is_sad = True
             if self.pet_stats.get_pet_happiness() > 49:
@@ -165,13 +171,10 @@ class RockHouse:
             
             if self.is_rock_dirty == True:
                 self.draw_thought_bubble(self.screen, self.my_rock.get_location(),self.thought_of_watering_can)
-
             if self.is_rock_dirty == False and self.is_hungry == True:
                 self.draw_thought_bubble(self.screen, self.my_rock.get_location(),self.broccoli_item.image)
-            
             if self.is_rock_dirty == False and self.is_hungry == False and self.is_thirsty == True:
                 self.draw_thought_bubble(self.screen, self.my_rock.get_location(), self.thought_of_full_cup)
-
             if self.is_rock_dirty == False and self.is_hungry == False and self.is_thirsty == False and self.is_sad == True:
                 self.draw_thought_bubble(self.screen, self.my_rock.get_location(), self.thought_of_ball)
 
@@ -181,7 +184,6 @@ class RockHouse:
             elif (self.not_interacted and not self.is_rock_dirty) and self.my_rock.get_location()[0] >= 1100:
                 self.my_rock.set_current_animation(Config.RockActions.dirty.value, False)
                 self.is_rock_dirty = True
-                self.draw_thought_bubble(self.screen, self.my_rock.get_location(), self.watering_can)
             self.my_rock.updated_frame()
             if self.rock_collide_table():
                 self.lamp_table.update()
@@ -190,7 +192,7 @@ class RockHouse:
                 self.my_rock.set_current_animation(Config.RockActions.jumping.value, True)
                 self.started_game_time = pygame.time.get_ticks() + (self.rock_misbehaving_time*1000)
                 self.not_interacted = True
-            self.handle_event()
+            self.handle_event(self.is_rock_dirty)
             pygame.display.flip()
             
         else:
