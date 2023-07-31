@@ -121,7 +121,7 @@ class Item:
             return config.ItemID.full_cup
 
         
-    def handle_event(self, event):
+    def handle_event(self, event, item_loc):
         if self.is_movable: 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.rect.collidepoint(event.pos):
@@ -131,6 +131,8 @@ class Item:
                         event.pos[1] - self.rect.y
                     )
             elif event.type == pygame.MOUSEBUTTONUP and self.is_dragging:
+                self.rect.x = item_loc[0]
+                self.rect.y = item_loc[1]
                 self.is_dragging = False
             elif event.type == pygame.MOUSEMOTION and self.is_dragging:
                 self.rect.x = event.pos[0] - self.offset[0]
