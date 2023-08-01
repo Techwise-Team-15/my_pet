@@ -68,7 +68,7 @@ class PetRock():
     def get_animation_lists(self,action):
         self.current_animation_list = []
         for x in range(self.FRAME[action]):
-            self.current_animation_list.append(self.rocks.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.RED))
+            self.current_animation_list.append(self.rocks.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BG_BLACK))
         self.last_frame = self.current_animation_list[-1]
         return self.current_animation_list
     
