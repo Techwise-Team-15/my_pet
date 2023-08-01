@@ -68,6 +68,11 @@ class RockHouse:
         self.rock_misbehaving_time = 10 #seconds
         self.game_over = GameOver(pygame, self.screen, self.my_rock)
 
+        #scaled thought bubble objects
+        self.thought_of_watering_can = self.sprite_sheet.get_image(0, 288, 96, 96, 1, config.BG_BLACK)
+        self.thought_of_ball = self.sprite_sheet.get_image(2, 288, 96, 96, 1, config.BG_BLACK)
+        self.thought_of_full_cup = self.sprite_sheet.get_image(0,864,96,96,1, config.BG_BLACK)
+
         self.pet_died = False
         self.is_rock_dirty = False
         self.is_hungry = False
@@ -104,12 +109,12 @@ class RockHouse:
                 pygame.quit()
 
             if is_rock_dirty == False:
-                self.broccoli_item.handle_event(event,self.watering_can_location, is_rock_dirty)
-                self.ball_item.handle_event(event, self.broccoli_location, is_rock_dirty)
-                self.bed_item.handle_event(event, self.ball_location, is_rock_dirty)
-                self.full_cup_item.handle_event(event, self.bed_location, is_rock_dirty)
+                self.broccoli_item.handle_event(event,self.broccoli_location, is_rock_dirty)
+                self.ball_item.handle_event(event, self.ball_location, is_rock_dirty)
+                self.bed_item.handle_event(event, self.bed_location, is_rock_dirty)
+                self.full_cup_item.handle_event(event, self.cup_item_location, is_rock_dirty)
                 
-            self.watering_can_item.handle_event(event, self.cup_item_location, is_rock_dirty)
+            self.watering_can_item.handle_event(event, self.watering_can_location, is_rock_dirty)
 
             if(self.watering_can_item.get_collision_item() == config.ItemID.watering_can):
                 self.started_game_time = pygame.time.get_ticks()
