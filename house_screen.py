@@ -77,7 +77,8 @@ class RockHouse:
             
             if(self.watering_can_item.get_collision_item() == config.ItemID.watering_can):
                 self.started_game_time = pygame.time.get_ticks()
-                # self.pet_stats.fill_thirst()
+                self.my_rock.set_current_animation(Config.RockActions.idle.value, True)
+                self.is_rock_dirty = False
             elif(self.broccoli_item.get_collision_item() == config.ItemID.broccoli):
                 self.started_game_time = pygame.time.get_ticks()
                 self.pet_stats.fill_hunger()
@@ -123,6 +124,9 @@ class RockHouse:
             elif (self.not_interacted and not self.is_rock_dirty) and self.my_rock.get_location()[0] >= 1100:
                 self.my_rock.set_current_animation(Config.RockActions.dirty.value, False)
                 self.is_rock_dirty = True
+            elif (pygame.time.get_ticks() * 1000) % 30 == 0 and not self.is_rock_dirty:
+                self.my_rock.set_current_animation(Config.RockActions.dirty.value, False)
+                self.is_rock_dirty = True
             self.my_rock.updated_frame()
             if self.rock_collide_table():
                 self.lamp_table.update()
@@ -130,7 +134,7 @@ class RockHouse:
                 self.my_rock.set_location(600,350)
                 self.my_rock.set_current_animation(Config.RockActions.jumping.value, True)
                 self.started_game_time = pygame.time.get_ticks() + (self.rock_misbehaving_time*1000)
-                self.not_interacted = True
+                self.not_interacted = True 
             self.handle_event()
             pygame.display.flip()
             
