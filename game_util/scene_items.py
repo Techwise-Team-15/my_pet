@@ -59,7 +59,7 @@ class PetStats:
     def get_pet_hunger(self):
         return self.hunger_bar.hp
     
-    def get_pet_happieness(self):
+    def get_pet_happiness(self):
         return self.happiness_bar.hp
     
     def fill_health(self):
@@ -99,6 +99,7 @@ class Item:
         self.interacting_pet = pet
         self.item_location = [x,y]
         self.offset = (0, 0)
+        self.is_rock_dirty = False
 
     def is_mouse_selection(self, mouse_pos):
         item_location = self.item_location
@@ -120,12 +121,12 @@ class Item:
             self.interacting_pet.set_current_animation(config.RockActions.drinking.value, True)
             return config.ItemID.full_cup
         elif self.item_id==config.ItemID.watering_can and self.rect.collidepoint(self.interacting_pet.get_location()):
-            self.interacting_pet.set_current_animation(config.RockActions.clean.value,True)
+            self.interacting_pet.set_current_animation(config.RockActions.very_dirty_shower.value,True)
             return config.ItemID.watering_can
         
 
         
-    def handle_event(self, event, item_loc):
+    def handle_event(self, event, item_loc, is_rock_dirty) :
         if self.is_movable: 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.rect.collidepoint(event.pos):
@@ -145,6 +146,6 @@ class Item:
         else:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = self.pygame.mouse.get_pos()
-                if self.is_mouse_selection(mouse_pos):
+                if self.is_mouse_selection(mouse_pos) and  is_rock_dirty == False:
                     self.interacting_pet.set_location(self.item_location[0],self.item_location[1]+ self.rect.height/2.5)
                     self.interacting_pet.set_current_animation(config.RockActions.sleeping.value, True)
