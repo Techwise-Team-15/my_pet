@@ -124,7 +124,7 @@ class RockHouse:
             elif (self.not_interacted and not self.is_rock_dirty) and self.my_rock.get_location()[0] >= 1100:
                 self.my_rock.set_current_animation(Config.RockActions.dirty.value, False)
                 self.is_rock_dirty = True
-            elif (pygame.time.get_ticks() * 1000) % 30 == 0 and not self.is_rock_dirty:
+            elif (pygame.time.get_ticks() * 1000000) % 30 == 0 and not self.is_rock_dirty:
                 self.my_rock.set_current_animation(Config.RockActions.dirty.value, False)
                 self.is_rock_dirty = True
             self.my_rock.updated_frame()
