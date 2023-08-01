@@ -38,7 +38,7 @@ class RockHouse:
         self.sprite_sheet = SpriteSheet(self.sprite_sheet_img)
 
 
-        self.last_update = pygame.time.get_ticks()
+        self.last_update = pygame.time.get_ticks()  
         self.animation_cooldown = 100
 
         self.my_rock = PetRock(pygame, self.screen)
@@ -73,6 +73,7 @@ class RockHouse:
         self.thought_of_ball = self.sprite_sheet.get_image(2, 288, 96, 96, 1, config.BG_BLACK)
         self.thought_of_full_cup = self.sprite_sheet.get_image(0,864,96,96,1, config.BG_BLACK)
 
+        self.rock_made_a_mess = False
         self.pet_died = False
         self.is_rock_dirty = False
         self.is_hungry = False
@@ -118,7 +119,8 @@ class RockHouse:
 
             if(self.watering_can_item.get_collision_item() == config.ItemID.watering_can):
                 self.started_game_time = pygame.time.get_ticks()
-                # self.pet_stats.fill_thirst()
+                #self.is_rock_dirty = False
+                #self.pet_stats.fill_happiness()
             elif(self.broccoli_item.get_collision_item() == config.ItemID.broccoli):
                 self.started_game_time = pygame.time.get_ticks()
                 self.pet_stats.fill_hunger()
@@ -191,6 +193,9 @@ class RockHouse:
             elif (self.not_interacted and not self.is_rock_dirty) and self.my_rock.get_location()[0] >= 1100:
                 self.my_rock.set_current_animation(Config.RockActions.dirty.value, False)
                 self.is_rock_dirty = True
+
+            #elif self.my_rock.get_location()[0] >= 1100 and self.is_rock_dirty == False:
+                #pass
             self.my_rock.updated_frame()
             if self.rock_collide_table():
                 self.lamp_table.update()
