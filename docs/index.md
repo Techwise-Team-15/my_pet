@@ -31,4 +31,4 @@ Start playing Paw Patrol now and have a fantastic time taking care of your virtu
 You can find more information about Paw Patrol in the following documents:
 
 - [Collaboration Guide](CollabGuide.md): Guidelines for collaborating with your team on the development of Paw Patrol.
-- [Game Overview](Overview.md): An overview of Paw Patrol, including its features and gameplay.
+<!-- - [Game Overview](Overview.md): An overview of Paw Patrol, including its features and gameplay. -->
