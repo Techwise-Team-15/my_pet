@@ -66,8 +66,8 @@ class RockHouse:
         self.started_game_time = pygame.time.get_ticks()
         self.dirtiness_start = pygame.time.get_ticks()
         self.not_interacted = False
-        self.rock_misbehaving_time = 10 #seconds
-        self.dirtiness_time = 7
+        self.rock_misbehaving_time = 10 #seconds time before rock misbehaves
+        self.dirtiness_time = 30 #seconds time before rock starts getting dirty
         self.game_over = GameOver(pygame, self.screen, self.my_rock)
 
         #scaled thought bubble objects
