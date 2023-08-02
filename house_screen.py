@@ -64,8 +64,10 @@ class RockHouse:
         self.full_cup_item = scene_item.Item(config.ItemID.full_cup, pygame, self.screen, self.full_cup, self.my_rock, self.cup_item_location[0], self.cup_item_location[1])
 
         self.started_game_time = pygame.time.get_ticks()
+        self.dirtiness_start = pygame.time.get_ticks()
         self.not_interacted = False
         self.rock_misbehaving_time = 10 #seconds
+        self.dirtiness_time = 7
         self.game_over = GameOver(pygame, self.screen, self.my_rock)
 
         #scaled thought bubble objects
@@ -119,8 +121,9 @@ class RockHouse:
 
             if(self.watering_can_item.get_collision_item() == config.ItemID.watering_can):
                 self.started_game_time = pygame.time.get_ticks()
-                #self.is_rock_dirty = False
-                #self.pet_stats.fill_happiness()
+                #self.my_rock.set_current_animation(Config.RockActions.idle.value, True)
+                self.is_rock_dirty = False
+                self.not_interacted = False 
             elif(self.broccoli_item.get_collision_item() == config.ItemID.broccoli):
                 self.started_game_time = pygame.time.get_ticks()
                 self.pet_stats.fill_hunger()
@@ -193,9 +196,10 @@ class RockHouse:
             elif (self.not_interacted and not self.is_rock_dirty) and self.my_rock.get_location()[0] >= 1100:
                 self.my_rock.set_current_animation(Config.RockActions.dirty.value, False)
                 self.is_rock_dirty = True
-
-            #elif self.my_rock.get_location()[0] >= 1100 and self.is_rock_dirty == False:
-                #pass
+            if not self.is_rock_dirty and self.dirtiness_start + self.dirtiness_time * 1000 < pygame.time.get_ticks():
+                self.my_rock.set_current_animation(Config.RockActions.dirty.value, False)
+                self.is_rock_dirty = True
+                self.dirtiness_start = pygame.time.get_ticks() + (self.dirtiness_time*1000)
             self.my_rock.updated_frame()
             if self.rock_collide_table():
                 self.lamp_table.update()
