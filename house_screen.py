@@ -118,6 +118,15 @@ class RockHouse:
                 self.full_cup_item.handle_event(event, self.cup_item_location, is_rock_dirty)
                 
             self.watering_can_item.handle_event(event, self.watering_can_location, is_rock_dirty)
+            
+            if self.is_rock_dirty and event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                self.my_rock.set_location(600, 600)  # Move the rock back to the center
+                self.my_rock.set_current_animation(Config.RockActions.idle.value, True)  # Set the idle animation
+                self.not_interacted = False  # Reset the rock's interaction flag
+                self.started_game_time = pygame.time.get_ticks()  # Reset the game time
+                self.is_paused = True  # Set the pause state to True
+                self.pause_start_time = pygame.time.get_ticks() 
+            
 
             if(self.watering_can_item.get_collision_item() == config.ItemID.watering_can):
                 self.started_game_time = pygame.time.get_ticks()
@@ -139,28 +148,7 @@ class RockHouse:
   
             
 
-    def pause_bars(self):
-        self.is_paused = True
-        self.pause_start_time = pygame.time.get_ticks()
 
-    def unpause_bars(self):
-        self.is_paused = False
-
-    def toggle_pause(self):
-        if self.is_paused:
-            self.unpause_bars()
-        else:
-            self.pause_bars()
-
-    def update(self):
-        if not self.pet_died:
-            if self.is_paused:
-                # Get the time elapsed during the pause
-                pause_elapsed_time = pygame.time.get_ticks() - self.pause_start_time
-
-                # Update the bars only when the pause time is over (e.g., 2 seconds)
-                if pause_elapsed_time >= 2000:
-                    self.unpause_bars() 
 
     
 
