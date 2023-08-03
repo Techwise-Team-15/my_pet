@@ -42,7 +42,7 @@ class RockHouse:
         self.animation_cooldown = 100
 
         self.my_rock = PetRock(pygame, self.screen)
-        self.my_rock.set_location(600, 600)
+        self.my_rock.set_location(config.SCREEN_WIDTH // 2 - self.my_rock.get_current_frame().get_width() // 2, config.SCREEN_HEIGHT // 2 + self.my_rock.get_current_frame().get_height() // 3)
         self.my_rock.set_current_animation(Config.RockActions.idle.value, True)
 
         self.broccoli = self.sprite_sheet.get_image(0,384,96,96,1,config.BG_BLACK)
@@ -119,8 +119,10 @@ class RockHouse:
                 
             self.watering_can_item.handle_event(event, self.watering_can_location, is_rock_dirty)
             
-            if self.is_rock_dirty and event.type == pygame.KEYDOWN and event.key == pygame.K_r:
-                self.my_rock.set_location(600, 600)  # Move the rock back to the center
+            if not self.is_rock_dirty and event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                x_location = config.SCREEN_WIDTH // 2 - self.my_rock.get_current_frame().get_width() // 2
+                y_location = config.SCREEN_HEIGHT // 2 + self.my_rock.get_current_frame().get_height() // 3
+                self.my_rock.set_location(x_location, y_location)  # Move the rock back to the center
                 self.my_rock.set_current_animation(Config.RockActions.idle.value, True)  # Set the idle animation
                 self.not_interacted = False  # Reset the rock's interaction flag
                 self.started_game_time = pygame.time.get_ticks()  # Reset the game time
