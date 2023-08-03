@@ -1,5 +1,5 @@
 from enum import Enum
-from game_util import os
+import os
 class PetConfig:
     SCREEN_WIDTH = 1400
     SCREEN_HEIGHT = 800
@@ -14,6 +14,7 @@ class PetConfig:
 
     # Colors
     BLACK = (0, 0, 0)
+    BG_BLACK =(0,0,5)
     WHITE = (255, 255, 255)
     RED = (255, 0, 0)
     GREEN = (0, 255, 0)
@@ -31,7 +32,10 @@ class PetConfig:
     RACCOON_PATH = '../my_pet/sprites/racoonpet.png' if os.path.exists('../my_pet/sprites/racoonpet.png') else 'my_pet/sprites/racoonpet.png'
     ROCK_SPRITES_PATH = '../my_pet/sprites/rock_sprites.png' if os.path.exists('../my_pet/sprites/rock_sprites.png') else 'my_pet/sprites/rock_sprites.png'
     MUDSKIPPER_PATH = '../my_pet/sprites/petmudskipper.png' if os.path.exists('../my_pet/sprites/petmudskipper.png') else 'my_pet/sprites/petmudskipper.png'
-    TABLE_PATH = '../my_pet/sprites/items.png' if os.path.exists('../my_pet/sprites/items.png') else 'my_pet/sprites/items.png' 
+
+    # Item Paths
+    HEART_PATH = '../my_pet/assets/heart.png' if os.path.exists('../my_pet/assets/heart.png') else 'my_pet/assets/heart.png'
+    ITEM_PATH = '../my_pet/assets/items.png' if os.path.exists('../my_pet/assets/items.png') else 'my_pet/assets/items.png' 
 
     # Sprites with background colors
     RACCOON_COLORED_PATH = '../my_pet/sprites/raccoon.png' if os.path.exists('../my_pet/sprites/raccoon.png') else 'my_pet/sprites/raccoon.png'
@@ -91,9 +95,6 @@ class PetConfig:
         dirt_shower = 25
         drinking = 26
 
-
-
-
     class MudskipperActions(Enum):
         walking = 0
         eating = 1
@@ -106,10 +107,11 @@ class PetConfig:
         bubble = 8
         clean = 9
 
+    # Table actions
     class TableActions(Enum):
         lamp = 0
         vase = 1
-        flower = 2
+        sun_flower = 2
         watering_can = 3
         broccoli = 4
         plant = 5 
@@ -119,6 +121,10 @@ class PetConfig:
         full_cup = 9
         half_cup = 10
         plate = 11
+        iris = 12
+        ball = 13
+
+
 
     class ItemID(Enum):
         broccoli = "broccoli"
