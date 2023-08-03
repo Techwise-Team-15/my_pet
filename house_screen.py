@@ -74,7 +74,19 @@ class RockHouse:
             self.ball_item.handle_event(event, self.ball_location)
             self.bed_item.handle_event(event, self.bed_location)
             self.full_cup_item.handle_event(event, self.cup_item_location)
-            
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                self.my_rock.set_location(600, 350)  # Move the rock back to the center
+                self.my_rock.set_current_animation(Config.RockActions.idle.value, True)  # Set the idle animation
+                self.not_interacted = False  # Reset the rock's interaction flag
+                self.started_game_time = pygame.time.get_ticks()  # Reset the game time
+                self.is_paused = True  # Set the pause state to True
+                self.pause_start_time = pygame.time.get_ticks() 
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_p:
+                self.toggle_pause()
+
+
+
             if(self.watering_can_item.get_collision_item() == config.ItemID.watering_can):
                 self.started_game_time = pygame.time.get_ticks()
                 # self.pet_stats.fill_thirst()
@@ -90,7 +102,34 @@ class RockHouse:
             elif(self.full_cup_item.get_collision_item() == config.ItemID.full_cup):
                 self.started_game_time = pygame.time.get_ticks()
                 self.pet_stats.fill_thirst()
+  
+            
+
+    def pause_bars(self):
+        self.is_paused = True
+        self.pause_start_time = pygame.time.get_ticks()
+
+    def unpause_bars(self):
+        self.is_paused = False
+
+    def toggle_pause(self):
+        if self.is_paused:
+            self.unpause_bars()
+        else:
+            self.pause_bars()
+
+    def update(self):
+        if not self.pet_died:
+            if self.is_paused:
+                # Get the time elapsed during the pause
+                pause_elapsed_time = pygame.time.get_ticks() - self.pause_start_time
+
+                # Update the bars only when the pause time is over (e.g., 2 seconds)
+                if pause_elapsed_time >= 2000:
+                    self.unpause_bars() 
+
     
+
     def rock_collide_table(self):
         if self.my_rock.get_location()[0] + self.my_rock.get_current_frame().get_width() >= self.lamp_table.get_location()[0] and self.my_rock.get_location()[0] <= self.lamp_table.get_location()[0] + self.lamp_table.get_current_frame().get_width():
             if self.my_rock.get_location()[1] + self.my_rock.get_current_frame().get_height() >= self.lamp_table.get_location()[1] and self.my_rock.get_location()[1] <= self.lamp_table.get_location()[1] + self.lamp_table.get_current_frame().get_height():
