@@ -26,16 +26,29 @@ class StatusBar:
     def bar_fill(self):
         self.hp = self.max_hp
 
-class BarIcons:
+class Icons:
     def __init__(self,pygame, screen) -> None:
         self.pygame = pygame
         self.screen = screen
         self.heart_img = pygame.image.load(config.HEART_PATH).convert_alpha()
         self.heart_img = pygame.transform.scale(self.heart_img, (40, 40))
         self.sprite_sheet = SpriteSheet(pygame.image.load(config.ITEM_PATH).convert_alpha())
+        self.watering_can = self.sprite_sheet.get_image(0, 288, 96, 96, 1, config.BG_BLACK)
         self.broccoli = self.sprite_sheet.get_image(0,384,96,96,.75,config.BG_BLACK)
         self.full_cup = self.sprite_sheet.get_image(0,864,96,96,.75,config.BG_BLACK)
         self.ball = self.sprite_sheet.get_image(0, 1248, 96, 96, .75, config.BG_BLACK)
+
+    def get_broccoli_icon(self):
+        return self.broccoli
+    
+    def get_full_cup_icon(self):
+        return self.full_cup
+    
+    def get_ball_icon(self):
+        return self.ball
+    
+    def get_watering_can_icon(self):
+        return self.watering_can
 
     def draw(self):
         self.screen.blit(self.heart_img, (config.SCREEN_WIDTH - 240, 45))
@@ -149,3 +162,33 @@ class Item:
                 if self.is_mouse_selection(mouse_pos) and  is_rock_dirty == False:
                     self.interacting_pet.set_location(self.item_location[0],self.item_location[1]+ self.rect.height/2.5)
                     self.interacting_pet.set_current_animation(config.RockActions.sleeping.value, True)
+
+class ThoughtBubble:
+    def __init__(self, pet_stats):
+        self.thought_bubble_radius = 40
+        self.thought_bubble_color = config.WHITE
+        self.sprite_sheet_img = pygame.image.load(config.ITEM_PATH).convert_alpha() #SpriteSheet('../my_pet/assets/items_sheet.png')
+        self.sprite_sheet = SpriteSheet(self.sprite_sheet_img)
+        self.pet_stats = pet_stats
+    
+
+    def draw_thought_bubble(self,screen, pet_location, icon_to_draw ):
+        bubble_offset = (0, 50)  # Offset for the first bubble (above the rock)
+        bubble_x = pet_location[0] + bubble_offset[0] - self.thought_bubble_radius
+        bubble_y = pet_location[1] + bubble_offset[1] - self.thought_bubble_radius
+
+        # Draw the first bubble (above the rock)
+        pygame.draw.circle(screen, self.thought_bubble_color, (bubble_x + self.thought_bubble_radius, bubble_y + self.thought_bubble_radius), self.thought_bubble_radius//2)
+
+        # Update the bubble_offset for the second bubble (below the first bubble)
+        bubble_offset = (0, -50)  
+        bubble_x = pet_location[0] + bubble_offset[0] - self.thought_bubble_radius
+        bubble_y = pet_location[1] + bubble_offset[1] - self.thought_bubble_radius
+
+        # Draw the second bubble (below the first bubble)
+        pygame.draw.circle(screen, self.thought_bubble_color, (bubble_x + self.thought_bubble_radius, bubble_y + self.thought_bubble_radius), self.thought_bubble_radius)
+
+        # Draw the broccoli sprite inside the main thought bubble
+        item_x = bubble_x + (self.thought_bubble_radius - icon_to_draw.get_width() // 2)
+        item_y = bubble_y + (self.thought_bubble_radius - icon_to_draw.get_height() // 2)
+        screen.blit(icon_to_draw, (item_x, item_y))
