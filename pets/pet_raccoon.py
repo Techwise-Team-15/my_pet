@@ -15,7 +15,7 @@ class PetRaccoon():
         self.my_pygame = input_pygame
         self.last_update = self.my_pygame.time.get_ticks()
         self.raccoon_screen = screen
-        self.raccoon_sprites =  self.my_pygame.image.load(Config.RACCOON_COLORED_PATH).convert_alpha()
+        self.raccoon_sprites =  self.my_pygame.image.load(Config.RACCOON_PATH).convert_alpha()
         self.raccoons = sprite.SpriteSheet(self.raccoon_sprites)
         self.run = True
         self.current_frame = 0
@@ -68,7 +68,7 @@ class PetRaccoon():
     def get_animation_lists(self,action)->list:
         self.current_animation_list = []
         for x in range(self.FRAME[action]):
-            self.current_animation_list.append(self.raccoons.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.RED))
+            self.current_animation_list.append(self.raccoons.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BG_BLACK))
         self.last_frame = self.current_animation_list[-1]
         return self.current_animation_list
 
