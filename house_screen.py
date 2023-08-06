@@ -82,6 +82,14 @@ class RockHouse:
                 
             self.watering_can_item.handle_event(event, self.watering_can_location, is_rock_dirty)
 
+            if not self.is_rock_dirty and event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                x_location = config.SCREEN_WIDTH // 2 - self.my_rock.get_current_frame().get_width() // 2
+                y_location = config.SCREEN_HEIGHT // 2 + self.my_rock.get_current_frame().get_height() // 3
+                self.my_rock.set_location(x_location, y_location)  # Move the rock back to the center
+                self.my_rock.set_current_animation(Config.RockActions.idle.value, True)  # Set the idle animation
+                self.not_interacted = False  # Reset the rock's interaction flag
+                self.started_game_time = pygame.time.get_ticks()  # Reset the game time
+            
             if(self.watering_can_item.get_collision_item() == config.ItemID.watering_can):
                 self.started_game_time = pygame.time.get_ticks()
                 #self.my_rock.set_current_animation(Config.RockActions.idle.value, True)
