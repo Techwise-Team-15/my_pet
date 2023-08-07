@@ -21,7 +21,7 @@ class StatusBar:
     def bar_drain(self):
         if self.hp > 0:
             pygame.time.delay(config.HP_DRAIN_TIME)
-            self.hp -= 20 
+            self.hp -= 20 #TODO: change this back to 20
     
     def bar_fill(self):
         self.hp = self.max_hp
@@ -105,7 +105,7 @@ class Item:
         self.pygame = pygame
         self.screen = screen
         self.image = image
-        self.rect = self.image.get_rect(topleft=(x, y))
+        self.item_rect = self.image.get_rect(topleft=(x, y))
         self.is_dragging = False
         self.is_movable = is_movable
         self.item_id = item_id
@@ -114,53 +114,46 @@ class Item:
         self.offset = (0, 0)
         self.is_rock_dirty = False
 
+    def get_mask(self):
+        item_mask = pygame.mask.from_surface(self.image)
+        
+        return item_mask
+    def get_item_location(self):
+        return self.item_location
+    
     def is_mouse_selection(self, mouse_pos):
         item_location = self.item_location
-        item_width = self.rect.width
-        item_height = self.rect.height 
+        item_width = self.item_rect.width
+        item_height = self.item_rect.height 
         if mouse_pos[0] >= item_location[0] and mouse_pos[0] <= (item_location[0] + item_width):
             if mouse_pos[1] >= item_location[1] and mouse_pos[1] <= (item_location[1] + item_height):
                 return True
         return False
-    
-    def get_collision_item(self):
-        if self.item_id == config.ItemID.ball and self.rect.collidepoint(self.interacting_pet.get_location()):
-            self.interacting_pet.set_current_animation(config.RockActions.playing.value, True)
-            return config.ItemID.ball
-        elif self.item_id == config.ItemID.broccoli and self.rect.collidepoint(self.interacting_pet.get_location()):
-            self.interacting_pet.set_current_animation(config.RockActions.eating.value, True)
-            return config.ItemID.broccoli
-        elif self.item_id == config.ItemID.full_cup and self.rect.collidepoint(self.interacting_pet.get_location()):
-            self.interacting_pet.set_current_animation(config.RockActions.drinking.value, True)
-            return config.ItemID.full_cup
-        elif self.item_id==config.ItemID.watering_can and self.rect.collidepoint(self.interacting_pet.get_location()):
-            self.interacting_pet.set_current_animation(config.RockActions.very_dirty_shower.value,True)
-            return config.ItemID.watering_can
-        
-
         
     def handle_event(self, event, item_loc, is_rock_dirty) :
         if self.is_movable: 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.rect.collidepoint(event.pos):
+                if self.is_mouse_selection(event.pos):
+                    print("Mouse down")
                     self.is_dragging = True
                     self.offset = (
-                        event.pos[0] - self.rect.x,
-                        event.pos[1] - self.rect.y
+                        event.pos[0] - self.item_location[0],
+                        event.pos[1] - self.item_location[1]
                     )
             elif event.type == pygame.MOUSEBUTTONUP and self.is_dragging:
-                self.rect.x = item_loc[0]
-                self.rect.y = item_loc[1]
+                self.item_location[0] = item_loc[0]
+                self.item_location[1] = item_loc[1]
                 self.is_dragging = False
             elif event.type == pygame.MOUSEMOTION and self.is_dragging:
-                self.rect.x = event.pos[0] - self.offset[0]
-                self.rect.y = event.pos[1] - self.offset[1]
+                print("Mouse motion")
+                self.item_location[0] = event.pos[0] - self.offset[0]
+                self.item_location[1] = event.pos[1] - self.offset[1]
 
         else:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = self.pygame.mouse.get_pos()
                 if self.is_mouse_selection(mouse_pos) and  is_rock_dirty == False:
-                    self.interacting_pet.set_location(self.item_location[0],self.item_location[1]+ self.rect.height/2.5)
+                    self.interacting_pet.set_location(self.item_location[0],self.item_location[1]+ self.item_rect.height/2.5)
                     self.interacting_pet.set_current_animation(config.RockActions.sleeping.value, True)
 
 class ThoughtBubble:
