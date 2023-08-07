@@ -29,10 +29,6 @@ class PetRock():
     def get_mask(self):
         return self.my_pygame.mask.from_surface(self.get_current_frame())
     
-    def get_current_frame_mask(self):
-        masked_frame = self.my_pygame.mask.from_surface(self.get_current_frame())
-        return masked_frame
-    
     def get_name(self):
         return self.pet_name
 
@@ -87,7 +83,7 @@ class PetRock():
         return False
     
     def did_overlap_with(self, item):
-        if self.get_current_frame_mask().overlap(item.get_mask(), (item.get_item_location()[0] - self.get_location()[0], item.get_item_location()[1] - self.get_location()[1])):
+        if self.get_mask().overlap(item.get_mask(), (item.get_item_location()[0] - self.get_location()[0], item.get_item_location()[1] - self.get_location()[1])):
             return True
         return False
     

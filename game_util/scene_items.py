@@ -21,7 +21,7 @@ class StatusBar:
     def bar_drain(self):
         if self.hp > 0:
             pygame.time.delay(config.HP_DRAIN_TIME)
-            self.hp -= 20 #TODO: change this back to 20
+            self.hp -= 20 
     
     def bar_fill(self):
         self.hp = self.max_hp
@@ -134,7 +134,6 @@ class Item:
         if self.is_movable: 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.is_mouse_selection(event.pos):
-                    print("Mouse down")
                     self.is_dragging = True
                     self.offset = (
                         event.pos[0] - self.item_location[0],
@@ -145,7 +144,6 @@ class Item:
                 self.item_location[1] = item_loc[1]
                 self.is_dragging = False
             elif event.type == pygame.MOUSEMOTION and self.is_dragging:
-                print("Mouse motion")
                 self.item_location[0] = event.pos[0] - self.offset[0]
                 self.item_location[1] = event.pos[1] - self.offset[1]
 
