@@ -11,7 +11,7 @@ class PetConfig:
     #theme items
     BACKGROUND1 = '../my_pet/theme_items/general_background1.PNG'
     BACKGROUND2 = '../my_pet/theme_items/general_background2.png'
-    RACCOON_SCENE = '../my_pet/theme_items/raccoon scene.png'
+    RACCOON_BACKGROUND = '../my_pet/theme_items/raccoon_scene.png'
     FONT = '../my_pet/theme_items/Starborn.ttf'
 
     # Colors
