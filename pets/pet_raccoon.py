@@ -15,8 +15,8 @@ class PetRaccoon():
         self.my_pygame = input_pygame
         self.last_update = self.my_pygame.time.get_ticks()
         self.raccoon_screen = screen
-        self.raccoon_sprites =  self.my_pygame.image.load(Config.RACCOON_COLORED_PATH).convert_alpha()
-        self.raccoons = sprite.SpriteSheet(self.raccoon_sprites)
+        self.raccoon_sprites =  self.my_pygame.image.load(Config.RACCOON_PATH).convert_alpha()
+        self.raccoon_img = sprite.SpriteSheet(self.raccoon_sprites)
         self.run = True
         self.current_frame = 0
         self.pet_location = [0,0]
@@ -27,7 +27,10 @@ class PetRaccoon():
         self.current_animation_list = self.get_animation_lists(self.current_selected_animation)
         self.is_play_once = False
         self.last_frame = self.current_animation_list[-1]
-    
+
+    def get_mask(self):
+        return self.my_pygame.mask.from_surface(self.get_current_frame())
+
     def get_name(self):
         return self.pet_name
     
@@ -64,11 +67,16 @@ class PetRaccoon():
             self.current_frame+=1
             if self.current_frame >= self.FRAME[self.current_selected_animation]:
                 self.current_frame = 0 
+                
+    def did_overlap_with(self, item):
+        if self.get_mask().overlap(item.get_mask(), (item.get_item_location()[0] - self.get_location()[0], item.get_item_location()[1] - self.get_location()[1])):
+            return True
+        return False
     
     def get_animation_lists(self,action)->list:
         self.current_animation_list = []
         for x in range(self.FRAME[action]):
-            self.current_animation_list.append(self.raccoons.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.RED))
+            self.current_animation_list.append(self.raccoon_img.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BG_BLACK))
         self.last_frame = self.current_animation_list[-1]
         return self.current_animation_list
 

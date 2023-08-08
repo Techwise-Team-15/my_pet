@@ -1,11 +1,12 @@
 from enum import Enum
+import game_config
 import os
 class PetConfig:
-    SCREEN_WIDTH = 1400
-    SCREEN_HEIGHT = 800
-    HP_DRAIN_TIME = 100
+    SCREEN_WIDTH = game_config.SCREEN_WIDTH
+    SCREEN_HEIGHT = game_config.SCREEN_HEIGHT
+    HP_DRAIN_TIME = game_config.HP_DRAIN_TIME
 
-    FPS = 60
+    FPS = game_config.FPS
 
     #theme items
     BACKGROUND1 = '../my_pet/theme_items/general_background1.PNG'
