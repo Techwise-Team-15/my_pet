@@ -26,6 +26,9 @@ class PetMudskipper():
         self.is_play_once = False
         self.last_frame = self.current_animation_list[-1]
     
+    def get_mask(self):
+        return self.my_pygame.mask.from_surface(self.get_current_frame())
+
     def get_name(self):
         return self.pet_name
     
@@ -63,6 +66,10 @@ class PetMudskipper():
             if self.current_frame >= self.FRAME[self.current_selected_animation]:
                 self.current_frame = 0 
 
+    def did_overlap_with(self, item):
+        if self.get_mask().overlap(item.get_mask(), (item.get_item_location()[0] - self.get_location()[0], item.get_item_location()[1] - self.get_location()[1])):
+            return True
+        return False
     
     def get_animation_lists(self,action):
         self.current_animation_list = []

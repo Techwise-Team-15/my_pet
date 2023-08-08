@@ -11,3 +11,9 @@ class SpriteSheet():
         image.set_colorkey(color)
 
         return image
+    
+    def get_image_mask(self):
+        img_mask = pygame.mask.from_surface(self.sheet)
+        mask_sheet = img_mask.to_surface()
+
+        return mask_sheet
