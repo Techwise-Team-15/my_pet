@@ -81,15 +81,19 @@ class RockHouse:
                 self.full_cup_item.handle_event(event, self.cup_item_location, is_rock_dirty)
                 
             self.watering_can_item.handle_event(event, self.watering_can_location, is_rock_dirty)
-
-            if(self.my_rock.did_overlap_with(self.watering_can_item)):
+            if not self.is_rock_dirty and event.type == pygame.KEYDOWN and event.key == pygame.K_r:
                 x_location = config.SCREEN_WIDTH // 2 - self.my_rock.get_current_frame().get_width() // 2
                 y_location = config.SCREEN_HEIGHT // 2 + self.my_rock.get_current_frame().get_height() // 3
                 self.my_rock.set_location(x_location, y_location)  # Move the rock back to the center
-                self.my_rock.set_current_animation(Config.RockActions.very_dirty_shower.value, True)  # Set the idle animation
+                self.my_rock.set_current_animation(Config.RockActions.idle.value, True)  # Set the idle animation
                 self.not_interacted = False  # Reset the rock's interaction flag
                 self.started_game_time = pygame.time.get_ticks()  # Reset the game time
+            
+            if(self.my_rock.did_overlap_with(self.watering_can_item)):
+                self.my_rock.set_current_animation(Config.RockActions.very_dirty_shower.value, True)
+                self.not_interacted = False  
                 self.is_rock_dirty = False
+                self.started_game_time = pygame.time.get_ticks()
             elif(self.my_rock.did_overlap_with(self.broccoli_item) and not self.is_rock_dirty):
                 self.started_game_time = pygame.time.get_ticks()
                 self.my_rock.set_current_animation(Config.RockActions.eating.value, True)
