@@ -10,12 +10,11 @@ class PetRock():
         self.animation_cooldown = Config.PET_ANIMATION_COOLDOWN
         self.FRAME = [8,8,2,8,6,8,8,7,8,8,8,2,6,8,8,2,6,8,8,2,8,12,8,12,8,12,8]
         self.ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768,864,960,1056,1152,1248,1344,1440,1536,1632,1728,1824,1920,2016,2112,2208,2304,2400,2496]
-        print("pet rock", len(self.FRAME),len(self.ANIMATION_HEIGHT))
         self.my_pygame = input_pygame
         self.last_update = self.my_pygame.time.get_ticks()
         self.rock_screen = screen
         self.rock_sprites =  self.my_pygame.image.load(Config.ROCK_SPRITES_PATH).convert_alpha()
-        self.rocks = sprite.SpriteSheet(self.rock_sprites)
+        self.rock_img = sprite.SpriteSheet(self.rock_sprites)
         self.run = True
         self.current_frame = 0
         self.pet_location = [0,0]
@@ -26,8 +25,10 @@ class PetRock():
         self.current_animation_list = self.get_animation_lists(self.current_selected_animation)
         self.is_play_once = False
         self.last_frame = self.current_animation_list[-1]
-        
-        
+
+    def get_mask(self):
+        return self.my_pygame.mask.from_surface(self.get_current_frame())
+    
     def get_name(self):
         return self.pet_name
 
@@ -68,7 +69,7 @@ class PetRock():
     def get_animation_lists(self,action):
         self.current_animation_list = []
         for x in range(self.FRAME[action]):
-            self.current_animation_list.append(self.rocks.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BG_BLACK))
+            self.current_animation_list.append(self.rock_img.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BG_BLACK))
         self.last_frame = self.current_animation_list[-1]
         return self.current_animation_list
     
@@ -79,5 +80,10 @@ class PetRock():
         if mouse_pos[0] >= pet_location[0] and mouse_pos[0] <= (pet_location[0] + pet_width):
             if mouse_pos[1] >= pet_location[1] and mouse_pos[1] <= (pet_location[1] + pet_height):
                 return True
+        return False
+    
+    def did_overlap_with(self, item):
+        if self.get_mask().overlap(item.get_mask(), (item.get_item_location()[0] - self.get_location()[0], item.get_item_location()[1] - self.get_location()[1])):
+            return True
         return False
     
