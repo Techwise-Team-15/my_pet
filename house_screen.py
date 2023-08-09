@@ -47,6 +47,7 @@ class RockHouse:
         self.full_cup = self.sprite_sheet.get_image(0,864,96,96,2, config.BG_BLACK)
         self.cup_item_location = [70, 400]
         self.full_cup_item = scene_item.Item(config.ItemID.full_cup, pygame, self.screen, self.full_cup, self.my_rock, self.cup_item_location[0], self.cup_item_location[1])
+        self.list_of_items = [self.full_cup_item, self.broccoli_item, self.ball_item, self.watering_can_item]
         # Pet Timer
         self.started_game_time = pygame.time.get_ticks()
         self.dirtiness_start = pygame.time.get_ticks()
@@ -70,6 +71,7 @@ class RockHouse:
         screen_background = pygame.image.load(config.ROCK_HOUSE_BG_PATH)
         screen_background = pygame.transform.scale(screen_background, (config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
         self.house_screen.blit(screen_background, (0, 0))
+
     
     def handle_event(self, is_rock_dirty):
         for event in pygame.event.get():
@@ -139,47 +141,13 @@ class RockHouse:
             self.rock_thought.draw_thought_bubble(self.screen, self.my_rock.get_location(), self.pet_stats_bar_icon.get_ball_icon())
 
     def display_house_to_screen(self):
-        if(self.my_rock.did_overlap_with(self.full_cup_item) and not self.is_rock_dirty):
-            self.screen.blit(self.my_rock.get_current_frame(), self.my_rock.get_location())
-            self.screen.blit(self.watering_can_item.image,self.watering_can_item.get_item_location() )
-            self.screen.blit(self.broccoli, self.broccoli_item.get_item_location())
-            self.screen.blit(self.ball, self.ball_item.get_item_location())
-            self.screen.blit(self.bed, self.bed_item.get_item_location())
-            #self.screen.blit(self.full_cup,self.full_cup_item.get_item_location())
-            self.screen.blit(self.lamp_table.get_current_frame(), self.lamp_table.get_location())
-        elif(self.my_rock.did_overlap_with(self.ball_item) and not self.is_rock_dirty):
-            self.screen.blit(self.my_rock.get_current_frame(), self.my_rock.get_location())
-            self.screen.blit(self.watering_can_item.image,self.watering_can_item.get_item_location() )
-            self.screen.blit(self.broccoli, self.broccoli_item.get_item_location())
-            #self.screen.blit(self.ball, self.ball_item.get_item_location())
-            self.screen.blit(self.bed, self.bed_item.get_item_location())
-            self.screen.blit(self.full_cup,self.full_cup_item.get_item_location())
-            self.screen.blit(self.lamp_table.get_current_frame(), self.lamp_table.get_location())
-        elif(self.my_rock.did_overlap_with(self.broccoli_item) and not self.is_rock_dirty):
-            self.screen.blit(self.my_rock.get_current_frame(), self.my_rock.get_location())
-            self.screen.blit(self.watering_can_item.image,self.watering_can_item.get_item_location() )
-            #self.screen.blit(self.broccoli, self.broccoli_item.get_item_location())
-            self.screen.blit(self.ball, self.ball_item.get_item_location())
-            self.screen.blit(self.bed, self.bed_item.get_item_location())
-            self.screen.blit(self.full_cup,self.full_cup_item.get_item_location())
-            self.screen.blit(self.lamp_table.get_current_frame(), self.lamp_table.get_location())
-        elif(self.my_rock.did_overlap_with(self.watering_can_item) and not self.is_rock_dirty):
-            self.screen.blit(self.my_rock.get_current_frame(), self.my_rock.get_location())
-            #self.screen.blit(self.watering_can_item.image,self.watering_can_item.get_item_location() )
-            self.screen.blit(self.broccoli, self.broccoli_item.get_item_location())
-            self.screen.blit(self.ball, self.ball_item.get_item_location())
-            self.screen.blit(self.bed, self.bed_item.get_item_location())
-            self.screen.blit(self.full_cup,self.full_cup_item.get_item_location())
-            self.screen.blit(self.lamp_table.get_current_frame(), self.lamp_table.get_location())
-        else:
-            self.screen.blit(self.my_rock.get_current_frame(), self.my_rock.get_location())
-            self.screen.blit(self.watering_can_item.image,self.watering_can_item.get_item_location() )
-            self.screen.blit(self.broccoli, self.broccoli_item.get_item_location())
-            self.screen.blit(self.ball, self.ball_item.get_item_location())
-            self.screen.blit(self.bed, self.bed_item.get_item_location())
-            self.screen.blit(self.full_cup,self.full_cup_item.get_item_location())
-            self.screen.blit(self.lamp_table.get_current_frame(), self.lamp_table.get_location())
-
+        self.screen.blit(self.my_rock.get_current_frame(), self.my_rock.get_location())
+        self.screen.blit(self.bed, self.bed_item.get_item_location())
+        self.screen.blit(self.lamp_table.get_current_frame(), self.lamp_table.get_location())
+        for item in self.list_of_items:
+            if not self.my_rock.did_overlap_with(item):
+                self.screen.blit(item.image, item.get_item_location())
+                
     def manage_pet_dirtiness(self):
         if (self.not_interacted and not self.is_rock_dirty) and self.my_rock.get_location()[0] < 1100:
             self.my_rock.set_location(self.my_rock.get_location()[0]+30, self.my_rock.get_location()[1])
