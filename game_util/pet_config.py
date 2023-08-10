@@ -67,6 +67,7 @@ class PetConfig:
         clean = 7
         sleeping = 8
         idle = 9
+        drinking = 10
             
     class RockActions(Enum):
         rolling = 0 
@@ -125,6 +126,11 @@ class PetConfig:
         plate = 11
         iris = 12
         ball = 13
+        white_cloud = 14
+        gray_cloud = 15
+        wand = 16
+        sword = 17
+        soap = 18
 
 
 
@@ -134,4 +140,5 @@ class PetConfig:
         ball = "ball"
         watering_can = "watering_can"
         full_cup = "full_cup"
-
+        soap = "soap"
+        wand = "wand"

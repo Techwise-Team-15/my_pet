@@ -8,7 +8,7 @@ class Table:
         self.table_location = [x,y]
         self.table_img = self.my_pygame.image.load(Config.ITEM_PATH).convert_alpha()
         self.animation_lists = []
-        self.FRAME = [11,11]
+        self.FRAME = [11,11,1,1,1,1,6,6,1,1,1,1,1,1,1,1,1,1,1]
         self.ANIMATION_HEIGHT = [0,96]
         self.animation_cooldown = 100
         self.current_frame = 0

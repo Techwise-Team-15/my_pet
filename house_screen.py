@@ -71,7 +71,6 @@ class RockHouse:
         screen_background = pygame.image.load(config.ROCK_HOUSE_BG_PATH)
         screen_background = pygame.transform.scale(screen_background, (config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
         self.house_screen.blit(screen_background, (0, 0))
-
     
     def handle_event(self, is_rock_dirty):
         for event in pygame.event.get():
