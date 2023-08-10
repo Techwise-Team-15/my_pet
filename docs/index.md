@@ -30,6 +30,18 @@ To take care of your selected pet, you'll need to attend to its various needs. T
 
 Start playing Paw Patrol now and have a fantastic time taking care of your virtual pets!
 
+## Contributor's LinkedIn
+
+[Ruth Ann](https://www.linkedin.com/in/ruth-aakre-8a277b272/)
+
+[Hannah Coleman](https://www.linkedin.com/in/hannah-coleman-711a62250/)
+
+[Donald Deal](http://www.linkedin.com/in/donald-deal-240582271)
+
+[Vanessa Medina](http://linkedin.com/in/vanessa-medina-638157269)
+
+[Dinaol Tadesse](https://www.linkedin.com/in/dinaol-tadesse/)
+
 ## Additional Information
 
 You can find more information about Paw Patrol in the following documents:
