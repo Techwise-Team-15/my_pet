@@ -1,5 +1,5 @@
 
-from game_util import PetConfig as config
+from game_util import PetConfig as config, scene_items as scene_item
 
 
 
@@ -8,6 +8,7 @@ class GameOver():
         self.screen = in_screen
         self.game_over_pygame = in_pygame
         self.font = config.FONT
+        self.score_board = scene_item.Score(pygame=in_pygame, screen=in_screen)
         self.background = self.game_over_pygame.image.load('../my_pet/theme_items/StartBackground.png')
         self.bg = self.game_over_pygame.transform.scale(self.background, [config.SCREEN_WIDTH, config.SCREEN_HEIGHT])
         self.game_over_pygame.display.set_caption('Game Over')
@@ -36,9 +37,11 @@ class GameOver():
         self.screen.blit(text_surface, text_rect)
         
 
-    def main_frames(self):
+    def main_frames(self,score):
+        self.score_board.score = score
         self.screen.blit(self.bg, (0,0))
         self.display_game_over_message()
+        self.score_board.draw_score_text()
         self.screen.blit(self.loser_pet.get_current_frame(), self.loser_pet.get_location())
         self.loser_pet.updated_frame()
         self.game_over_pygame.display.flip()

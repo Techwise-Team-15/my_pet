@@ -1,6 +1,8 @@
 import pygame, pygame.freetype
+from pygame.locals import *
 from .sprite_sheet import SpriteSheet as SpriteSheet
 from .pet_config import PetConfig as config
+import os
 
 class StatusBar:
     def __init__(self, x, y, w, h, max_hp, color, bg_color):
@@ -184,6 +186,33 @@ class Item:
                 if self.is_mouse_selection(mouse_pos) and  is_rock_dirty == False:
                     self.interacting_pet.set_location(self.item_location[0],self.item_location[1]+ self.item_rect.height/2.5)
                     self.interacting_pet.set_current_animation(config.RockActions.sleeping.value, True)
+
+class Score:
+    def __init__(self, pygame, screen):
+        self.font = pygame.font.Font(None,36)
+        self.pygame = pygame
+        self.screen  = screen
+        self.score = 0
+        self.score_increment = 10
+        self.time_to_add_score = 5
+        self.time_to_add_score_start = pygame.time.get_ticks()
+        
+    
+    def add_score(self):
+        current_time = self.pygame.time.get_ticks()
+        if current_time >= self.time_to_add_score_start + self.time_to_add_score * 1000:
+            self.time_to_add_score_start = current_time + (self.time_to_add_score * 1000)
+            self.score += self.score_increment
+            return self.score
+
+    def draw_score_text(self):
+        self.score_text = self.font.render(f'Score: {self.score}', True, config.BLACK)
+        self.screen.blit(self.score_text, (10,10))
+
+   # def current_score(self):
+       # return self.score
+
+
 
 class ThoughtBubble:
     def __init__(self, pet_stats):
