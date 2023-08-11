@@ -15,6 +15,7 @@ class RockHouse:
     def __init__(self,screen):
         self.house_screen = screen
         self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
+        self.score_board = scene_item.Score(pygame=pygame, screen=screen)
         self.initialize_house()
         self.pet_stats = scene_item.PetStats()
         self.pet_stats_bar_icon = scene_item.Icons(pygame, self.screen)
@@ -187,8 +188,11 @@ class RockHouse:
 
             self.my_rock.updated_frame()
             self.handle_event(self.is_rock_dirty)
+            self.score_board.draw_score_text()
+            self.score_board.add_score()
             pygame.display.flip()
             
         else:
-            self.game_over.main_frames()
+            score = self.score_board.score_value
+            self.game_over.main_frames(score)
         pygame.display.update()
