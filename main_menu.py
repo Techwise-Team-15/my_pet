@@ -7,7 +7,11 @@ from pets import PetRaccoon, PetRock, PetMudskipper
 from house_screen import RockHouse
 from raccoon_screen import RaccoonHouse
 
+
+
 pygame.init()
+pygame.mixer.init()
+
 
 background = config.BACKGROUND1
 screen_width = config.SCREEN_WIDTH
@@ -122,6 +126,8 @@ class Game:
         self.current_screen = "start"
         self.pet_rock_house = None
         self.pet_raccon_house = None
+        self.background_music = pygame.mixer.Sound('../my_pet/assets/rock_sound_effects/Game_Background_music.mp3')
+        self.background_music.play(-1)
 
     def run(self):
         running = True
@@ -140,6 +146,7 @@ class Game:
                 if self.main_menu.select_option == "Choose Your Pet":
                     self.current_screen = "pet_selection"
                 elif self.main_menu.select_option == "Quit":
+                    self.background_music.stop()
                     pygame.quit()
                     sys.exit()
             else:
@@ -159,7 +166,8 @@ class Game:
                     self.current_screen = "raccoon_house"
                     self.pet_raccoon_house = RaccoonHouse(screen)
             elif self.current_screen == "rock_house":
-                self.pet_rock_house.main_frames()    
+                self.pet_rock_house.main_frames() 
+
             elif self.current_screen== "raccoon_house":
                 self.pet_raccoon_house.main_frames()
             else:
