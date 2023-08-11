@@ -15,7 +15,6 @@ class RaccoonHouse:
     def __init__(self,screen):
         self.house_screen = screen
         self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
-        self.score = 0
         self.score_board = scene_item.Score(pygame=pygame, screen=screen)
         self.initialize_house()
         self.pet_stats = scene_item.PetStats()
@@ -192,6 +191,6 @@ class RaccoonHouse:
             pygame.display.flip()
             
         else:
-            score = self.score_board.score
+            score = self.score_board.score_value
             self.game_over.main_frames(score)
         pygame.display.update()

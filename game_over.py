@@ -38,7 +38,7 @@ class GameOver():
         
 
     def main_frames(self,score):
-        self.score_board.score = score
+        self.score_board.score_value = score
         self.screen.blit(self.bg, (0,0))
         self.display_game_over_message()
         self.score_board.draw_score_text()

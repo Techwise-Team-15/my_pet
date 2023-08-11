@@ -193,6 +193,6 @@ class RockHouse:
             pygame.display.flip()
             
         else:
-            score = self.score_board.score
+            score = self.score_board.score_value
             self.game_over.main_frames(score)
         pygame.display.update()

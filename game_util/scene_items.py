@@ -192,7 +192,7 @@ class Score:
         self.font = pygame.font.Font(None,36)
         self.pygame = pygame
         self.screen  = screen
-        self.score = 0
+        self.score_value = 0
         self.score_increment = 10
         self.time_to_add_score = 5
         self.time_to_add_score_start = pygame.time.get_ticks()
@@ -202,16 +202,12 @@ class Score:
         current_time = self.pygame.time.get_ticks()
         if current_time >= self.time_to_add_score_start + self.time_to_add_score * 1000:
             self.time_to_add_score_start = current_time + (self.time_to_add_score * 1000)
-            self.score += self.score_increment
-            return self.score
+            self.score_value += self.score_increment
+            return self.score_value
 
     def draw_score_text(self):
-        self.score_text = self.font.render(f'Score: {self.score}', True, config.BLACK)
+        self.score_text = self.font.render(f'Score: {self.score_value}', True, config.BLACK)
         self.screen.blit(self.score_text, (10,10))
-
-   # def current_score(self):
-       # return self.score
-
 
 
 class ThoughtBubble:
