@@ -36,7 +36,8 @@ class RockHouse:
         self.watering_can_location = [150, 600]
         self.watering_can_item = scene_item.Item( config.ItemID.watering_can, pygame, self.screen, self.watering_can,self.my_rock, self.watering_can_location[0], self.watering_can_location[1])
         self.ball = self.sprite_sheet.get_image(0, 1248, 96, 96, 2, config.BG_BLACK)
-        self.ball_location = [300,370]
+        self.ball_vanish = self.sprite_sheet.get_image(-1, 1248, 96, 96, 2, config.BLACK)
+        self.ball_location = [300,400]
         self.ball_item = scene_item.Item( config.ItemID.ball,pygame, self.screen, self.ball,self.my_rock, self.ball_location[0], self.ball_location[1])
         self.bed = self.sprite_sheet.get_image(0,480,96,96,6.5,config.BG_BLACK)
         self.bed_location = [875, 295]
@@ -46,6 +47,7 @@ class RockHouse:
         self.full_cup = self.sprite_sheet.get_image(0,864,96,96,2, config.BG_BLACK)
         self.cup_item_location = [70, 400]
         self.full_cup_item = scene_item.Item(config.ItemID.full_cup, pygame, self.screen, self.full_cup, self.my_rock, self.cup_item_location[0], self.cup_item_location[1])
+        self.list_of_items = [self.full_cup_item, self.broccoli_item, self.ball_item, self.watering_can_item]
         # Pet Timer
         self.started_game_time = pygame.time.get_ticks()
         self.dirtiness_start = pygame.time.get_ticks()
@@ -53,6 +55,7 @@ class RockHouse:
         self.rock_misbehaving_time = 10 #seconds time before rock misbehaves
         self.dirtiness_time = 30 #seconds time before rock starts getting dirty
         self.game_over = GameOver(pygame, self.screen, self.my_rock)
+        self.item_timer = 10
 
         # Thought bubble
         self.rock_thought = scene_item.ThoughtBubble(self.pet_stats)
@@ -81,12 +84,19 @@ class RockHouse:
                 self.full_cup_item.handle_event(event, self.cup_item_location, is_rock_dirty)
                 
             self.watering_can_item.handle_event(event, self.watering_can_location, is_rock_dirty)
-
+            if not self.is_rock_dirty and event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                x_location = config.SCREEN_WIDTH // 2 - self.my_rock.get_current_frame().get_width() // 2
+                y_location = config.SCREEN_HEIGHT // 2 + self.my_rock.get_current_frame().get_height() // 3
+                self.my_rock.set_location(x_location, y_location)  # Move the rock back to the center
+                self.my_rock.set_current_animation(Config.RockActions.idle.value, True)  # Set the idle animation
+                self.not_interacted = False  # Reset the rock's interaction flag
+                self.started_game_time = pygame.time.get_ticks()  # Reset the game time
+            
             if(self.my_rock.did_overlap_with(self.watering_can_item)):
-                self.started_game_time = pygame.time.get_ticks()
                 self.my_rock.set_current_animation(Config.RockActions.very_dirty_shower.value, True)
+                self.not_interacted = False  
                 self.is_rock_dirty = False
-                self.not_interacted = False 
+                self.started_game_time = pygame.time.get_ticks()
             elif(self.my_rock.did_overlap_with(self.broccoli_item) and not self.is_rock_dirty):
                 self.started_game_time = pygame.time.get_ticks()
                 self.my_rock.set_current_animation(Config.RockActions.eating.value, True)
@@ -131,13 +141,12 @@ class RockHouse:
 
     def display_house_to_screen(self):
         self.screen.blit(self.my_rock.get_current_frame(), self.my_rock.get_location())
-        self.screen.blit(self.watering_can_item.image,self.watering_can_item.get_item_location() )
-        self.screen.blit(self.broccoli, self.broccoli_item.get_item_location())
-        self.screen.blit(self.ball, self.ball_item.get_item_location())
         self.screen.blit(self.bed, self.bed_item.get_item_location())
-        self.screen.blit(self.full_cup,self.full_cup_item.get_item_location())
         self.screen.blit(self.lamp_table.get_current_frame(), self.lamp_table.get_location())
-
+        for item in self.list_of_items:
+            if not self.my_rock.did_overlap_with(item):
+                self.screen.blit(item.image, item.get_item_location())
+                
     def manage_pet_dirtiness(self):
         if (self.not_interacted and not self.is_rock_dirty) and self.my_rock.get_location()[0] < 1100:
             self.my_rock.set_location(self.my_rock.get_location()[0]+30, self.my_rock.get_location()[1])

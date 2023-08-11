@@ -10,8 +10,8 @@ class PetRaccoon():
         self.pet_id = "raccoon" # This is the pet id don't change this
         self.pet_name = "Rocket" # This is the pet name can change this
         self.animation_cooldown = Config.PET_ANIMATION_COOLDOWN
-        self.FRAME = [5,8,8,4,8,8,8,8,8,3]
-        self.ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768,864]
+        self.FRAME = [5,8,8,4,8,8,8,8,8,3,7]
+        self.ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768,864,960]
         self.my_pygame = input_pygame
         self.last_update = self.my_pygame.time.get_ticks()
         self.raccoon_screen = screen

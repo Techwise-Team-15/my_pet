@@ -55,7 +55,38 @@ class Icons:
         self.screen.blit(self.full_cup, (config.SCREEN_WIDTH - 260, 80))
         self.screen.blit(self.broccoli, (config.SCREEN_WIDTH - 250, 130))
         self.screen.blit(self.ball, (config.SCREEN_WIDTH - 250, 180))
-        
+
+
+
+class RaccoonIcons:
+    def __init__(self,pygame, screen) -> None:
+        self.pygame = pygame
+        self.screen = screen
+        self.heart_img = pygame.image.load(config.HEART_PATH).convert_alpha()
+        self.heart_img = pygame.transform.scale(self.heart_img, (40, 40))
+        self.sprite_sheet = SpriteSheet(pygame.image.load(config.ITEM_PATH).convert_alpha())
+        self.soap = self.sprite_sheet.get_image(0, 1728, 96, 96, 1, config.BG_BLACK)
+        self.broccoli = self.sprite_sheet.get_image(0,384,96,96,.75,config.BG_BLACK)
+        self.full_cup = self.sprite_sheet.get_image(0,864,96,96,.75,config.BG_BLACK)
+        self.wand = self.sprite_sheet.get_image(0, 1536, 96, 96, .75, config.BG_BLACK)
+
+    def get_broccoli_icon(self):
+        return self.broccoli
+    
+    def get_full_cup_icon(self):
+        return self.full_cup
+    
+    def get_wand_icon(self):
+        return self.wand
+    
+    def get_soap_icon(self):
+        return self.soap
+
+    def draw(self):
+        self.screen.blit(self.heart_img, (config.SCREEN_WIDTH - 240, 45))
+        self.screen.blit(self.full_cup, (config.SCREEN_WIDTH - 260, 80))
+        self.screen.blit(self.broccoli, (config.SCREEN_WIDTH - 250, 130))
+        self.screen.blit(self.wand, (config.SCREEN_WIDTH - 250, 180))       
 
 class PetStats:
     health_bar = StatusBar(950, 50, 200, 40, 1000, config.GREEN, config.RED)
