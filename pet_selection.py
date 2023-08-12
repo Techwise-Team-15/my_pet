@@ -27,7 +27,7 @@ class PetSelection():
             # Create the rock
         self.My_rock = PetRock(input_pygame=self.pet_pygame, screen=self.screen)
         self.My_rock.set_current_animation(Config.RockActions.idle.value)
-        self.My_rock.set_location(600, 600)
+        self.My_rock.set_location(Config.SCREEN_WIDTH/2 - 30, Config.SCREEN_HEIGHT/2 - 150)
             # Create the mudskipper
         self.My_mudskipper = PetMudskipper(input_pygame=self.pet_pygame, screen=self.screen)
         self.My_mudskipper.set_current_animation(Config.MudskipperActions.idle.value)
@@ -49,9 +49,9 @@ class PetSelection():
         prime_meridian = Config.SCREEN_WIDTH/2
         equator = Config.SCREEN_HEIGHT/2
         pet_locations = {
-            0: (prime_meridian/2 + x_offset, self.My_rock.get_location()[1]+ y_offset),
+            0: (prime_meridian/2 + x_offset, 600 + y_offset),
             1: (prime_meridian + x_offset, equator + y_offset ),
-            2: ((prime_meridian/2 + x_offset)+prime_meridian, self.My_rock.get_location()[1]+ y_offset)
+            2: ((prime_meridian/2 + x_offset)+prime_meridian, 600+ y_offset)
         }
         for pets in range(len(self.pets_to_display)):
             text_surface = self.font.render(self.pets_to_display[pets].get_name(), True, (255, 255, 255))
@@ -67,9 +67,9 @@ class PetSelection():
         equator = Config.SCREEN_HEIGHT/2
         desc_font = pygame.font.Font(None, 36)
         pet_locations = {
-            0: [prime_meridian/2 + x_offset, self.My_rock.get_location()[1]+ y_offset],
+            0: [prime_meridian/2 + x_offset, 600 + y_offset],
             1: [prime_meridian + x_offset, equator + y_offset ],
-            2: [(prime_meridian/2 + x_offset)+prime_meridian, self.My_rock.get_location()[1]+ y_offset]
+            2: [(prime_meridian/2 + x_offset)+prime_meridian, 600 + y_offset]
         }
         for pets in range(len(self.pets_to_display)):
             for idx,desc in enumerate(Config.PET_DESCRIPTIONS[self.pets_to_display[pets].get_pet_id()]):
