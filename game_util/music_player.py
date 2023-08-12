@@ -1,12 +1,14 @@
 import pygame.mixer
 import game_config
+from game_util import PetConfig as Config
 
 class MusicPlayer:
     def __init__(self):
         pygame.mixer.init()
         self.current_track = None
-        self.volume = 0.5  # Default volume
-        self.background_music = pygame.mixer.Sound('../my_pet/assets/rock_sound_effects/Game_Background_music.mp3')
+        self.volume = 0.5  # Default volume TODO set volume
+
+
     
     def load_track(self, track_path):
         self.current_track = track_path

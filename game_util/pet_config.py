@@ -44,6 +44,18 @@ class PetConfig:
     ROCK_COLORED_PATH = '../my_pet/sprites/rock.png' if os.path.exists('../my_pet/sprites/rock.png') else 'my_pet/sprites/rock.png'
     MUDSKIPPER_COLORED_PATH = '../my_pet/sprites/mudskipper.png' if os.path.exists('../my_pet/sprites/mudskipper.png') else 'my_pet/sprites/mudskipper.png'
 
+
+    #Sound Effects path
+    background_music = '../my_pet/assets/rock_sound_effects/game_background_music.mp3'
+    watering_can_effect = '../my_pet/assets/rock_sound_effects/water_can.mp3'
+    braking_lamp ='../my_pet/assets/rock_sound_effects/braking_lamp.mp3'
+    fire_sound ='../my_pet/assets/rock_sound_effects/fire_sound.mp3'
+    game_over ='../my_pet/assets/rock_sound_effects/game_over.mp3'
+    misc_sound_effect ='../my_pet/assets/rock_sound_effects/misc_sound_effect.mp3'
+    rock_in_buckett ='../my_pet/assets/rock_sound_effects/rock_in_buckett.mp3'
+    sleeping ='../my_pet/assets/rock_sound_effects/sleeping.mp3'
+    watering_can ='../my_pet/assets/rock_sound_effects/watering_can.mp3'
+
     # Pet names and descriptions
     
     PET_DESCRIPTIONS = {    

@@ -1,11 +1,12 @@
 import pygame
 import sys
-from game_util import PetConfig as config
+from game_util import PetConfig as config, MusicPlayer as MP
 from pet_selection import PetSelection
 from game_over import GameOver
 from pets import PetRaccoon, PetRock, PetMudskipper
 from house_screen import RockHouse
 from raccoon_screen import RaccoonHouse
+
 
 
 
@@ -126,8 +127,11 @@ class Game:
         self.current_screen = "start"
         self.pet_rock_house = None
         self.pet_raccon_house = None
-        self.background_music = pygame.mixer.Sound('../my_pet/assets/rock_sound_effects/Game_Background_music.mp3')
-        self.background_music.play(-1)
+        #self.background_music = pygame.mixer.Sound('../my_pet/assets/rock_sound_effects/Game_Background_music.mp3')
+        #self.background_music.play(-1)
+        self.game_music = MP()
+        self.game_music.load_track(config.background_music)
+        self.game_music.play(loop=True)
 
     def run(self):
         running = True
@@ -161,10 +165,10 @@ class Game:
                 scan_clicked_pet = self.my_pet_screen.handle_events()
                 if scan_clicked_pet is not None and scan_clicked_pet.get_pet_id() == self.my_rock.get_pet_id():
                     self.current_screen = "rock_house"
-                    self.pet_rock_house = RockHouse(screen)
+                    self.pet_rock_house = RockHouse(screen, self.game_music)
                 if scan_clicked_pet is not None and scan_clicked_pet.get_pet_id() == self.my_raccoon.get_pet_id():
                     self.current_screen = "raccoon_house"
-                    self.pet_raccoon_house = RaccoonHouse(screen)
+                    self.pet_raccoon_house = RaccoonHouse(screen, self.game_music)
             elif self.current_screen == "rock_house":
                 self.pet_rock_house.main_frames() 
 
