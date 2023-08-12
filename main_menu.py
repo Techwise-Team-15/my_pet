@@ -144,7 +144,6 @@ class Game:
                 if self.main_menu.select_option == "Choose Your Pet":
                     self.current_screen = "pet_selection"
                 elif self.main_menu.select_option == "Quit":
-                    self.background_music.stop()
                     pygame.quit()
                     sys.exit()
             else:
