@@ -84,9 +84,9 @@ class MainMenu:
         self.title_text = self.font_title.render("Game Main Menu", True, WHITE)
         self.menu_items = [
             MenuItem("pet_select", "Choose Your Pet", (screen_width // 2, screen_height // 2)),
-            MenuItem("load", "Load Game", (screen_width // 2, screen_height // 2 + 50)),
-            MenuItem("sound", "Sound:", (screen_width // 2, screen_height // 2 + 100)),
-            MenuItem("quit", "Quit", (screen_width // 2, screen_height // 2 + 150)),
+            MenuItem("load", "Load Game", (screen_width // 2, screen_height // 2 + 100)),
+            MenuItem("sound", "Sound: " + "ON" if IS_SOUND_ON else "OFF", (screen_width // 2, screen_height // 2 + 200)),
+            MenuItem("quit", "Quit", (screen_width // 2, screen_height // 2 + 300)),
         ]
         self.select_option = None
 
