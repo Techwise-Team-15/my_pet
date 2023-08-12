@@ -8,12 +8,6 @@ from house_screen import RockHouse
 from raccoon_screen import RaccoonHouse
 
 
-
-
-pygame.init()
-pygame.mixer.init()
-
-
 background = config.BACKGROUND1
 screen_width = config.SCREEN_WIDTH
 screen_height = config.SCREEN_HEIGHT
@@ -77,9 +71,9 @@ class MainMenu:
         self.title_text = self.font_title.render("Game Main Menu", True, WHITE)
         self.menu_items = [
             MenuItem("Choose Your Pet", (screen_width // 2, screen_height // 2)),
-            MenuItem("Load Game", (screen_width // 2, screen_height // 2 + 50)),
-            MenuItem("Options", (screen_width // 2, screen_height // 2 + 100)),
-            MenuItem("Quit", (screen_width // 2, screen_height // 2 + 150)),
+            MenuItem("Load Game", (screen_width // 2, screen_height // 2 + 100)),
+            MenuItem("Options", (screen_width // 2, screen_height // 2 + 200)),
+            MenuItem("Quit", (screen_width // 2, screen_height // 2 + 300)),
         ]
         self.select_option = None
 
@@ -150,7 +144,6 @@ class Game:
                 if self.main_menu.select_option == "Choose Your Pet":
                     self.current_screen = "pet_selection"
                 elif self.main_menu.select_option == "Quit":
-                    self.background_music.stop()
                     pygame.quit()
                     sys.exit()
             else:
