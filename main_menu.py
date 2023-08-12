@@ -6,6 +6,13 @@ from game_over import GameOver
 from pets import PetRaccoon, PetRock, PetMudskipper
 from house_screen import RockHouse
 from raccoon_screen import RaccoonHouse
+from game_config import IS_SOUND_ON
+
+
+
+
+pygame.init()
+pygame.mixer.init()
 
 
 background = config.BACKGROUND1
@@ -18,12 +25,18 @@ start_img = pygame.image.load('../my_pet/theme_items/start button.png').convert_
 WHITE = config.WHITE
 
 class MenuItem:
-    def __init__(self, text, pos):
+    def __init__(self,menu_item_id, text, pos):
+        self.menu_item_id = menu_item_id
         self.text = text
         self.pos = pos
         self.font_options = pygame.font.Font(font, 50)
         self.rendered_text = self.font_options.render(text, True, WHITE)
         self.rect = self.rendered_text.get_rect(center=pos)
+
+    def change_text(self, text):
+        self.text = text
+        self.rendered_text = self.font_options.render(text, True, WHITE)
+        self.rect = self.rendered_text.get_rect(center=self.pos)
 
     def is_mouse_selection(self, mouse_pos):
         return self.rect.collidepoint(mouse_pos)
@@ -70,10 +83,10 @@ class MainMenu:
         self.font_title = pygame.font.Font(font, 80)
         self.title_text = self.font_title.render("Game Main Menu", True, WHITE)
         self.menu_items = [
-            MenuItem("Choose Your Pet", (screen_width // 2, screen_height // 2)),
-            MenuItem("Load Game", (screen_width // 2, screen_height // 2 + 100)),
-            MenuItem("Options", (screen_width // 2, screen_height // 2 + 200)),
-            MenuItem("Quit", (screen_width // 2, screen_height // 2 + 300)),
+            MenuItem("pet_select", "Choose Your Pet", (screen_width // 2, screen_height // 2)),
+            MenuItem("load", "Load Game", (screen_width // 2, screen_height // 2 + 50)),
+            MenuItem("sound", "Sound:", (screen_width // 2, screen_height // 2 + 100)),
+            MenuItem("quit", "Quit", (screen_width // 2, screen_height // 2 + 150)),
         ]
         self.select_option = None
 
@@ -82,7 +95,7 @@ class MainMenu:
             mouse_pos = pygame.mouse.get_pos()
             for item in self.menu_items:
                 if item.is_mouse_selection(mouse_pos):
-                    self.select_option = item.text
+                    self.select_option = item.menu_item_id
                     return
         self.select_option = None
     
@@ -125,7 +138,10 @@ class Game:
         #self.background_music.play(-1)
         self.game_music = MP()
         self.game_music.load_track(config.background_music)
-        self.game_music.play(loop=True)
+        if IS_SOUND_ON:
+            self.game_music.play(loop=True)
+        else:
+            self.game_music.stop()
 
     def run(self):
         running = True
@@ -141,9 +157,20 @@ class Game:
                     self.current_screen = "menu"
             elif self.current_screen == "menu":
                 self.main_menu.handle_event(event)
-                if self.main_menu.select_option == "Choose Your Pet":
+                if self.main_menu.select_option == "pet_select":
                     self.current_screen = "pet_selection"
-                elif self.main_menu.select_option == "Quit":
+                elif self.main_menu.select_option == "sound":
+                    global IS_SOUND_ON
+                    if IS_SOUND_ON:
+                        self.game_music.stop()
+                        IS_SOUND_ON = False
+                        self.main_menu.menu_items[2].change_text("Sound: Off")
+                    else:
+                        self.game_music.play(loop=True)
+                        IS_SOUND_ON = True
+                        self.main_menu.menu_items[2].change_text("Sound: On")
+                elif self.main_menu.select_option == "quit":
+                    self.background_music.stop()
                     pygame.quit()
                     sys.exit()
             else:
