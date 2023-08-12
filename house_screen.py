@@ -16,7 +16,6 @@ class RockHouse:
         self.house_screen = screen
         self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
         self.score_board = scene_item.Score(pygame=pygame, screen=screen)
-        self.initialize_house()
         self.pet_stats = scene_item.PetStats()
         self.pet_stats_bar_icon = scene_item.Icons(pygame, self.screen)
         self.sprite_sheet_img = pygame.image.load(config.ITEM_PATH).convert_alpha() #SpriteSheet('../my_pet/assets/items_sheet.png')
