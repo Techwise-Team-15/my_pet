@@ -3,7 +3,7 @@ from pygame.locals import *
 from game_util import PetConfig as Config
 from pets import PetRaccoon, PetRock, PetMudskipper
 from src import table as Table
-from game_util import PetConfig as config, scene_items as scene_item
+from game_util import PetConfig as config, scene_items as scene_item, music_player as MP
 from pet_selection import PetSelection
 from game_over import GameOver
 from game_util.sprite_sheet import SpriteSheet
@@ -12,15 +12,15 @@ import os
 
 
 class RockHouse:
-    def __init__(self,screen):
+    def __init__(self,screen,music):
         self.house_screen = screen
         self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
         self.score_board = scene_item.Score(pygame=pygame, screen=screen)
-        self.initialize_house()
         self.pet_stats = scene_item.PetStats()
         self.pet_stats_bar_icon = scene_item.Icons(pygame, self.screen)
         self.sprite_sheet_img = pygame.image.load(config.ITEM_PATH).convert_alpha() #SpriteSheet('../my_pet/assets/items_sheet.png')
         self.sprite_sheet = SpriteSheet(self.sprite_sheet_img)
+        self.main_music = music
 
 
         self.last_update = pygame.time.get_ticks()  
@@ -174,6 +174,8 @@ class RockHouse:
             y_location = config.SCREEN_HEIGHT // 2 + self.my_rock.get_current_frame().get_height() // 3
             self.my_rock.set_location(x_location, y_location )
             self.pet_died = True
+            self.main_music.load_track(config.game_over)
+            self.main_music.play(True)
 
         if not self.pet_died:
             self.initialize_house()

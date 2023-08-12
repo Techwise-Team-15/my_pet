@@ -1,12 +1,12 @@
 from enum import Enum
-import game_config
+from game_config import SCREEN_HEIGHT, SCREEN_WIDTH, HP_DRAIN_TIME, FPS
 import os
 class PetConfig:
-    SCREEN_WIDTH = game_config.SCREEN_WIDTH
-    SCREEN_HEIGHT = game_config.SCREEN_HEIGHT
-    HP_DRAIN_TIME = game_config.HP_DRAIN_TIME
+    SCREEN_WIDTH = SCREEN_WIDTH
+    SCREEN_HEIGHT = SCREEN_HEIGHT
+    HP_DRAIN_TIME = HP_DRAIN_TIME
 
-    FPS = game_config.FPS
+    FPS = FPS
 
     #theme items
     BACKGROUND1 = '../my_pet/theme_items/general_background1.PNG'
@@ -43,6 +43,18 @@ class PetConfig:
     RACCOON_COLORED_PATH = '../my_pet/sprites/raccoon.png' if os.path.exists('../my_pet/sprites/raccoon.png') else 'my_pet/sprites/raccoon.png'
     ROCK_COLORED_PATH = '../my_pet/sprites/rock.png' if os.path.exists('../my_pet/sprites/rock.png') else 'my_pet/sprites/rock.png'
     MUDSKIPPER_COLORED_PATH = '../my_pet/sprites/mudskipper.png' if os.path.exists('../my_pet/sprites/mudskipper.png') else 'my_pet/sprites/mudskipper.png'
+
+
+    #Sound Effects path
+    background_music = '../my_pet/assets/rock_sound_effects/game_background_music.mp3'
+    watering_can_effect = '../my_pet/assets/rock_sound_effects/water_can.mp3'
+    braking_lamp ='../my_pet/assets/rock_sound_effects/braking_lamp.mp3'
+    fire_sound ='../my_pet/assets/rock_sound_effects/fire_sound.mp3'
+    game_over ='../my_pet/assets/rock_sound_effects/game_over.mp3'
+    misc_sound_effect ='../my_pet/assets/rock_sound_effects/misc_sound_effect.mp3'
+    rock_in_buckett ='../my_pet/assets/rock_sound_effects/rock_in_buckett.mp3'
+    sleeping ='../my_pet/assets/rock_sound_effects/sleeping.mp3'
+    watering_can ='../my_pet/assets/rock_sound_effects/watering_can.mp3'
 
     # Pet names and descriptions
     
