@@ -3,11 +3,11 @@ from pygame.locals import *
 from game_util import PetConfig as Config
 from pets import PetRaccoon, PetRock, PetMudskipper
 from src import table as Table
-from game_util import PetConfig as config, scene_items as scene_item, music_player as MP
+from game_util import PetConfig as config, scene_items as scene_item
 from pet_selection import PetSelection
 from game_over import GameOver
 from game_util.sprite_sheet import SpriteSheet
-from game_config import IS_SOUND_ON
+from game_config import GameConfig as gc
 import os
 
 
@@ -49,7 +49,10 @@ class RockHouse:
         self.full_cup = self.sprite_sheet.get_image(0,864,96,96,2, config.BG_BLACK)
         self.cup_item_location = [70, 400]
         self.full_cup_item = scene_item.Item(config.ItemID.full_cup, pygame, self.screen, self.full_cup, self.my_rock, self.cup_item_location[0], self.cup_item_location[1])
-        self.list_of_items = [self.full_cup_item, self.broccoli_item, self.ball_item, self.watering_can_item]
+        self.list_of_items = [self.broccoli_item, self.ball_item, self.watering_can_item]
+        self.half_full_cup = self.sprite_sheet.get_image(0,960,96,96,2, config.BG_BLACK)
+        self.half_full_cup_location = [70,400]
+        self.half_full_cup_item = scene_item.Item(config.ItemID.half_cup,pygame, self.screen, self.half_full_cup, self.my_rock, self.half_full_cup_location[0],self.half_full_cup_location[1])
         # Pet Timer
         self.started_game_time = pygame.time.get_ticks()
         self.dirtiness_start = pygame.time.get_ticks()
@@ -57,7 +60,9 @@ class RockHouse:
         self.rock_misbehaving_time = 10 #seconds time before rock misbehaves
         self.dirtiness_time = 30 #seconds time before rock starts getting dirty
         self.game_over = GameOver(pygame, self.screen, self.my_rock)
+        self.item_timer_start = pygame.time.get_ticks()
         self.item_timer = 10
+        self.item_on_cooldown = False
 
         # Thought bubble
         self.rock_thought = scene_item.ThoughtBubble(self.pet_stats)
@@ -147,8 +152,18 @@ class RockHouse:
         self.screen.blit(self.lamp_table.get_current_frame(), self.lamp_table.get_location())
         for item in self.list_of_items:
             if not self.my_rock.did_overlap_with(item):
-                self.screen.blit(item.image, item.get_item_location())
-                
+                self.screen.blit(item.image, item.get_item_location())      
+        if self.my_rock.did_overlap_with(self.full_cup_item) and self.item_on_cooldown == False:
+            self.item_timer_start = pygame.time.get_ticks() + (self.item_timer *1000)
+            self.item_on_cooldown = True
+        elif self.item_on_cooldown == False:
+            self.screen.blit(self.full_cup, self.full_cup_item.get_item_location())
+        if self.item_timer_start + self.item_timer * 1000 < pygame.time.get_ticks():
+            self.item_on_cooldown = False
+        if self.item_on_cooldown == True:
+            self.screen.blit(self.half_full_cup, self.half_full_cup_location)
+            
+            
     def manage_pet_dirtiness(self):
         if (self.not_interacted and not self.is_rock_dirty) and self.my_rock.get_location()[0] < 1100:
             self.my_rock.set_location(self.my_rock.get_location()[0]+30, self.my_rock.get_location()[1])
@@ -176,7 +191,7 @@ class RockHouse:
             self.my_rock.set_location(x_location, y_location )
             self.pet_died = True
             self.main_music.load_track(config.game_over)
-            if IS_SOUND_ON:
+            if gc.IS_SOUND_ON:
                 self.main_music.play(True)
             else:
                 self.main_music.stop()

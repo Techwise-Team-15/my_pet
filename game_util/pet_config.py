@@ -1,12 +1,12 @@
 from enum import Enum
-from game_config import SCREEN_HEIGHT, SCREEN_WIDTH, HP_DRAIN_TIME, FPS
+from game_config import GameConfig as gc
 import os
 class PetConfig:
-    SCREEN_WIDTH = SCREEN_WIDTH
-    SCREEN_HEIGHT = SCREEN_HEIGHT
-    HP_DRAIN_TIME = HP_DRAIN_TIME
+    SCREEN_WIDTH = gc.SCREEN_WIDTH
+    SCREEN_HEIGHT = gc.SCREEN_HEIGHT
+    HP_DRAIN_TIME = gc.HP_DRAIN_TIME
 
-    FPS = FPS
+    FPS = gc.FPS
 
     #theme items
     BACKGROUND1 = '../my_pet/theme_items/general_background1.PNG'
@@ -152,5 +152,6 @@ class PetConfig:
         ball = "ball"
         watering_can = "watering_can"
         full_cup = "full_cup"
+        half_cup = "half_cup"
         soap = "soap"
         wand = "wand"
