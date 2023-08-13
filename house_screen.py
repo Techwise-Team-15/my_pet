@@ -3,11 +3,11 @@ from pygame.locals import *
 from game_util import PetConfig as Config
 from pets import PetRaccoon, PetRock, PetMudskipper
 from src import table as Table
-from game_util import PetConfig as config, scene_items as scene_item, music_player as MP
+from game_util import PetConfig as config, scene_items as scene_item
 from pet_selection import PetSelection
 from game_over import GameOver
 from game_util.sprite_sheet import SpriteSheet
-from game_config import IS_SOUND_ON
+from game_config import GameConfig as gc
 import os
 
 
@@ -176,7 +176,7 @@ class RockHouse:
             self.my_rock.set_location(x_location, y_location )
             self.pet_died = True
             self.main_music.load_track(config.game_over)
-            if IS_SOUND_ON:
+            if gc.IS_SOUND_ON:
                 self.main_music.play(True)
             else:
                 self.main_music.stop()

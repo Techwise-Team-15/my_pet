@@ -6,7 +6,7 @@ from game_over import GameOver
 from pets import PetRaccoon, PetRock, PetMudskipper
 from house_screen import RockHouse
 from raccoon_screen import RaccoonHouse
-from game_config import IS_SOUND_ON
+from game_config import GameConfig as gc 
 
 
 
@@ -85,7 +85,7 @@ class MainMenu:
         self.menu_items = [
             MenuItem("pet_select", "Choose Your Pet", (screen_width // 2, screen_height // 2)),
             MenuItem("load", "Load Game", (screen_width // 2, screen_height // 2 + 100)),
-            MenuItem("sound", "Sound: " + "ON" if IS_SOUND_ON else "OFF", (screen_width // 2, screen_height // 2 + 200)),
+            MenuItem("sound", "Sound: " + "ON" if gc.IS_SOUND_ON else "OFF", (screen_width // 2, screen_height // 2 + 200)),
             MenuItem("quit", "Quit", (screen_width // 2, screen_height // 2 + 300)),
         ]
         self.select_option = None
@@ -138,7 +138,7 @@ class Game:
         #self.background_music.play(-1)
         self.game_music = MP()
         self.game_music.load_track(config.background_music)
-        if IS_SOUND_ON:
+        if gc.IS_SOUND_ON:
             self.game_music.play(loop=True)
         else:
             self.game_music.stop()
@@ -160,14 +160,13 @@ class Game:
                 if self.main_menu.select_option == "pet_select":
                     self.current_screen = "pet_selection"
                 elif self.main_menu.select_option == "sound":
-                    global IS_SOUND_ON
-                    if IS_SOUND_ON:
+                    if gc.IS_SOUND_ON:
                         self.game_music.stop()
-                        IS_SOUND_ON = False
+                        gc.IS_SOUND_ON = False
                         self.main_menu.menu_items[2].change_text("Sound: Off")
                     else:
                         self.game_music.play(loop=True)
-                        IS_SOUND_ON = True
+                        gc.IS_SOUND_ON = True
                         self.main_menu.menu_items[2].change_text("Sound: On")
                 elif self.main_menu.select_option == "quit":
                     self.background_music.stop()
