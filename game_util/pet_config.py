@@ -152,5 +152,6 @@ class PetConfig:
         ball = "ball"
         watering_can = "watering_can"
         full_cup = "full_cup"
+        half_cup = "half_cup"
         soap = "soap"
         wand = "wand"

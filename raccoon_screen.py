@@ -56,6 +56,13 @@ class RaccoonHouse:
         self.raccoon_misbehaving_time = 10 #seconds time before raccoon misbehaves
         self.dirtiness_time = 30 #seconds time before raccoon starts getting dirty
         self.game_over = GameOver(pygame, self.screen, self.my_raccoon)
+        self.half_full_cup = self.sprite_sheet.get_image(0,960,96,96,2, config.BG_BLACK)
+        self.half_full_cup_location = [70,400]
+        self.half_full_cup_item = scene_item.Item(config.ItemID.half_cup,pygame, self.screen, self.half_full_cup, self.my_raccoon, self.half_full_cup_location[0],self.half_full_cup_location[1])
+        self.item_timer_start = pygame.time.get_ticks()
+        self.item_timer = 10
+        self.item_on_cooldown = False
+        self.list_of_items = [self.broccoli_item, self.wand_item, self.soap_item]
 
         # Thought bubble
         self.raccoon_thought = scene_item.ThoughtBubble(self.pet_stats)
@@ -141,12 +148,20 @@ class RaccoonHouse:
 
     def display_house_to_screen(self):
         self.screen.blit(self.my_raccoon.get_current_frame(), self.my_raccoon.get_location())
-        self.screen.blit(self.soap_item.image,self.soap_item.get_item_location() )
-        self.screen.blit(self.broccoli, self.broccoli_item.get_item_location())
-        self.screen.blit(self.wand, self.wand_item.get_item_location())
         self.screen.blit(self.bed, self.bed_item.get_item_location())
-        self.screen.blit(self.full_cup,self.full_cup_item.get_item_location())
         #self.screen.blit(self.lamp_table.get_current_frame(), self.lamp_table.get_location())
+        for item in self.list_of_items:
+            if not self.my_raccoon.did_overlap_with(item):
+                self.screen.blit(item.image, item.get_item_location())      
+        if self.my_raccoon.did_overlap_with(self.full_cup_item) and self.item_on_cooldown == False:
+            self.item_timer_start = pygame.time.get_ticks() + (self.item_timer *1000)
+            self.item_on_cooldown = True
+        elif self.item_on_cooldown == False:
+            self.screen.blit(self.full_cup, self.full_cup_item.get_item_location())
+        if self.item_timer_start + self.item_timer * 1000 < pygame.time.get_ticks():
+            self.item_on_cooldown = False
+        if self.item_on_cooldown == True:
+            self.screen.blit(self.half_full_cup, self.half_full_cup_location)
 
     def manage_pet_dirtiness(self):
         if (self.not_interacted and not self.is_raccoon_dirty) and self.my_raccoon.get_location()[0] < 1100:
