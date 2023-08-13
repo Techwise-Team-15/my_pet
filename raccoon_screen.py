@@ -3,23 +3,26 @@ from pygame.locals import *
 from game_util import PetConfig as Config
 from pets import PetRaccoon, PetRock, PetMudskipper
 from src import table as Table
-from game_util import PetConfig as config, scene_items as scene_item
+from game_util import PetConfig as config, scene_items as scene_item, music_player as MP
 from pet_selection import PetSelection
 from game_over import GameOver
 from game_util.sprite_sheet import SpriteSheet
+from game_config import IS_SOUND_ON
 import os
 
 
 
 class RaccoonHouse:
-    def __init__(self,screen):
+    def __init__(self,screen,music):
         self.house_screen = screen
         self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
+        self.score_board = scene_item.Score(pygame=pygame, screen=screen)
         self.initialize_house()
         self.pet_stats = scene_item.PetStats()
         self.pet_stats_bar_icon = scene_item.RaccoonIcons(pygame, self.screen)
         self.sprite_sheet_img = pygame.image.load(config.ITEM_PATH).convert_alpha() #SpriteSheet('../my_pet/assets/items_sheet.png')
         self.sprite_sheet = SpriteSheet(self.sprite_sheet_img)
+        self.main_music = music
 
 
         self.last_update = pygame.time.get_ticks()  
@@ -171,6 +174,11 @@ class RaccoonHouse:
             y_location = config.SCREEN_HEIGHT // 2 + self.my_raccoon.get_current_frame().get_height() // 3
             self.my_raccoon.set_location(x_location, y_location )
             self.pet_died = True
+            self.main_music.load_track(config.game_over)
+            if IS_SOUND_ON:
+                self.main_music.play(True)
+            else:
+                self.main_music.stop()
 
         if not self.pet_died:
             self.initialize_house()
@@ -185,8 +193,11 @@ class RaccoonHouse:
 
             self.my_raccoon.updated_frame()
             self.handle_event(self.is_raccoon_dirty)
+            self.score_board.draw_score_text()
+            self.score_board.add_score()
             pygame.display.flip()
             
         else:
-            self.game_over.main_frames()
+            score = self.score_board.score_value
+            self.game_over.main_frames(score)
         pygame.display.update()
