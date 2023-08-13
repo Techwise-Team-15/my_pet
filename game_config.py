@@ -7,3 +7,4 @@ HP_DRAIN_TIME = 100
 
 FPS = 60
 
+IS_SOUND_ON = True
