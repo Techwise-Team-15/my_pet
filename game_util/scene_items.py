@@ -23,22 +23,22 @@ class StatusBar:
     def bar_drain_thirst(self):
         if self.hp > 0:
             pygame.time.delay(config.HP_DRAIN_TIME)
-            self.hp -= 10
+            self.hp -= 5
     
     def bar_drain_hunger(self):
         if self.hp > 0:
             pygame.time.delay(config.HP_DRAIN_TIME)
-            self.hp -= 7
+            self.hp -= 3
     
     def bar_drain_happy(self):
         if self.hp > 0:
             pygame.time.delay(config.HP_DRAIN_TIME)
-            self.hp -= 14
+            self.hp -= 7
     
     def bar_drain_health(self):
         if self.hp > 0:
             pygame.time.delay(config.HP_DRAIN_TIME)
-            self.hp -= 20
+            self.hp -= 10
     
     
     
@@ -108,10 +108,10 @@ class RaccoonIcons:
         self.screen.blit(self.wand, (config.SCREEN_WIDTH - 250, 180))       
 
 class PetStats:
-    health_bar = StatusBar(950, 50, 200, 40, 1000, config.LIGHT_PINK, config.LIGHT_ORANGE)
-    thirst_bar = StatusBar(950, 100, 200, 40, 1000, config.LIGHT_BLUE, config.LIGHT_ORANGE)
-    hunger_bar = StatusBar(950, 150, 200, 40, 1000, config.LIGHT_GREEN, config.LIGHT_ORANGE)
-    happiness_bar = StatusBar(950, 200, 200, 40, 1000, config.LIGHT_PURPLE, config.LIGHT_ORANGE)
+    health_bar = StatusBar(950, 50, 200, 25, 1000, config.LIGHT_PINK, config.LIGHT_ORANGE)
+    thirst_bar = StatusBar(950, 100, 200, 25, 1000, config.LIGHT_BLUE, config.LIGHT_ORANGE)
+    hunger_bar = StatusBar(950, 150, 200, 25, 1000, config.LIGHT_GREEN, config.LIGHT_ORANGE)
+    happiness_bar = StatusBar(950, 200, 200, 25, 1000, config.LIGHT_PURPLE, config.LIGHT_ORANGE)
 
     def get_pet_health(self):
         return self.health_bar.hp
