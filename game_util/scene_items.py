@@ -20,10 +20,27 @@ class StatusBar:
         pygame.draw.rect(surface, self.bg_color, (self.x, self.y, self.w, self.h))
         pygame.draw.rect(surface, self.color, (self.x, self.y, self.w * ratio, self.h))
 
-    def bar_drain(self):
+    def bar_drain_thirst(self):
         if self.hp > 0:
             pygame.time.delay(config.HP_DRAIN_TIME)
-            self.hp -= 20 
+            self.hp -= 10
+    
+    def bar_drain_hunger(self):
+        if self.hp > 0:
+            pygame.time.delay(config.HP_DRAIN_TIME)
+            self.hp -= 7
+    
+    def bar_drain_happy(self):
+        if self.hp > 0:
+            pygame.time.delay(config.HP_DRAIN_TIME)
+            self.hp -= 14
+    
+    def bar_drain_health(self):
+        if self.hp > 0:
+            pygame.time.delay(config.HP_DRAIN_TIME)
+            self.hp -= 20
+    
+    
     
     def bar_fill(self):
         self.hp = self.max_hp
@@ -91,10 +108,10 @@ class RaccoonIcons:
         self.screen.blit(self.wand, (config.SCREEN_WIDTH - 250, 180))       
 
 class PetStats:
-    health_bar = StatusBar(950, 50, 200, 40, 1000, config.GREEN, config.RED)
-    thirst_bar = StatusBar(950, 100, 200, 40, 1000, config.BLUE, config.RED)
-    hunger_bar = StatusBar(950, 150, 200, 40, 1000, config.ORANGE, config.RED)
-    happiness_bar = StatusBar(950, 200, 200, 40, 1000, config.YELLOW, config.RED)
+    health_bar = StatusBar(950, 50, 200, 40, 1000, config.LIGHT_PINK, config.LIGHT_ORANGE)
+    thirst_bar = StatusBar(950, 100, 200, 40, 1000, config.LIGHT_BLUE, config.LIGHT_ORANGE)
+    hunger_bar = StatusBar(950, 150, 200, 40, 1000, config.LIGHT_GREEN, config.LIGHT_ORANGE)
+    happiness_bar = StatusBar(950, 200, 200, 40, 1000, config.LIGHT_PURPLE, config.LIGHT_ORANGE)
 
     def get_pet_health(self):
         return self.health_bar.hp
@@ -127,11 +144,11 @@ class PetStats:
         self.happiness_bar.draw(surface)
 
     def update(self):
-        self.thirst_bar.bar_drain()
-        self.hunger_bar.bar_drain()
-        self.happiness_bar.bar_drain()
+        self.thirst_bar.bar_drain_thirst()
+        self.hunger_bar.bar_drain_hunger()
+        self.happiness_bar.bar_drain_happy()
         if self.hunger_bar.hp == 0 and self.thirst_bar.hp == 0:
-            self.health_bar.bar_drain()
+            self.health_bar.bar_drain_health()
 
 class Item:
     def __init__(self, item_id, pygame, screen, image, pet, x, y, is_movable = True):

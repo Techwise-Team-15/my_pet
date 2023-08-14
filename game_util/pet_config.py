@@ -26,6 +26,12 @@ class PetConfig:
     YELLOW = (255, 255, 0)
     ORANGE = (255, 165, 0)
     INDIGO = (75, 0, 130)
+    LIGHT_GREEN = (21,242,143)
+    LIGHT_BLUE = (143,240,238)
+    LIGHT_PINK = (252,213,233)
+    LIGHT_PURPLE = (196,149,222)
+    LIGHT_ORANGE = (218,87,0)
+
 
 
 
