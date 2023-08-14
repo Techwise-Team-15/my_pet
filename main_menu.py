@@ -6,7 +6,7 @@ from game_over import GameOver
 from pets import PetRaccoon, PetRock, PetMudskipper
 from house_screen import RockHouse
 from raccoon_screen import RaccoonHouse
-from drop_down_menu_class import PetNameSelectionApp
+from load_name import PetNameSelectionApp
 from game_config import GameConfig as gc 
 
 
