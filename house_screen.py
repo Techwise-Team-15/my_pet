@@ -28,7 +28,6 @@ class RockHouse:
         self.animation_cooldown = 100
 
         self.my_rock = PetRock(pygame, self.screen)
-        self.my_rock.set_location(600, 600)
         self.my_rock.set_current_animation(Config.RockActions.idle.value )
 
         self.broccoli = self.sprite_sheet.get_image(0,384,96,96,1,config.BG_BLACK)
@@ -68,7 +67,6 @@ class RockHouse:
         self.rock_thought = scene_item.ThoughtBubble(self.pet_stats)
         self.rock_made_a_mess = False
         self.pet_died = False
-        self.is_rock_dirty = False
         self.is_hungry = False
         self.is_thirsty = False
         self.is_sad = False
@@ -91,7 +89,7 @@ class RockHouse:
                 self.full_cup_item.handle_event(event, self.cup_item_location, is_rock_dirty)
                 
             self.watering_can_item.handle_event(event, self.watering_can_location, is_rock_dirty)
-            if not self.is_rock_dirty and event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+            if not self.my_rock.is_rock_dirty and event.type == pygame.KEYDOWN and event.key == pygame.K_r:
                 x_location = config.SCREEN_WIDTH // 2 - self.my_rock.get_current_frame().get_width() // 2
                 y_location = config.SCREEN_HEIGHT // 2 + self.my_rock.get_current_frame().get_height() // 3
                 self.my_rock.set_location(x_location, y_location)  # Move the rock back to the center
@@ -101,21 +99,23 @@ class RockHouse:
             
             if(self.my_rock.did_overlap_with(self.watering_can_item)):
                 self.my_rock.set_current_animation(Config.RockActions.very_dirty_shower.value, True)
+                if self.my_rock.flag_after_animation(Config.RockActions.very_dirty_shower.value):
+                    self.my_rock.is_rock_dirty = False
                 self.not_interacted = False  
-                self.is_rock_dirty = False
+                self.my_rock.is_rock_dirty = False
                 self.started_game_time = pygame.time.get_ticks()
-            elif(self.my_rock.did_overlap_with(self.broccoli_item) and not self.is_rock_dirty):
+            elif(self.my_rock.did_overlap_with(self.broccoli_item) and not self.my_rock.is_rock_dirty):
                 self.started_game_time = pygame.time.get_ticks()
                 self.my_rock.set_current_animation(Config.RockActions.eating.value, True)
                 self.pet_stats.fill_hunger()
-            elif(self.my_rock.did_overlap_with(self.ball_item) and not self.is_rock_dirty):
+            elif(self.my_rock.did_overlap_with(self.ball_item) and not self.my_rock.is_rock_dirty):
                 self.started_game_time = pygame.time.get_ticks()
                 self.my_rock.set_current_animation(Config.RockActions.playing.value, True)
                 self.pet_stats.fill_happiness()
-            elif(self.my_rock.did_overlap_with(self.bed_item) and not self.is_rock_dirty):
+            elif(self.my_rock.did_overlap_with(self.bed_item) and not self.my_rock.is_rock_dirty):
                 self.started_game_time = pygame.time.get_ticks()
                 
-            elif(self.my_rock.did_overlap_with(self.full_cup_item) and not self.is_rock_dirty):
+            elif(self.my_rock.did_overlap_with(self.full_cup_item) and not self.my_rock.is_rock_dirty):
                 self.started_game_time = pygame.time.get_ticks()
                 self.my_rock.set_current_animation(Config.RockActions.drinking.value, True)
                 self.pet_stats.fill_thirst()
@@ -137,13 +137,13 @@ class RockHouse:
             self.is_sad = False
     
     def draw_pet_thought(self):
-        if self.is_rock_dirty == True:
+        if self.my_rock.is_rock_dirty == True:
             self.rock_thought.draw_thought_bubble(self.screen, self.my_rock.get_location(),self.pet_stats_bar_icon.get_watering_can_icon())
-        if self.is_rock_dirty == False and self.is_hungry == True:
+        if self.my_rock.is_rock_dirty == False and self.is_hungry == True:
             self.rock_thought.draw_thought_bubble(self.screen, self.my_rock.get_location(),self.pet_stats_bar_icon.get_broccoli_icon())
-        if self.is_rock_dirty == False and self.is_hungry == False and self.is_thirsty == True:
+        if self.my_rock.is_rock_dirty == False and self.is_hungry == False and self.is_thirsty == True:
             self.rock_thought.draw_thought_bubble(self.screen, self.my_rock.get_location(), self.pet_stats_bar_icon.get_full_cup_icon())
-        if self.is_rock_dirty == False and self.is_hungry == False and self.is_thirsty == False and self.is_sad == True:
+        if self.my_rock.is_rock_dirty == False and self.is_hungry == False and self.is_thirsty == False and self.is_sad == True:
             self.rock_thought.draw_thought_bubble(self.screen, self.my_rock.get_location(), self.pet_stats_bar_icon.get_ball_icon())
 
     def display_house_to_screen(self):
@@ -163,21 +163,28 @@ class RockHouse:
         if self.item_on_cooldown == True:
             self.screen.blit(self.half_full_cup, self.half_full_cup_location)
             
-            
+    def move_rock_to_center(self):
+        x_location = config.SCREEN_WIDTH // 2 - self.my_rock.get_current_frame().get_width() // 2
+        y_location = config.SCREEN_HEIGHT // 2 + self.my_rock.get_current_frame().get_height() // 3
+        self.my_rock.set_location(x_location, y_location)  # Move the rock back to the center  
+
     def manage_pet_dirtiness(self):
-        if (self.not_interacted and not self.is_rock_dirty) and self.my_rock.get_location()[0] < 1100:
-            self.my_rock.set_location(self.my_rock.get_location()[0]+30, self.my_rock.get_location()[1])
-        elif (self.not_interacted and not self.is_rock_dirty) and self.my_rock.get_location()[0] >= 1100:
+        # if the rock is dirty and checks if the rock needs to be dirty over time
+        if (self.not_interacted and not self.my_rock.is_rock_dirty) and self.my_rock.get_location()[0] < 1100:
+            self.my_rock.set_location(self.my_rock.get_location()[0]+25, self.my_rock.get_location()[1])
+        elif (self.not_interacted and not self.my_rock.is_rock_dirty) and self.my_rock.get_location()[0] >= 1100:
             self.my_rock.set_current_animation(Config.RockActions.dirty.value, False)
-            self.is_rock_dirty = True
-        if not self.is_rock_dirty and self.dirtiness_start + self.dirtiness_time * 1000 < pygame.time.get_ticks():
+            self.my_rock.is_rock_dirty = True
+        # if the rock is dirty and checks if the rock needs to be dirty over time
+        if not self.my_rock.is_rock_dirty and self.dirtiness_start + self.dirtiness_time * 1000 < pygame.time.get_ticks():
             self.my_rock.set_current_animation(Config.RockActions.dirty.value, False)
-            self.is_rock_dirty = True
+            self.my_rock.is_rock_dirty = True
             self.dirtiness_start = pygame.time.get_ticks() + (self.dirtiness_time*1000)
-            
+        # updates the lamp table animation if rock interacts with it
         if self.lamp_table.did_overlap_with(self.my_rock):
             self.lamp_table.update()
-        if not self.is_rock_dirty and self.started_game_time + self.rock_misbehaving_time * 1000 < pygame.time.get_ticks():
+        # if the rock is not dirty and checks if the rock needs to misbehave
+        if not self.my_rock.is_rock_dirty and self.started_game_time + self.rock_misbehaving_time * 1000 < pygame.time.get_ticks():
             self.my_rock.set_location(600,350)
             self.my_rock.set_current_animation(Config.RockActions.jumping.value, True)
             self.started_game_time = pygame.time.get_ticks() + (self.rock_misbehaving_time*1000)
@@ -186,9 +193,7 @@ class RockHouse:
     def main_frames(self):
         if self.pet_stats.get_pet_health() == 0 and not self.pet_died:
             self.my_rock.set_current_animation(Config.RockActions.dying.value)
-            x_location = config.SCREEN_WIDTH // 2 - self.my_rock.get_current_frame().get_width() // 2
-            y_location = config.SCREEN_HEIGHT // 2 + self.my_rock.get_current_frame().get_height() // 3
-            self.my_rock.set_location(x_location, y_location )
+            self.move_rock_to_center()
             self.pet_died = True
             self.main_music.load_track(config.game_over)
             if gc.IS_SOUND_ON:
@@ -206,9 +211,9 @@ class RockHouse:
             self.update_pet_stats()
             self.draw_pet_thought()
             self.manage_pet_dirtiness()
-
+            
             self.my_rock.updated_frame()
-            self.handle_event(self.is_rock_dirty)
+            self.handle_event(self.my_rock.is_rock_dirty)
             self.score_board.draw_score_text()
             self.score_board.add_score()
             pygame.display.flip()

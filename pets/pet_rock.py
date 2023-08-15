@@ -25,6 +25,8 @@ class PetRock():
         self.current_animation_list = self.get_animation_lists(self.current_selected_animation)
         self.is_play_once = False
         self.last_frame = self.current_animation_list[-1]
+        # Pet state
+        self.is_rock_dirty = False
 
     def get_mask(self):
         return self.my_pygame.mask.from_surface(self.get_current_frame())
@@ -86,4 +88,13 @@ class PetRock():
         if self.get_mask().overlap(item.get_mask(), (item.get_item_location()[0] - self.get_location()[0], item.get_item_location()[1] - self.get_location()[1])):
             return True
         return False
+    def get_duration(self,animation_to_check):
+        return self.FRAME[animation_to_check] * Config.PET_ANIMATION_COOLDOWN
+    
+    def flag_after_animation(self, curr_animation):
+        current_time = self.my_pygame.time.get_ticks()
+        animation_duration = self.get_duration(curr_animation)
+        if current_time - self.animation_start_time >= animation_duration:
+            return True
+        return False    
     
