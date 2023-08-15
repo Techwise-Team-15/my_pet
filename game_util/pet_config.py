@@ -26,6 +26,12 @@ class PetConfig:
     YELLOW = (255, 255, 0)
     ORANGE = (255, 165, 0)
     INDIGO = (75, 0, 130)
+    LIGHT_GREEN = (21,242,143)
+    LIGHT_BLUE = (143,240,238)
+    LIGHT_PINK = (252,213,233)
+    LIGHT_PURPLE = (196,149,222)
+    LIGHT_ORANGE = (218,87,0)
+
 
 
 
@@ -111,16 +117,18 @@ class PetConfig:
         drinking = 26
 
     class MudskipperActions(Enum):
-        walking = 0
+        swiming = 0
         eating = 1
-        fighting = 2
+        flipping = 2
         idle = 3
         jumping = 4
         shooting = 5
         dirty = 6
         playing = 7
-        bubble = 8
+        sleeping = 8
         clean = 9
+        drinking = 10
+        dying = 11
 
     # Table actions
     class TableActions(Enum):
@@ -143,6 +151,10 @@ class PetConfig:
         wand = 16
         sword = 17
         soap = 18
+        pillow =19
+        table = 20
+        short_table = 21
+        broken_vase = 22
 
 
 
