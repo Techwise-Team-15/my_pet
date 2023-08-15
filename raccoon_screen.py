@@ -29,6 +29,8 @@ class RaccoonHouse:
         self.animation_cooldown = 100
 
         self.my_raccoon = PetRaccoon(pygame, self.screen)
+        self.x_location = config.SCREEN_WIDTH // 2 - self.my_raccoon.get_current_frame().get_width() // 2
+        self.y_location = config.SCREEN_HEIGHT // 2 + self.my_raccoon.get_current_frame().get_height() // 3
         self.my_raccoon.set_location(900, 1100)
         self.my_raccoon.set_current_animation(Config.RaccoonActions.idle.value)
 
@@ -63,6 +65,8 @@ class RaccoonHouse:
         self.item_timer = 10
         self.item_on_cooldown = False
         self.list_of_items = [self.broccoli_item, self.wand_item, self.soap_item]
+        self.sleep_start = pygame.time.get_ticks()
+        self.sleep_time = 5
 
         # Thought bubble
         self.raccoon_thought = scene_item.ThoughtBubble(self.pet_stats)
@@ -72,6 +76,7 @@ class RaccoonHouse:
         self.is_hungry = False
         self.is_thirsty = False
         self.is_sad = False
+        self.is_sleeping = False
 
     def initialize_house(self):
         self.house_screen.fill(config.BLACK)
@@ -91,12 +96,10 @@ class RaccoonHouse:
                 self.full_cup_item.handle_event(event, self.cup_item_location, is_raccoon_dirty)
                 
             self.soap_item.handle_event(event, self.soap_location, is_raccoon_dirty)
-            if not self.is_raccoon_dirty and event.type == pygame.KEYDOWN and event.key == pygame.K_r:
-                x_location = config.SCREEN_WIDTH // 2 - self.my_raccoon.get_current_frame().get_width() // 2
-                y_location = config.SCREEN_HEIGHT // 2 + self.my_raccoon.get_current_frame().get_height() // 3
-                self.my_raccoon.set_location(x_location, y_location)  # Move the raccoon back to the center
+            if not self.is_raccoon_dirty and event.type == pygame.KEYDOWN and event.key == pygame.K_r: 
+                self.my_raccoon.set_location(self.x_location, self.y_location)  # Move the rock back to the center
                 self.my_raccoon.set_current_animation(Config.RaccoonActions.idle.value, True)  # Set the idle animation
-                self.not_interacted = False  # Reset the raccoon's interaction flag
+                self.not_interacted = False  # Reset the rock's interaction flag
                 self.started_game_time = pygame.time.get_ticks()  # Reset the game time
             
             if(self.my_raccoon.did_overlap_with(self.soap_item)):
@@ -108,12 +111,20 @@ class RaccoonHouse:
                 self.started_game_time = pygame.time.get_ticks()
                 self.my_raccoon.set_current_animation(Config.RaccoonActions.eating.value, True)
                 self.pet_stats.fill_hunger()
-            elif(self.my_raccoon.did_overlap_with(self.wand_item) and not self.is_raccoon_dirty):
+            if(self.my_raccoon.did_overlap_with(self.wand_item) and not self.is_raccoon_dirty):
                 self.started_game_time = pygame.time.get_ticks()
                 self.my_raccoon.set_current_animation(Config.RaccoonActions.magic.value, True)
                 self.pet_stats.fill_happiness()
             elif(self.my_raccoon.did_overlap_with(self.bed_item) and not self.is_raccoon_dirty):
+                self.is_sleeping = True
                 self.started_game_time = pygame.time.get_ticks()
+
+            if (self.is_sleeping == True) and self.sleep_start + self.sleep_time * 1000 < pygame.time.get_ticks():
+                self.my_raccoon.set_location(self.x_location, self.y_location)
+                self.my_raccoon.set_current_animation(Config.RaccoonActions.idle.value, True)
+                self.sleep_start = pygame.time.get_ticks()
+                self.started_game_time = pygame.time.get_ticks()
+                self.is_sleeping = False
                 
             elif(self.my_raccoon.did_overlap_with(self.full_cup_item) and not self.is_raccoon_dirty):
                 self.started_game_time = pygame.time.get_ticks()
@@ -149,7 +160,7 @@ class RaccoonHouse:
     def display_house_to_screen(self):
         self.screen.blit(self.my_raccoon.get_current_frame(), self.my_raccoon.get_location())
         self.screen.blit(self.bed, self.bed_item.get_item_location())
-        #self.screen.blit(self.lamp_table.get_current_frame(), self.lamp_table.get_location())
+       # self.screen.blit(self.lamp_table.get_current_frame(), self.lamp_table.get_location())
         for item in self.list_of_items:
             if not self.my_raccoon.did_overlap_with(item):
                 self.screen.blit(item.image, item.get_item_location())      
@@ -176,11 +187,11 @@ class RaccoonHouse:
             
         if self.lamp_table.did_overlap_with(self.my_raccoon):
             self.lamp_table.update()
-       # if not self.is_raccoon_dirty and self.started_game_time + self.raccoon_misbehaving_time * 1000 < pygame.time.get_ticks():
-          #  self.my_raccoon.set_location(600,350)
-           # self.my_raccoon.set_current_animation(Config.RaccoonActions.jumping.value, True)
-           # self.started_game_time = pygame.time.get_ticks() + (self.raccoon_misbehaving_time*1000)
-          #  self.not_interacted = True
+     #   if not self.is_raccoon_dirty and self.started_game_time + self.raccoon_misbehaving_time * 1000 < pygame.time.get_ticks():
+      #      self.my_raccoon.set_location(600,350)
+       #     self.my_raccoon.set_current_animation(Config.RaccoonActions.fighting.value, True)
+        #    self.started_game_time = pygame.time.get_ticks() + (self.raccoon_misbehaving_time*1000)
+         #   self.not_interacted = True
 
     def main_frames(self):
         if self.pet_stats.get_pet_health() == 0 and not self.pet_died:
@@ -198,7 +209,8 @@ class RaccoonHouse:
         if not self.pet_died:
             self.initialize_house()
             self.pet_stats_bar_icon.draw()
-            self.pet_stats.update()
+            if self.is_sleeping == False:
+                self.pet_stats.update()
             self.pet_stats.draw(self.screen)
             
             self.display_house_to_screen()
