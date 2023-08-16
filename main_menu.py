@@ -76,7 +76,7 @@ class StartScreen:
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
             if self.start_button.is_mouse_on_button(mouse_pos):
-                pygame.time.delay(1000)
+                pygame.time.delay(500)
                 return True 
 
 class MainMenu:
@@ -98,7 +98,7 @@ class MainMenu:
             for item in self.menu_items:
                 if item.is_mouse_selection(mouse_pos):
                     self.select_option = item.menu_item_id
-                    pygame.time.delay(1000)
+                    pygame.time.delay(500)
                     return
         self.select_option = None
     

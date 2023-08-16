@@ -136,6 +136,15 @@ class RaccoonHouse:
                 self.started_game_time = pygame.time.get_ticks()
                 self.my_raccoon.set_current_animation(Config.RaccoonActions.drinking.value, True)
                 self.pet_stats.fill_thirst()
+            
+            if(self.my_raccoon.current_selected_animation == config.RaccoonActions.clean.value and self.my_raccoon.has_animation_ended()):
+                self.my_raccoon.set_current_animation(Config.RaccoonActions.idle.value)
+                self.my_raccoon.set_location(self.x_location, self.y_location)
+                self.is_rock_dirty = False
+                self.not_interacted = False
+                self.started_game_time = pygame.time.get_ticks()
+                self.dirtiness_start   = pygame.time.get_ticks()
+                
 
     
     

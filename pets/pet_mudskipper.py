@@ -15,11 +15,10 @@ class PetMudskipper():
         self.mudskipper_sprites =  self.my_pygame.image.load(Config.MUDSKIPPER_PATH).convert_alpha()
         self.mudskippers = sprite.SpriteSheet(self.mudskipper_sprites)
         self.last_update = self.my_pygame.time.get_ticks()
-        self.run = True
         self.current_frame = 0
         self.pet_location = [0,0]
         # The current animation to play
-        self.current_selected_animation = 3
+        self.current_selected_animation = Config.MudskipperActions.idle.value 
         # The lists of frames for the current animation
         self.current_animation_list = []
         self.current_animation_list = self.get_animation_lists(self.current_selected_animation)
@@ -86,4 +85,9 @@ class PetMudskipper():
             if mouse_pos[1] >= pet_location[1] and mouse_pos[1] <= pet_location[1] + pet_height:
                 return True
         return False
-    
+
+    def has_animation_ended(self):
+        if self.current_frame == self.FRAME[self.current_selected_animation] - 1:
+            return True
+        return False
+     
