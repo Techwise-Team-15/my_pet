@@ -29,9 +29,9 @@ class RaccoonHouse:
         self.animation_cooldown = 100
 
         self.my_raccoon = PetRaccoon(pygame, self.screen)
-        self.x_location = 400
-        self.y_location = 550
-        self.my_raccoon_location = [400,550]
+        self.x_location = 550
+        self.y_location = 500
+        self.my_raccoon_location = [550,500]
         self.my_raccoon.set_location(0, 0)
         self.my_raccoon.set_current_animation(Config.RaccoonActions.idle.value)
 
