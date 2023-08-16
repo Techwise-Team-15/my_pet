@@ -11,7 +11,7 @@ class GameOver():
         self.score_board = scene_item.Score(pygame=in_pygame, screen=in_screen)
         self.background = self.game_over_pygame.image.load('../my_pet/theme_items/StartBackground.png')
         self.bg = self.game_over_pygame.transform.scale(self.background, [config.SCREEN_WIDTH, config.SCREEN_HEIGHT])
-        self.game_over_pygame.display.set_caption('Game Over')
+        
         self.last_update = self.game_over_pygame.time.get_ticks()
         self.animation_cooldown = config.PET_ANIMATION_COOLDOWN 
         self.loser_pet = lost_pet 
@@ -38,6 +38,7 @@ class GameOver():
         
 
     def main_frames(self,score):
+        self.game_over_pygame.display.set_caption('Game Over')
         self.score_board.score_value = score
         self.screen.blit(self.bg, (0,0))
         self.display_game_over_message()

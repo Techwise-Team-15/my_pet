@@ -6,7 +6,7 @@ class PetNameSelectionApp:
     def __init__(self, screen):
         pygame.init()
         self.screen = screen
-        pygame.display.set_caption("Pet Name Selection")
+        #pygame.display.set_caption("Pet Name Selection")
 
         self.SCREEN_MAIN = 0
         self.SCREEN_SAVED_NAMES = 1
@@ -14,7 +14,7 @@ class PetNameSelectionApp:
         self.pet_names = ["Fluffy", "Buddy", "Max", "Charlie", "Luna", "Bella", "Rocky", "Daisy", "Simba", "Milo", "Honey"]
         self.pet_name = self.generate_random_name()
 
-        self.background_image = pygame.image.load('theme_items/general_background1.png').convert_alpha()
+        self.background_image = pygame.image.load(config.BACKGROUND1).convert_alpha()
         self.background_image_scale = pygame.transform.scale(self.background_image, (config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
 
         self.font = pygame.font.Font(None, 30)

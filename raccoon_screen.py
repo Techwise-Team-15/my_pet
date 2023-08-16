@@ -32,7 +32,7 @@ class RaccoonHouse:
         self.x_location = 400
         self.y_location = 550
         self.my_raccoon_location = [400,550]
-        self.my_raccoon.set_location(400, 550)
+        self.my_raccoon.set_location(0, 0)
         self.my_raccoon.set_current_animation(Config.RaccoonActions.idle.value)
 
         self.broccoli = self.sprite_sheet.get_image(0,384,96,96,1,config.BG_BLACK)
@@ -45,6 +45,7 @@ class RaccoonHouse:
         self.wand_location = [300,500]
         self.wand_item = scene_item.Item(config.ItemID.wand, pygame, self.screen, self.wand, self.my_raccoon, self.wand_location[0], self.wand_location[1])
         self.pillow = self.sprite_sheet.get_image(0,1824,96,96,1.5,config.BG_BLACK)
+        self.pillow = self.sprite_sheet.get_flipped_image(self.pillow)
         self.pillow_location = [750, 420]
         self.bowl_table = self.sprite_sheet.get_image(0,1920,96,96,2,config.BG_BLACK)
         self.bowl_table_location = [150, 400]
@@ -71,7 +72,7 @@ class RaccoonHouse:
         self.item_on_cooldown = False
         self.list_of_items = [self.broccoli_item, self.wand_item, self.soap_item]
         self.sleep_start = pygame.time.get_ticks()
-        self.sleep_time = 5
+        self.sleep_time = 10
 
         # Thought bubble
         self.raccoon_thought = scene_item.ThoughtBubble(self.pet_stats)
@@ -163,8 +164,10 @@ class RaccoonHouse:
             self.raccoon_thought.draw_thought_bubble(self.screen, self.my_raccoon.get_location(), self.pet_stats_bar_icon.get_wand_icon())
 
     def display_house_to_screen(self):
-        self.screen.blit(self.my_raccoon.get_current_frame(), self.my_raccoon.get_location())
         self.screen.blit(self.pillow, self.pillow_item.get_item_location())
+        self.screen.blit(self.my_raccoon.get_current_frame(), self.my_raccoon.get_location())
+       # self.screen.blit(self.pet_pygame.transform.flip(My_rock.get_current_frame(),True,False), My_rock.get_location())
+        
         self.screen.blit(self.bowl_table,self.bowl_table_location)
         self.screen.blit(self.table,self.table_location)
        # self.screen.blit(self.lamp_table.get_current_frame(), self.lamp_table.get_location())

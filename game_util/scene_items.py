@@ -205,7 +205,7 @@ class Item:
                         self.interacting_pet.set_location(self.item_location[0],self.item_location[1]+ self.item_rect.height/2.5)
                         self.interacting_pet.set_current_animation(config.RockActions.sleeping.value, True)
                     elif self.interacting_pet.get_pet_id() == "raccoon":
-                        self.interacting_pet.set_location(self.item_location[0],self.item_location[1]-75)
+                        self.interacting_pet.set_location(self.item_location[0]-50,self.item_location[1]-75)
                         self.interacting_pet.set_current_animation(config.RaccoonActions.sleeping.value, True)
                    # elif self.interacting_pet.get_pet_id() == "mudskipper":
                       #  self.interacting_pet.set_current_animation(config.MudskipperActions.sleeping.value, True)
