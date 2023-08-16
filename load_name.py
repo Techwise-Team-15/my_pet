@@ -116,7 +116,7 @@ class LoadName:
 
     def blit_main_screen(self):
         pygame.draw.rect(self.screen, config.WHITE, self.dropdown_rect, 2)
-        dropdown_text = self.font.render(self.pet_name, True, config.BLACK)
+        dropdown_text = self.font.render("Select Name Here", True, config.BLACK)
         dropdown_text_rect = dropdown_text.get_rect(center=self.dropdown_rect.center)
         self.screen.blit(dropdown_text, dropdown_text_rect)
 
@@ -188,9 +188,6 @@ class LoadName:
                 
         return "load_name"
             
-
-            
-
     def blit_load_name(self):
         self.screen.blit(self.background_image_scale, (0, 0))
         # blit go home button

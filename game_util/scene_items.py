@@ -252,6 +252,18 @@ class Score:
         self.score_text = self.font.render(f'Score: {self.score_value}', True, config.BLACK)
         self.screen.blit(self.score_text, (10,10))
 
+class PlayerName():
+    def __init__(self, pygame, screen, player_name):
+        self.pygame = pygame
+        self.screen = screen
+        self.player_name = player_name
+        self.player_name_font = pygame.font.Font(config.FONT, 36)
+        self.player_name_text = self.player_name_font.render(f'Player Name: {self.player_name}', True, config.BLACK)
+        self.player_name_rect = self.player_name_text.get_rect(topleft=(10, 50))
+        self.is_player_name_entered = False
+
+    def draw_player_name_text(self):
+        self.screen.blit(self.player_name_text, (10,50))
 
 class ThoughtBubble:
     def __init__(self, pet_stats):
