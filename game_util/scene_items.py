@@ -75,6 +75,26 @@ class Icons:
         self.screen.blit(self.broccoli, (config.SCREEN_WIDTH - 250, 130))
         self.screen.blit(self.ball, (config.SCREEN_WIDTH - 250, 180))
 
+class Buttons:
+    def __init__(self, screen, location, button_text,text_size = 36, button_text_color=config.WHITE):
+        self.screen = screen
+        self.location = location
+        self.font = pygame.font.Font(config.FONT, text_size)
+        self.text = self.font.render(button_text, True, button_text_color)
+        self.item_rect = self.text.get_rect(topleft=location)
+        self.is_mouse_hovering = False
+        self.is_mouse_clicking = False
+        self.button_width = self.item_rect.width
+        self.button_height = self.item_rect.height
+    
+    def draw(self):
+        self.screen.blit(self.text, self.location)
+
+    def is_mouse_selection(self, mouse_pos):
+        if mouse_pos[0] >= self.location[0] and mouse_pos[0] <= (self.location[0] + self.button_width):
+            if mouse_pos[1] >= self.location[1] and mouse_pos[1] <= (self.location[1] + self.button_height):
+                return True
+        return False
 
 
 class RaccoonIcons:

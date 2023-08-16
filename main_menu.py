@@ -194,6 +194,9 @@ class Game:
                 self.pet_raccoon_house.main_frames()
             elif self.current_screen == "load_name":
                 self.load_name_screen.main_frames()
+                if self.load_name_screen.handle_events() == "back":
+                    self.current_screen = "menu"
+                
             pygame.display.update()
 
 game = Game()
