@@ -7,6 +7,7 @@ class LoadName:
     def __init__(self, screen):
         pygame.init()
         self.screen = screen
+        #pygame.display.set_caption("Pet Name Selection")
 
         self.home_button = si.Buttons(self.screen,[50,50],"Back")
         self.SCREEN_MAIN = 0
@@ -15,7 +16,7 @@ class LoadName:
         self.pet_names = ["Fluffy", "Buddy", "Max", "Charlie", "Luna", "Bella", "Rocky", "Daisy", "Simba", "Milo", "Honey"]
         self.pet_name = self.generate_random_name()
 
-        self.background_image = pygame.image.load('theme_items/general_background1.png').convert_alpha()
+        self.background_image = pygame.image.load(config.BACKGROUND1).convert_alpha()
         self.background_image_scale = pygame.transform.scale(self.background_image, (config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
 
         self.font = pygame.font.Font(None, 30)

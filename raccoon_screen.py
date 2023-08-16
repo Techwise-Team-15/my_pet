@@ -29,27 +29,33 @@ class RaccoonHouse:
         self.animation_cooldown = 100
 
         self.my_raccoon = PetRaccoon(pygame, self.screen)
-        self.x_location = config.SCREEN_WIDTH // 2 - self.my_raccoon.get_current_frame().get_width() // 2
-        self.y_location = config.SCREEN_HEIGHT // 2 + self.my_raccoon.get_current_frame().get_height() // 3
-        self.my_raccoon.set_location(900, 1100)
+        self.x_location = 550
+        self.y_location = 500
+        self.my_raccoon_location = [550,500]
+        self.my_raccoon.set_location(0, 0)
         self.my_raccoon.set_current_animation(Config.RaccoonActions.idle.value)
 
         self.broccoli = self.sprite_sheet.get_image(0,384,96,96,1,config.BG_BLACK)
-        self.broccoli_location = [475, 650]
+        self.broccoli_location = [890, 600]
         self.broccoli_item = scene_item.Item(config.ItemID.broccoli, pygame, self.screen, self.broccoli,self.my_raccoon, self.broccoli_location[0], self.broccoli_location[1])
-        self.soap = self.sprite_sheet.get_image(0, 1728, 96, 96, 2, config.BG_BLACK)
-        self.soap_location = [150, 600]
+        self.soap = self.sprite_sheet.get_image(0, 1728, 96, 96, .6, config.BG_BLACK)
+        self.soap_location = [205, 410]
         self.soap_item = scene_item.Item(config.ItemID.soap, pygame, self.screen, self.soap, self.my_raccoon, self.soap_location[0], self.soap_location[1])
-        self.wand = self.sprite_sheet.get_image(0, 1536, 96, 96, 2, config.BG_BLACK)
-        self.wand_location = [300,370]
+        self.wand = self.sprite_sheet.get_image(0, 1536, 96, 96, 1, config.BG_BLACK)
+        self.wand_location = [300,500]
         self.wand_item = scene_item.Item(config.ItemID.wand, pygame, self.screen, self.wand, self.my_raccoon, self.wand_location[0], self.wand_location[1])
-        self.bed = self.sprite_sheet.get_image(0,480,96,96,2,config.BG_BLACK)
-        self.bed_location = [1100, 600]
-        self.bed_item = scene_item.Item(config.ItemID.bed, pygame, self.screen,self.bed,self.my_raccoon, self.bed_location[0],self.bed_location[1],False)
+        self.pillow = self.sprite_sheet.get_image(0,1824,96,96,1.5,config.BG_BLACK)
+        self.pillow = self.sprite_sheet.get_flipped_image(self.pillow)
+        self.pillow_location = [750, 420]
+        self.bowl_table = self.sprite_sheet.get_image(0,1920,96,96,2,config.BG_BLACK)
+        self.bowl_table_location = [150, 400]
+        self.table = self.sprite_sheet.get_image(0,2016,96,96,4,config.BG_BLACK)
+        self.table_location = [700, 400]
+        self.pillow_item = scene_item.Item(config.ItemID.pillow, pygame, self.screen, self.pillow, self.my_raccoon, self.pillow_location[0],self.pillow_location[1],False)
         self.lamp_table_location = [800, 350]
         self.lamp_table = Table.Table(pygame, self.screen, self.lamp_table_location[0], self.lamp_table_location[1])
-        self.full_cup = self.sprite_sheet.get_image(0,864,96,96,2, config.BG_BLACK)
-        self.cup_item_location = [70, 400]
+        self.full_cup = self.sprite_sheet.get_image(0,864,96,96,1, config.BG_BLACK)
+        self.cup_item_location = [795, 600]
         self.full_cup_item = scene_item.Item(config.ItemID.full_cup, pygame, self.screen, self.full_cup, self.my_raccoon, self.cup_item_location[0], self.cup_item_location[1])
         # Pet Timer
         self.started_game_time = pygame.time.get_ticks()
@@ -58,15 +64,15 @@ class RaccoonHouse:
         self.raccoon_misbehaving_time = 10 #seconds time before raccoon misbehaves
         self.dirtiness_time = 30 #seconds time before raccoon starts getting dirty
         self.game_over = GameOver(pygame, self.screen, self.my_raccoon)
-        self.half_full_cup = self.sprite_sheet.get_image(0,960,96,96,2, config.BG_BLACK)
-        self.half_full_cup_location = [70,400]
+        self.half_full_cup = self.sprite_sheet.get_image(0,960,96,96,1, config.BG_BLACK)
+        self.half_full_cup_location = [795, 600]
         self.half_full_cup_item = scene_item.Item(config.ItemID.half_cup,pygame, self.screen, self.half_full_cup, self.my_raccoon, self.half_full_cup_location[0],self.half_full_cup_location[1])
         self.item_timer_start = pygame.time.get_ticks()
         self.item_timer = 10
         self.item_on_cooldown = False
         self.list_of_items = [self.broccoli_item, self.wand_item, self.soap_item]
         self.sleep_start = pygame.time.get_ticks()
-        self.sleep_time = 5
+        self.sleep_time = 10
 
         # Thought bubble
         self.raccoon_thought = scene_item.ThoughtBubble(self.pet_stats)
@@ -92,7 +98,7 @@ class RaccoonHouse:
             if not is_raccoon_dirty:
                 self.broccoli_item.handle_event(event,self.broccoli_location, is_raccoon_dirty)
                 self.wand_item.handle_event(event, self.wand_location, is_raccoon_dirty)
-                self.bed_item.handle_event(event, self.bed_location, is_raccoon_dirty)
+                self.pillow_item.handle_event(event, self.pillow_location, is_raccoon_dirty)
                 self.full_cup_item.handle_event(event, self.cup_item_location, is_raccoon_dirty)
                 
             self.soap_item.handle_event(event, self.soap_location, is_raccoon_dirty)
@@ -115,7 +121,7 @@ class RaccoonHouse:
                 self.started_game_time = pygame.time.get_ticks()
                 self.my_raccoon.set_current_animation(Config.RaccoonActions.magic.value, True)
                 self.pet_stats.fill_happiness()
-            elif(self.my_raccoon.did_overlap_with(self.bed_item) and not self.is_raccoon_dirty):
+            elif(self.my_raccoon.did_overlap_with(self.pillow_item) and not self.is_raccoon_dirty):
                 self.is_sleeping = True
                 self.started_game_time = pygame.time.get_ticks()
 
@@ -130,21 +136,30 @@ class RaccoonHouse:
                 self.started_game_time = pygame.time.get_ticks()
                 self.my_raccoon.set_current_animation(Config.RaccoonActions.drinking.value, True)
                 self.pet_stats.fill_thirst()
+            
+            if(self.my_raccoon.current_selected_animation == config.RaccoonActions.clean.value and self.my_raccoon.has_animation_ended()):
+                self.my_raccoon.set_current_animation(Config.RaccoonActions.idle.value)
+                self.my_raccoon.set_location(self.x_location, self.y_location)
+                self.is_rock_dirty = False
+                self.not_interacted = False
+                self.started_game_time = pygame.time.get_ticks()
+                self.dirtiness_start   = pygame.time.get_ticks()
+                
 
     
     
     def update_pet_stats(self):
-        if self.pet_stats.get_pet_hunger()  < 50:
+        if self.pet_stats.get_pet_hunger()  < 500:
             self.is_hungry = True
-        if self.pet_stats.get_pet_hunger()  > 49:
+        if self.pet_stats.get_pet_hunger()  > 490:
             self.is_hungry = False 
-        if self.pet_stats.get_pet_thirst() < 50:
+        if self.pet_stats.get_pet_thirst() < 500:
             self.is_thirsty = True
-        if self.pet_stats.get_pet_thirst() > 49:
+        if self.pet_stats.get_pet_thirst() > 490:
             self.is_thirsty = False
-        if self.pet_stats.get_pet_happiness()  < 50:
+        if self.pet_stats.get_pet_happiness()  < 500:
             self.is_sad = True
-        if self.pet_stats.get_pet_happiness() > 49:
+        if self.pet_stats.get_pet_happiness() > 490:
             self.is_sad = False
     
     def draw_pet_thought(self):
@@ -158,8 +173,12 @@ class RaccoonHouse:
             self.raccoon_thought.draw_thought_bubble(self.screen, self.my_raccoon.get_location(), self.pet_stats_bar_icon.get_wand_icon())
 
     def display_house_to_screen(self):
+        self.screen.blit(self.pillow, self.pillow_item.get_item_location())
         self.screen.blit(self.my_raccoon.get_current_frame(), self.my_raccoon.get_location())
-        self.screen.blit(self.bed, self.bed_item.get_item_location())
+       # self.screen.blit(self.pet_pygame.transform.flip(My_rock.get_current_frame(),True,False), My_rock.get_location())
+        
+        self.screen.blit(self.bowl_table,self.bowl_table_location)
+        self.screen.blit(self.table,self.table_location)
        # self.screen.blit(self.lamp_table.get_current_frame(), self.lamp_table.get_location())
         for item in self.list_of_items:
             if not self.my_raccoon.did_overlap_with(item):
@@ -207,6 +226,7 @@ class RaccoonHouse:
                 self.main_music.stop()
 
         if not self.pet_died:
+            
             self.initialize_house()
             self.pet_stats_bar_icon.draw()
             if self.is_sleeping == False:
@@ -216,7 +236,7 @@ class RaccoonHouse:
             self.display_house_to_screen()
             self.update_pet_stats()
             self.draw_pet_thought()
-            self.manage_pet_dirtiness()
+            #self.manage_pet_dirtiness()
 
             self.my_raccoon.updated_frame()
             self.handle_event(self.is_raccoon_dirty)

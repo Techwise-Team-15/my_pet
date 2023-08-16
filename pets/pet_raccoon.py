@@ -17,16 +17,18 @@ class PetRaccoon():
         self.raccoon_screen = screen
         self.raccoon_sprites =  self.my_pygame.image.load(Config.RACCOON_PATH).convert_alpha()
         self.raccoon_img = sprite.SpriteSheet(self.raccoon_sprites)
-        self.run = True
         self.current_frame = 0
         self.pet_location = [0,0]
         # The current animation to play
-        self.current_selected_animation = 9
+        self.current_selected_animation = Config.RaccoonActions.idle.value
         # The lists of frames for the current animation
         self.current_animation_list = []
         self.current_animation_list = self.get_animation_lists(self.current_selected_animation)
         self.is_play_once = False
         self.last_frame = self.current_animation_list[-1]
+        # Pet state
+        self.is_raccoon_dirty = False
+        
 
     def get_mask(self):
         return self.my_pygame.mask.from_surface(self.get_current_frame())
@@ -89,5 +91,10 @@ class PetRaccoon():
                 return True
         return False
 
+    def has_animation_ended(self):
+        if self.current_frame == self.FRAME[self.current_selected_animation] - 1:
+            return True
+        return False
+    
 
 
