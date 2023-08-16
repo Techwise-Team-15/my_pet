@@ -88,13 +88,9 @@ class PetRock():
         if self.get_mask().overlap(item.get_mask(), (item.get_item_location()[0] - self.get_location()[0], item.get_item_location()[1] - self.get_location()[1])):
             return True
         return False
-    def get_duration(self,animation_to_check):
-        return self.FRAME[animation_to_check] * Config.PET_ANIMATION_COOLDOWN
     
-    def flag_after_animation(self, curr_animation):
-        current_time = self.my_pygame.time.get_ticks()
-        animation_duration = self.get_duration(curr_animation)
-        if current_time - self.animation_start_time >= animation_duration:
+    def has_animation_ended(self):
+        if self.current_frame == self.FRAME[self.current_selected_animation] - 1:
             return True
-        return False    
+        return False
     

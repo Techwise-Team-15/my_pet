@@ -95,7 +95,7 @@ class RockHouse:
                 self.full_cup_item.handle_event(event, self.cup_item_location, is_rock_dirty)
                 
             self.watering_can_item.handle_event(event, self.watering_can_location, is_rock_dirty)
-            if not self.is_rock_dirty and event.type == pygame.KEYDOWN and event.key == pygame.K_r: 
+            if not self.my_rock.is_rock_dirty and event.type == pygame.KEYDOWN and event.key == pygame.K_r: 
                 self.my_rock.set_location(self.x_location, self.y_location)  # Move the rock back to the center
                 self.my_rock.set_current_animation(Config.RockActions.idle.value, True)  # Set the idle animation
                 self.not_interacted = False  # Reset the rock's interaction flag
@@ -103,23 +103,25 @@ class RockHouse:
             
             if(self.my_rock.did_overlap_with(self.watering_can_item)):
                 self.my_rock.set_current_animation(Config.RockActions.very_dirty_shower.value, True)
-                if self.my_rock.flag_after_animation(Config.RockActions.very_dirty_shower.value):
-                    self.my_rock.is_rock_dirty = False
-                self.not_interacted = False  
                 self.my_rock.is_rock_dirty = False
+                self.not_interacted = False  
                 self.started_game_time = pygame.time.get_ticks()
+
             elif(self.my_rock.did_overlap_with(self.broccoli_item) and not self.my_rock.is_rock_dirty):
                 self.started_game_time = pygame.time.get_ticks()
                 self.my_rock.set_current_animation(Config.RockActions.eating.value, True)
                 self.pet_stats.fill_hunger()
-            if(self.my_rock.did_overlap_with(self.ball_item) and not self.is_rock_dirty):
+                self.not_interacted = False
+
+            if(self.my_rock.did_overlap_with(self.ball_item) and not self.my_rock.is_rock_dirty):
                 self.started_game_time = pygame.time.get_ticks()
                 self.my_rock.set_current_animation(Config.RockActions.playing.value, True)
                 self.pet_stats.fill_happiness()
-            elif(self.my_rock.did_overlap_with(self.bed_item) and not self.is_rock_dirty):
+                self.not_interacted = False
+            elif(self.my_rock.did_overlap_with(self.bed_item) and not self.my_rock.is_rock_dirty):
                 self.is_sleeping = True
                 self.started_game_time = pygame.time.get_ticks()
-
+                self.not_interacted = False
             if (self.is_sleeping == True) and self.sleep_start + self.sleep_time * 1000 < pygame.time.get_ticks():
                 self.my_rock.set_location(self.x_location, self.y_location)
                 self.my_rock.set_current_animation(Config.RockActions.idle.value, True)
@@ -131,6 +133,14 @@ class RockHouse:
                 self.started_game_time = pygame.time.get_ticks()
                 self.my_rock.set_current_animation(Config.RockActions.drinking.value, True)
                 self.pet_stats.fill_thirst()
+
+            if(self.my_rock.current_selected_animation == config.RockActions.very_dirty_shower.value and self.my_rock.has_animation_ended()):
+                self.my_rock.set_current_animation(Config.RockActions.idle.value)
+                self.my_rock.set_location(self.x_location, self.y_location)
+                self.my_rock.is_rock_dirty = False
+                self.not_interacted = False
+                self.started_game_time = pygame.time.get_ticks()
+                self.dirtiness_start   = pygame.time.get_ticks()
 
     
     
@@ -181,9 +191,9 @@ class RockHouse:
         self.my_rock.set_location(x_location, y_location)  # Move the rock back to the center  
 
     def manage_pet_dirtiness(self):
-        if (self.not_interacted and not self.is_rock_dirty and not self.is_sleeping) and self.my_rock.get_location()[0] < 1100:
+        if (self.not_interacted and not self.my_rock.is_rock_dirty and not self.is_sleeping) and self.my_rock.get_location()[0] < 1100:
             self.my_rock.set_location(self.my_rock.get_location()[0]+30, self.my_rock.get_location()[1])
-        elif (self.not_interacted and not self.is_rock_dirty and not self.is_sleeping) and self.my_rock.get_location()[0] >= 1100:
+        elif (self.not_interacted and not self.my_rock.is_rock_dirty and not self.is_sleeping) and self.my_rock.get_location()[0] >= 1100:
             self.my_rock.set_current_animation(Config.RockActions.dirty.value, False)
             self.my_rock.is_rock_dirty = True
         # if the rock is dirty and checks if the rock needs to be dirty over time
