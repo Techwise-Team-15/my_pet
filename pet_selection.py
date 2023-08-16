@@ -10,7 +10,7 @@ class PetSelection():
         self.screen = in_screen
         self.background = self.pet_pygame.image.load('../my_pet/load_game/background_exp.PNG')
         self.bg = self.pet_pygame.transform.scale(self.background, [Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT])
-        self.pet_pygame.display.set_caption('Pet Selection')
+        #self.pet_pygame.display.set_caption('Pet Selection')
         self.last_update = self.pet_pygame.time.get_ticks()
         self.animation_cooldown = 100
         self.pets_to_display = []

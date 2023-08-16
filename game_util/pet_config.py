@@ -166,4 +166,6 @@ class PetConfig:
         full_cup = "full_cup"
         half_cup = "half_cup"
         soap = "soap"
+        pillow = "pillow"
         wand = "wand"
+        
