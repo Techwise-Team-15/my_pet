@@ -15,7 +15,6 @@ class PetRock():
         self.rock_screen = screen
         self.rock_sprites =  self.my_pygame.image.load(Config.ROCK_SPRITES_PATH).convert_alpha()
         self.rock_img = sprite.SpriteSheet(self.rock_sprites)
-        self.run = True
         self.current_frame = 0
         self.pet_location = [0,0]
         # The current animation to play
