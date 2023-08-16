@@ -23,23 +23,23 @@ class StatusBar:
     def bar_drain_thirst(self):
         if self.hp > 0:
             pygame.time.delay(config.HP_DRAIN_TIME)
-            self.hp -= 5
-    
+            self.hp = max(self.hp - 5, 0)
+            
     def bar_drain_hunger(self):
         if self.hp > 0:
             pygame.time.delay(config.HP_DRAIN_TIME)
-            self.hp -= 3
-    
+            self.hp = max(self.hp - 3, 0)
+
     def bar_drain_happy(self):
         if self.hp > 0:
             pygame.time.delay(config.HP_DRAIN_TIME)
-            self.hp -= 7
-    
+            self.hp = max(self.hp - 7, 0)
+
     def bar_drain_health(self):
         if self.hp > 0:
             pygame.time.delay(config.HP_DRAIN_TIME)
-            self.hp -= 10
-    
+            self.hp = max(self.hp - 10, 0)
+        
     
     
     def bar_fill(self):
@@ -201,10 +201,11 @@ class Item:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = self.pygame.mouse.get_pos()
                 if self.is_mouse_selection(mouse_pos) and  is_rock_dirty == False:
-                    self.interacting_pet.set_location(self.item_location[0],self.item_location[1]+ self.item_rect.height/2.5)
                     if self.interacting_pet.get_pet_id() == "rock":
+                        self.interacting_pet.set_location(self.item_location[0],self.item_location[1]+ self.item_rect.height/2.5)
                         self.interacting_pet.set_current_animation(config.RockActions.sleeping.value, True)
                     elif self.interacting_pet.get_pet_id() == "raccoon":
+                        self.interacting_pet.set_location(self.item_location[0],self.item_location[1]-75)
                         self.interacting_pet.set_current_animation(config.RaccoonActions.sleeping.value, True)
                    # elif self.interacting_pet.get_pet_id() == "mudskipper":
                       #  self.interacting_pet.set_current_animation(config.MudskipperActions.sleeping.value, True)
