@@ -3,11 +3,10 @@ import random
 from game_util import PetConfig as config, scene_items as si
 from game_config import GameConfig as gc
 
-class PetNameSelectionApp:
+class LoadName:
     def __init__(self, screen):
         pygame.init()
         self.screen = screen
-        pygame.display.set_caption("Pet Name Selection")
 
         self.home_button = si.Buttons(self.screen,[50,50],"Back")
         self.SCREEN_MAIN = 0
@@ -169,7 +168,6 @@ class PetNameSelectionApp:
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
             if self.home_button.is_mouse_selection(mouse_pos):
-                pygame.time.delay(200)
                 return True
         return False
         
