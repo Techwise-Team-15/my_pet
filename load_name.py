@@ -1,13 +1,15 @@
 import pygame
 import random
-from game_util import PetConfig as config
+from game_util import PetConfig as config, scene_items as si
+from game_config import GameConfig as gc
 
-class PetNameSelectionApp:
+class LoadName:
     def __init__(self, screen):
         pygame.init()
         self.screen = screen
         #pygame.display.set_caption("Pet Name Selection")
 
+        self.home_button = si.Buttons(self.screen,[50,50],"Back")
         self.SCREEN_MAIN = 0
         self.SCREEN_SAVED_NAMES = 1
 
@@ -27,11 +29,8 @@ class PetNameSelectionApp:
         self.dropdown_width = 200
         self.dropdown_height = 30
         self.dropdown_rect = pygame.Rect(self.screen_center_x - self.dropdown_width // 2, self.screen_center_y - 50, self.dropdown_width, self.dropdown_height)
-        self.dropdown_options_rect = [pygame.Rect(self.dropdown_rect.x, self.dropdown_rect.y + (i * self.dropdown_height), self.dropdown_width, self.dropdown_height) for i in range(len(self.pet_names))]
+        self.dropdown_options_rect = [pygame.Rect(self.dropdown_rect.x, self.dropdown_rect.y + 30 + (i * self.dropdown_height), self.dropdown_width, self.dropdown_height) for i in range(len(self.pet_names))]
         self.is_dropdown_open = False
-
-        self.saved_names_file = "saved_names.txt"
-        self.saved_names = self.load_saved_names()
 
         self.input_box_width = 200
         self.input_box_height = 30
@@ -52,24 +51,7 @@ class PetNameSelectionApp:
         self.delete_buttons_rect = []
 
     def generate_random_name(self):
-        return random.choice(self.pet_names)
-
-    def load_saved_names(self):
-        try:
-            with open(self.saved_names_file, "r") as file:
-                return file.read().splitlines()
-        except FileNotFoundError:
-            return []
-
-    def handle_events(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                self.handle_mouse_click(event.pos)
-            elif event.type == pygame.KEYDOWN:
-                self.handle_key_down(event.key)
+        return random.choice(self.pet_names)            
 
     def handle_mouse_click(self, mouse_pos):
         if self.current_screen == self.SCREEN_MAIN:
@@ -93,16 +75,14 @@ class PetNameSelectionApp:
     def handle_pet_name_selection(self, index):
         self.pet_name = self.pet_names[index]
         self.is_dropdown_open = False
-        if self.pet_name not in self.saved_names:
-            with open(self.saved_names_file, "a") as file:
-                file.write(self.pet_name + "\n")
+        if self.pet_name not in gc.SAVED_PET_NAMES: 
+            gc.SAVED_PET_NAMES.append(self.pet_name)
             self.show_notification = True
             self.notification_text = "Name saved!"
 
     def handle_delete_saved_name(self, index):
-        deleted_name = self.saved_names.pop(index)
-        with open(self.saved_names_file, "w") as file:
-            file.write("\n".join(self.saved_names))
+        deleted_name = gc.SAVED_PET_NAMES[index] 
+        gc.SAVED_PET_NAMES.remove(deleted_name)
         self.show_notification = True
         self.notification_text = f"{deleted_name} deleted."
 
@@ -135,57 +115,90 @@ class PetNameSelectionApp:
             if option_rect.collidepoint(pygame.mouse.get_pos()):
                 pygame.draw.rect(self.screen, (0, 0, 150), option_rect)
 
-    def draw(self):
+        # handle event when home button is clicked
+    
+    def handle_home_button_clicked(self,event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+            if self.home_button.is_mouse_selection(mouse_pos):
+                return True
+        return False
+        
+    def handle_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if self.handle_home_button_clicked(event):
+                    return "back"
+                self.handle_mouse_click(event.pos)
+
+            elif event.type == pygame.KEYDOWN:
+                self.handle_key_down(event.key)
+                
+        return "load_name"
+    
+    def blit_main_screen(self):
+        pygame.draw.rect(self.screen, config.WHITE, self.dropdown_rect, 2)
+        dropdown_text = self.font.render("Select Name Here", True, config.BLACK)
+        dropdown_text_rect = dropdown_text.get_rect(center=self.dropdown_rect.center)
+        self.screen.blit(dropdown_text, dropdown_text_rect)
+
+        choose_text = self.font.render("Choose Your Pet Name To Save", True, config.BLACK)
+        choose_text_rect = choose_text.get_rect(center=(self.screen_center_x, self.dropdown_rect.top - 20))
+        self.screen.blit(choose_text, choose_text_rect)
+
+        if self.is_dropdown_open:
+            for i, option_rect in enumerate(self.dropdown_options_rect):
+                pygame.draw.rect(self.screen, config.BLUE, option_rect)
+                option_text = self.font.render(self.pet_names[i], True, config.WHITE)
+                option_text_rect = option_text.get_rect(center=option_rect.center)
+                self.screen.blit(option_text, option_text_rect)
+
+        # Save button
+        self.save_button_rect = pygame.Rect(self.screen_center_x + 150, self.screen_center_y - 50 , 200, 30)
+        pygame.draw.rect(self.screen, config.BLUE, self.save_button_rect)
+        save_button_text = self.font.render("Saved Pet Names", True, config.WHITE)
+        save_button_text_rect = save_button_text.get_rect(center=self.save_button_rect.center)
+        self.screen.blit(save_button_text, save_button_text_rect)
+        
+    def blit_saved_screen(self):
+        saved_screen_text = self.font.render("Saved Pet Names:", True, config.BLACK)
+        self.screen.blit(saved_screen_text, (self.screen_center_x - saved_screen_text.get_width() // 2, 50))
+
+        self.delete_buttons_rect = []
+        for i, name in enumerate(gc.SAVED_PET_NAMES[:self.max_saved_names]):
+            name_text = self.font.render(name, True, config.BLACK)
+            name_text_rect = name_text.get_rect(center=(self.screen_center_x, 100 + i * 30))
+            self.screen.blit(name_text, name_text_rect)
+
+            delete_button_position = (name_text_rect.right + 10, name_text_rect.centery - self.delete_button_height // 2)
+            delete_button_rect = pygame.Rect(delete_button_position[0], delete_button_position[1], self.delete_button_width, self.delete_button_height)
+            pygame.draw.rect(self.screen, config.BLUE, delete_button_rect)
+            delete_button_text = self.font.render("Delete", True, config.WHITE)
+            delete_button_text_rect = delete_button_text.get_rect(center=delete_button_rect.center)
+            self.screen.blit(delete_button_text, delete_button_text_rect)
+
+            self.delete_buttons_rect.append(delete_button_rect)
+
+        go_back_button_position = (config.SCREEN_WIDTH // 2 - 60, self.screen_center_y + 150)
+        self.go_back_button_rect = pygame.Rect(go_back_button_position[0], go_back_button_position[1], 120, 30)
+        pygame.draw.rect(self.screen, config.BLUE, self.go_back_button_rect)
+        go_back_button_text = self.font.render("Go Back", True, config.WHITE)
+        go_back_button_text_rect = go_back_button_text.get_rect(center=self.go_back_button_rect.center)
+        self.screen.blit(go_back_button_text, go_back_button_text_rect)
+        
+    def blit_load_name(self):
         self.screen.blit(self.background_image_scale, (0, 0))
-
+        # blit go home button
+        self.home_button.draw()
         if self.current_screen == self.SCREEN_MAIN:
-            pygame.draw.rect(self.screen, config.WHITE, self.dropdown_rect, 2)
-            dropdown_text = self.font.render(self.pet_name, True, config.BLACK)
-            dropdown_text_rect = dropdown_text.get_rect(center=self.dropdown_rect.center)
-            self.screen.blit(dropdown_text, dropdown_text_rect)
-
-            choose_text = self.font.render("Choose Your Pet Name", True, config.BLACK)
-            choose_text_rect = choose_text.get_rect(center=(self.screen_center_x, self.dropdown_rect.top - 20))
-            self.screen.blit(choose_text, choose_text_rect)
-
-            if self.is_dropdown_open:
-                for i, option_rect in enumerate(self.dropdown_options_rect):
-                    pygame.draw.rect(self.screen, config.BLUE, option_rect)
-                    option_text = self.font.render(self.pet_names[i], True, config.WHITE)
-                    option_text_rect = option_text.get_rect(center=option_rect.center)
-                    self.screen.blit(option_text, option_text_rect)
-
-            self.save_button_rect = pygame.Rect(config.SCREEN_WIDTH // 2 - 50, self.screen_center_y + 150, 100, 30)
-            pygame.draw.rect(self.screen, config.BLUE, self.save_button_rect)
-            save_button_text = self.font.render("Save", True, config.WHITE)
-            save_button_text_rect = save_button_text.get_rect(center=self.save_button_rect.center)
-            self.screen.blit(save_button_text, save_button_text_rect)
+            self.blit_main_screen()
 
         elif self.current_screen == self.SCREEN_SAVED_NAMES:
-            saved_screen_text = self.font.render("Saved Pet Names:", True, config.BLACK)
-            self.screen.blit(saved_screen_text, (self.screen_center_x - saved_screen_text.get_width() // 2, 50))
-
-            self.delete_buttons_rect = []
-            for i, name in enumerate(self.saved_names[:self.max_saved_names]):
-                name_text = self.font.render(name, True, config.BLACK)
-                name_text_rect = name_text.get_rect(center=(self.screen_center_x, 100 + i * 30))
-                self.screen.blit(name_text, name_text_rect)
-
-                delete_button_position = (name_text_rect.right + 10, name_text_rect.centery - self.delete_button_height // 2)
-                delete_button_rect = pygame.Rect(delete_button_position[0], delete_button_position[1], self.delete_button_width, self.delete_button_height)
-                pygame.draw.rect(self.screen, config.BLUE, delete_button_rect)
-                delete_button_text = self.font.render("Delete", True, config.WHITE)
-                delete_button_text_rect = delete_button_text.get_rect(center=delete_button_rect.center)
-                self.screen.blit(delete_button_text, delete_button_text_rect)
-
-                self.delete_buttons_rect.append(delete_button_rect)
-
-            go_back_button_position = (config.SCREEN_WIDTH // 2 - 60, self.screen_center_y + 150)
-            self.go_back_button_rect = pygame.Rect(go_back_button_position[0], go_back_button_position[1], 120, 30)
-            pygame.draw.rect(self.screen, config.BLUE, self.go_back_button_rect)
-            go_back_button_text = self.font.render("Go Back", True, config.WHITE)
-            go_back_button_text_rect = go_back_button_text.get_rect(center=self.go_back_button_rect.center)
-            self.screen.blit(go_back_button_text, go_back_button_text_rect)
+            self.blit_saved_screen()
 
         if self.input_box_active and not self.show_save_screen:
             pygame.draw.rect(self.screen, config.WHITE, self.input_box_rect, 2)
@@ -208,11 +221,10 @@ class PetNameSelectionApp:
     
     def main_frames(self):
         # while self.running:
-        self.draw()
-        self.handle_events()
+        self.blit_load_name()
+        # self.handle_events()
         
-        
-
+        pygame.display.flip()
         # pygame.quit()
 
 

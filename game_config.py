@@ -9,3 +9,6 @@ class GameConfig:
     FPS = 60
 
     IS_SOUND_ON = True
+
+    # Added Pet Names
+    SAVED_PET_NAMES = []

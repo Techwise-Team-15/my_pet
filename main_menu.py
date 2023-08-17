@@ -6,7 +6,7 @@ from game_over import GameOver
 from pets import PetRaccoon, PetRock, PetMudskipper
 from house_screen import RockHouse
 from raccoon_screen import RaccoonHouse
-from load_name import PetNameSelectionApp
+from load_name import LoadName
 from game_config import GameConfig as gc 
 
 
@@ -133,7 +133,7 @@ class Game:
         y_location = config.SCREEN_HEIGHT // 2 + self.my_rock.get_current_frame().get_height() // 3
         self.my_raccoon.set_location(raccoon_x_location, racccoon_y_location)
         self.my_rock.set_location(x_location, y_location)
-        self.load_name_screen = PetNameSelectionApp(screen)
+        self.load_name_screen = LoadName(screen)
         self.game_over_screen = GameOver(pygame, screen, self.my_rock)
         self.current_screen = "start"
         self.pet_rock_house = None
@@ -194,6 +194,9 @@ class Game:
                 self.pet_raccoon_house.main_frames()
             elif self.current_screen == "load_name":
                 self.load_name_screen.main_frames()
+                if self.load_name_screen.handle_events() == "back":
+                    self.current_screen = "menu"
+                
             pygame.display.update()
 
 game = Game()
