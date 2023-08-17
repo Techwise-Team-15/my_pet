@@ -29,7 +29,7 @@ class LoadName:
         self.dropdown_width = 200
         self.dropdown_height = 30
         self.dropdown_rect = pygame.Rect(self.screen_center_x - self.dropdown_width // 2, self.screen_center_y - 50, self.dropdown_width, self.dropdown_height)
-        self.dropdown_options_rect = [pygame.Rect(self.dropdown_rect.x, self.dropdown_rect.y + (i * self.dropdown_height), self.dropdown_width, self.dropdown_height) for i in range(len(self.pet_names))]
+        self.dropdown_options_rect = [pygame.Rect(self.dropdown_rect.x, self.dropdown_rect.y + 30 + (i * self.dropdown_height), self.dropdown_width, self.dropdown_height) for i in range(len(self.pet_names))]
         self.is_dropdown_open = False
 
         self.input_box_width = 200
@@ -146,7 +146,7 @@ class LoadName:
         dropdown_text_rect = dropdown_text.get_rect(center=self.dropdown_rect.center)
         self.screen.blit(dropdown_text, dropdown_text_rect)
 
-        choose_text = self.font.render("Choose Your Pet Name", True, config.BLACK)
+        choose_text = self.font.render("Choose Your Pet Name To Save", True, config.BLACK)
         choose_text_rect = choose_text.get_rect(center=(self.screen_center_x, self.dropdown_rect.top - 20))
         self.screen.blit(choose_text, choose_text_rect)
 
@@ -158,9 +158,9 @@ class LoadName:
                 self.screen.blit(option_text, option_text_rect)
 
         # Save button
-        self.save_button_rect = pygame.Rect(self.screen_center_x + 150, self.screen_center_y - 50 , 100, 30)
+        self.save_button_rect = pygame.Rect(self.screen_center_x + 150, self.screen_center_y - 50 , 200, 30)
         pygame.draw.rect(self.screen, config.BLUE, self.save_button_rect)
-        save_button_text = self.font.render("Save", True, config.WHITE)
+        save_button_text = self.font.render("Saved Pet Names", True, config.WHITE)
         save_button_text_rect = save_button_text.get_rect(center=self.save_button_rect.center)
         self.screen.blit(save_button_text, save_button_text_rect)
         
