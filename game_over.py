@@ -45,7 +45,8 @@ class GameOver():
         self.screen.blit(self.bg, (0,0))
         self.display_game_over_message()
         self.score_board.draw_score_text()
-        self.player_board.draw_player_name()
+        if self.player_name != '':
+            self.player_board.draw_player_name_text()
         self.screen.blit(self.loser_pet.get_current_frame(), self.loser_pet.get_location())
         self.loser_pet.updated_frame()
         self.game_over_pygame.display.flip()

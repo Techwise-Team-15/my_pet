@@ -115,6 +115,31 @@ class LoadName:
             if option_rect.collidepoint(pygame.mouse.get_pos()):
                 pygame.draw.rect(self.screen, (0, 0, 150), option_rect)
 
+        # handle event when home button is clicked
+    
+    def handle_home_button_clicked(self,event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+            if self.home_button.is_mouse_selection(mouse_pos):
+                return True
+        return False
+        
+    def handle_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if self.handle_home_button_clicked(event):
+                    return "back"
+                self.handle_mouse_click(event.pos)
+
+            elif event.type == pygame.KEYDOWN:
+                self.handle_key_down(event.key)
+                
+        return "load_name"
+    
     def blit_main_screen(self):
         pygame.draw.rect(self.screen, config.WHITE, self.dropdown_rect, 2)
         dropdown_text = self.font.render("Select Name Here", True, config.BLACK)
@@ -164,31 +189,7 @@ class LoadName:
         go_back_button_text = self.font.render("Go Back", True, config.WHITE)
         go_back_button_text_rect = go_back_button_text.get_rect(center=self.go_back_button_rect.center)
         self.screen.blit(go_back_button_text, go_back_button_text_rect)
-    # handle event when home button is clicked
-    def handle_home_button_clicked(self,event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_pos = pygame.mouse.get_pos()
-            if self.home_button.is_mouse_selection(mouse_pos):
-                return True
-        return False
         
-
-    def handle_events(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if self.handle_home_button_clicked(event):
-                    return "back"
-                self.handle_mouse_click(event.pos)
-
-            elif event.type == pygame.KEYDOWN:
-                self.handle_key_down(event.key)
-                
-        return "load_name"
-            
     def blit_load_name(self):
         self.screen.blit(self.background_image_scale, (0, 0))
         # blit go home button
@@ -216,15 +217,14 @@ class LoadName:
             notification_rect = notification_surface.get_rect(center=(self.screen_center_x, self.screen_center_y + 100))
             self.screen.blit(notification_surface, notification_rect)
             self.show_notification = False
-            pygame.time.delay(5000)
-            # pygame.time.set_timer(pygame.USEREVENT, 2000)
+            pygame.time.set_timer(pygame.USEREVENT, 2000)
     
     def main_frames(self):
         # while self.running:
         self.blit_load_name()
         # self.handle_events()
         
-
+        pygame.display.flip()
         # pygame.quit()
 
 
