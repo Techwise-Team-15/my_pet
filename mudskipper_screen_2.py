@@ -33,7 +33,7 @@ class MudskipperHouse:
 
         self.my_mudskipper = PetMudskipper(pygame, self.screen)
         self.my_mudskipper.set_location(900, 1100)
-        self.my_mudskipper.set_current_animation(Config.MudskipperActions.idle.value)
+        self.my_mudskipper.set_current_animation(config.MudskipperActions.idle.value)
 
         self.broccoli = self.sprite_sheet.get_image(0,384,96,96,1,config.BG_BLACK)
         self.broccoli_location = [475, 650]
