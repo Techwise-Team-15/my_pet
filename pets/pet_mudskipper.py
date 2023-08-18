@@ -10,15 +10,17 @@ class PetMudskipper():
         self.my_pygame = input_pygame
         self.mudskipper_screen = screen
         self.animation_cooldown = Config.PET_ANIMATION_COOLDOWN
-        self.FRAME = [8,12,10,4,9,12,10,11,9,10,7]
-        self.ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768,864,960]
+        self.FRAME = [8,12,10,4,9,6,10,6,6,10,7,12]
+        self.ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768,864,960, 1056]
         self.mudskipper_sprites =  self.my_pygame.image.load(Config.MUDSKIPPER_PATH).convert_alpha()
         self.mudskippers = sprite.SpriteSheet(self.mudskipper_sprites)
         self.last_update = self.my_pygame.time.get_ticks()
         self.current_frame = 0
         self.pet_location = [0,0]
         # The current animation to play
-        self.current_selected_animation = Config.MudskipperActions.idle.value 
+        self.current_selected_animation = Config.MudskipperActions.idle.value
+        # These are the animations with 2 frames per frame
+        self.double_frame_actions = [5,7,8]
         # The lists of frames for the current animation
         self.current_animation_list = []
         self.current_animation_list = self.get_animation_lists(self.current_selected_animation)
@@ -73,7 +75,10 @@ class PetMudskipper():
     def get_animation_lists(self,action):
         self.current_animation_list = []
         for x in range(self.FRAME[action]):
-            self.current_animation_list.append(self.mudskippers.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BG_BLACK))
+            if action in self.double_frame_actions:
+                self.current_animation_list.append(self.mudskippers.get_image(x,self.ANIMATION_HEIGHT[action], 192, 96,2,Config.BG_BLACK))
+            else:
+                self.current_animation_list.append(self.mudskippers.get_image(x,self.ANIMATION_HEIGHT[action], 96, 96, 2, Config.BG_BLACK))
         self.last_frame = self.current_animation_list[-1]
         return self.current_animation_list
 

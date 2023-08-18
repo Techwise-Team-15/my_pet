@@ -8,6 +8,7 @@ from house_screen import RockHouse
 from raccoon_screen import RaccoonHouse
 from load_name import LoadName
 from game_config import GameConfig as gc 
+from mudskipper_screen_2 import MudskipperHouse
 
 
 
@@ -127,17 +128,22 @@ class Game:
         self.my_pet_screen.initialize_pets()
         self.my_rock = PetRock(input_pygame=pygame, screen=screen)
         self.my_raccoon = PetRaccoon(input_pygame=pygame, screen=screen)
+        self.my_mudskipper=PetMudskipper(input_pygame=pygame,screen=screen)
         raccoon_x_location = 400
         racccoon_y_location = 550
+        mudskipper_x_location=config.SCREEN_WIDTH//2-self.my_mudskipper.get_current_frame().get_width()//2
+        mudskipper_y_location=config.SCREEN_HEIGHT//2+self.my_mudskipper.get_current_frame().get_height()//3
         x_location = config.SCREEN_WIDTH // 2 - self.my_rock.get_current_frame().get_width() // 2
         y_location = config.SCREEN_HEIGHT // 2 + self.my_rock.get_current_frame().get_height() // 3
         self.my_raccoon.set_location(raccoon_x_location, racccoon_y_location)
         self.my_rock.set_location(x_location, y_location)
+        self.my_mudskipper.set_location(mudskipper_x_location,mudskipper_y_location)
         self.load_name_screen = LoadName(screen)
         self.game_over_screen = GameOver(pygame, screen, self.my_rock)
         self.current_screen = "start"
         self.pet_rock_house = None
         self.pet_raccon_house = None
+        self.pet_mudskipper_house = None
         #self.background_music = pygame.mixer.Sound('../my_pet/assets/rock_sound_effects/Game_Background_music.mp3')
         #self.background_music.play(-1)
         self.game_music = MP()
@@ -188,10 +194,15 @@ class Game:
                 if scan_clicked_pet is not None and scan_clicked_pet.get_pet_id() == self.my_raccoon.get_pet_id():
                     self.current_screen = "raccoon_house"
                     self.pet_raccoon_house = RaccoonHouse(screen, self.game_music)
+                if scan_clicked_pet is not None and scan_clicked_pet.get_pet_id()==self.my_mudskipper.get_pet_id():
+                    self.current_screen="mudskipper_house"
+                    self.pet_mudskipper_house=MudskipperHouse(screen,self.game_music)
             elif self.current_screen == "rock_house":
                 self.pet_rock_house.main_frames() 
             elif self.current_screen== "raccoon_house":
                 self.pet_raccoon_house.main_frames()
+            elif self.current_screen == "mudskipper_house":
+                self.pet_mudskipper_house.main_frames()
             elif self.current_screen == "load_name":
                 self.load_name_screen.main_frames()
                 if self.load_name_screen.handle_events() == "back":
