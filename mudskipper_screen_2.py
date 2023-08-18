@@ -18,6 +18,9 @@ class MudskipperHouse:
         self.house_screen = screen
         self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
         self.score_board = scene_item.Score(pygame=pygame, screen=screen)
+        self.player_name = gc.SAVED_PET_NAMES[0] if len(gc.SAVED_PET_NAMES) > 0 else ''
+        self.player_board = scene_item.PlayerName(pygame=pygame, screen=screen, player_name=self.player_name)
+
         self.initialize_house()
         self.pet_stats = scene_item.PetStats()
         self.pet_stats_bar_icon = scene_item.RaccoonIcons(pygame, self.screen)
@@ -40,7 +43,7 @@ class MudskipperHouse:
         self.broccoli_item = scene_item.Item(config.ItemID.broccoli, pygame, self.screen, self.broccoli,self.my_mudskipper, self.broccoli_location[0], self.broccoli_location[1])
         self.gray_cloud = self.sprite_sheet.get_image(0, 1440, 96, 96, 2, config.BG_BLACK)
         self.gray_cloud_location = [480,0]
-        self.ball = self.sprite_sheet.get_image(0, 1248, 96, 96, 2, config.BG_BLACK)
+        self.ball = self.sprite_sheet.get_image(0,1248, 96, 96, 2, config.BG_BLACK)
         self.ball_location = [300,400]
         self.ball_item = scene_item.Item( config.ItemID.ball,pygame, self.screen, self.ball,self.my_mudskipper, self.ball_location[0], self.ball_location[1])
         self.gray_cloud_item = scene_item.Item(config.ItemID.gray_cloud, pygame, self.screen, self.gray_cloud, self.my_mudskipper, self.gray_cloud_location[0], self.gray_cloud_location[1])
@@ -82,11 +85,10 @@ class MudskipperHouse:
 
             if not is_mudskipper_dirty:
                 self.broccoli_item.handle_event(event,self.broccoli_location, is_mudskipper_dirty)
-                self.gray_cloud_item.handle_event(event, self.gray_cloud_location, is_mudskipper_dirty)
                 self.bed_item.handle_event(event, self.bed_location, is_mudskipper_dirty)
                 self.full_cup_item.handle_event(event, self.cup_item_location, is_mudskipper_dirty)
                 self.ball_item.handle_event(event,self.ball_location,is_mudskipper_dirty)
-                
+            self.gray_cloud_item.handle_event(event, self.gray_cloud_location, is_mudskipper_dirty)   
             
             if(self.my_mudskipper.did_overlap_with(self.gray_cloud_item)):
                 self.my_mudskipper.set_current_animation(Config.MudskipperActions.clean.value, True)
@@ -133,7 +135,7 @@ class MudskipperHouse:
         if self.is_mudskipper_dirty == False and self.is_hungry == False and self.is_thirsty == True:
             self.mudskipper_thought.draw_thought_bubble(self.screen, self.my_mudskipper.get_location(), self.pet_stats_bar_icon.get_full_cup_icon())
         if self.is_mudskipper_dirty == False and self.is_hungry == False and self.is_thirsty == False and self.is_sad == True:
-            self.mudskipper_thought.draw_thought_bubble(self.screen, self.my_mudskipper.get_location(), self.pet_stats_bar_icon.get_wand_icon())
+            self.mudskipper_thought.draw_thought_bubble(self.screen, self.my_mudskipper.get_location(), self.pet_stats_bar_icon.get_ball_icon())
 
     def display_house_to_screen(self):
         self.screen.blit(self.my_mudskipper.get_current_frame(), self.my_mudskipper.get_location())
@@ -173,7 +175,7 @@ class MudskipperHouse:
 
         if not self.pet_died:
             self.initialize_house()
-            self.pet_stats_bar_icon.draw()
+            self.pet_stats_bar_icon.draw_mudskipper_icons()
             self.pet_stats.update()
             self.pet_stats.draw(self.screen)
             
@@ -186,6 +188,8 @@ class MudskipperHouse:
             self.handle_event(self.is_mudskipper_dirty)
             self.score_board.draw_score_text()
             self.score_board.add_score()
+            if self.player_name != '':
+                self.player_board.draw_player_name_text()
             pygame.display.flip()
             
         else:
