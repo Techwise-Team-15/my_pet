@@ -1,14 +1,18 @@
 import pygame
 import sys
-from game_util import PetConfig as config
+from game_util import PetConfig as config, MusicPlayer as MP
 from pet_selection import PetSelection
 from game_over import GameOver
 from pets import PetRaccoon, PetRock, PetMudskipper
 from house_screen import RockHouse
 from raccoon_screen import RaccoonHouse
-from mudskipper_screen import MudskipperHouse
+from load_name import LoadName
+from game_config import GameConfig as gc 
+#from mudskipper_screen import mudskipper
 
 pygame.init()
+pygame.mixer.init()
+
 
 background = config.BACKGROUND1
 screen_width = config.SCREEN_WIDTH
@@ -20,12 +24,18 @@ start_img = pygame.image.load('../my_pet/theme_items/start button.png').convert_
 WHITE = config.WHITE
 
 class MenuItem:
-    def __init__(self, text, pos):
+    def __init__(self,menu_item_id, text, pos):
+        self.menu_item_id = menu_item_id
         self.text = text
         self.pos = pos
         self.font_options = pygame.font.Font(font, 50)
         self.rendered_text = self.font_options.render(text, True, WHITE)
         self.rect = self.rendered_text.get_rect(center=pos)
+
+    def change_text(self, text):
+        self.text = text
+        self.rendered_text = self.font_options.render(text, True, WHITE)
+        self.rect = self.rendered_text.get_rect(center=self.pos)
 
     def is_mouse_selection(self, mouse_pos):
         return self.rect.collidepoint(mouse_pos)
@@ -42,8 +52,7 @@ class Button():
         screen.blit(self.image, (self.rect.x, self.rect.y))
         pygame.display.flip()
 
-    def is_mouse_on_button(self):
-        mouse_pos = pygame.mouse.get_pos()
+    def is_mouse_on_button(self, mouse_pos):
         return self.rect.collidepoint(mouse_pos)
     
 
@@ -61,9 +70,11 @@ class StartScreen:
         self.start_screen.blit(screen_background, (0, 0))
         self.start_button.draw()
 
-    def handle_event(self, event):
+    def start_clicked(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if self.start_button.is_mouse_on_button():
+            mouse_pos = pygame.mouse.get_pos()
+            if self.start_button.is_mouse_on_button(mouse_pos):
+                pygame.time.delay(500)
                 return True 
 
 class MainMenu:
@@ -72,10 +83,10 @@ class MainMenu:
         self.font_title = pygame.font.Font(font, 80)
         self.title_text = self.font_title.render("Game Main Menu", True, WHITE)
         self.menu_items = [
-            MenuItem("Choose Your Pet", (screen_width // 2, screen_height // 2)),
-            MenuItem("Load Game", (screen_width // 2, screen_height // 2 + 50)),
-            MenuItem("Options", (screen_width // 2, screen_height // 2 + 100)),
-            MenuItem("Quit", (screen_width // 2, screen_height // 2 + 150)),
+            MenuItem("pet_select", "Choose Your Pet", (screen_width // 2, screen_height // 2)),
+            MenuItem("load_name", "Load Name", (screen_width // 2, screen_height // 2 + 100)),
+            MenuItem("sound", "Sound: " + "ON" if gc.IS_SOUND_ON else "OFF", (screen_width // 2, screen_height // 2 + 200)),
+            MenuItem("quit", "Quit", (screen_width // 2, screen_height // 2 + 300)),
         ]
         self.select_option = None
 
@@ -84,7 +95,8 @@ class MainMenu:
             mouse_pos = pygame.mouse.get_pos()
             for item in self.menu_items:
                 if item.is_mouse_selection(mouse_pos):
-                    self.select_option = item.text
+                    self.select_option = item.menu_item_id
+                    pygame.time.delay(500)
                     return
         self.select_option = None
     
@@ -106,7 +118,7 @@ class MainMenu:
 class Game:
     def __init__(self):
         pygame.init()
-        pygame.display.set_caption("Pet Patrol")
+        pygame.display.set_caption("My Pet")
         self.start_screen = StartScreen()
         self.main_menu = MainMenu()
         self.my_pet_screen = PetSelection(pygame, screen)
@@ -114,8 +126,8 @@ class Game:
         self.my_rock = PetRock(input_pygame=pygame, screen=screen)
         self.my_raccoon = PetRaccoon(input_pygame=pygame, screen=screen)
         self.my_mudskipper = PetMudskipper(input_pygame=pygame, screen=screen)
-        raccoon_x_location = config.SCREEN_WIDTH // 2 - self.my_raccoon.get_current_frame().get_width() // 2
-        racccoon_y_location = config.SCREEN_HEIGHT // 2 + self.my_raccoon.get_current_frame().get_height() // 3
+        raccoon_x_location = 400
+        racccoon_y_location = 550
         rock_x_location = config.SCREEN_WIDTH // 2 - self.my_rock.get_current_frame().get_width() // 2
         rock_y_location = config.SCREEN_HEIGHT // 2 + self.my_rock.get_current_frame().get_height() // 3
         mudskipper_x_location = config.SCREEN_WIDTH // 2 - self.my_mudskipper.get_current_frame().get_width() // 2
@@ -123,11 +135,20 @@ class Game:
         self.my_raccoon.set_location(raccoon_x_location, racccoon_y_location)
         self.my_rock.set_location(rock_x_location, rock_y_location)
         self.my_mudskipper.set_location(mudskipper_x_location, mudskipper_y_location)
+        self.load_name_screen = LoadName(screen)
         self.game_over_screen = GameOver(pygame, screen, self.my_rock)
         self.current_screen = "start"
         self.pet_rock_house = None
         self.pet_raccon_house = None
         self.pet_mudskipper_house = None
+        #self.background_music = pygame.mixer.Sound('../my_pet/assets/rock_sound_effects/Game_Background_music.mp3')
+        #self.background_music.play(-1)
+        self.game_music = MP()
+        self.game_music.load_track(config.background_music)
+        if gc.IS_SOUND_ON:
+            self.game_music.play(loop=True)
+        else:
+            self.game_music.stop()
 
     def run(self):
         running = True
@@ -138,29 +159,35 @@ class Game:
                     sys.exit()
 
             if self.current_screen == "start":
-                transition_to_menu = self.start_screen.handle_event(event)
-                if transition_to_menu:
+                self.start_screen.draw()
+                if self.start_screen.start_clicked(event):
                     self.current_screen = "menu"
             elif self.current_screen == "menu":
+                self.main_menu.draw()
                 self.main_menu.handle_event(event)
-                if self.main_menu.select_option == "Choose Your Pet":
+                if self.main_menu.select_option == "pet_select":
                     self.current_screen = "pet_selection"
-                elif self.main_menu.select_option == "Quit":
+                elif self.main_menu.select_option == "sound":
+                    if gc.IS_SOUND_ON:
+                        self.game_music.stop()
+                        gc.IS_SOUND_ON = False
+                        self.main_menu.menu_items[2].change_text("Sound: Off")
+                    else:
+                        self.game_music.play(loop=True)
+                        gc.IS_SOUND_ON = True
+                        self.main_menu.menu_items[2].change_text("Sound: On")
+                elif self.main_menu.select_option == "load_name":
+                    self.current_screen = "load_name"
+                elif self.main_menu.select_option == "quit":
+                    self.background_music.stop()
                     pygame.quit()
                     sys.exit()
-            else:
-                self.main_menu.handle_event(event)
-
-            if self.current_screen == "start":
-                self.start_screen.draw()
-            elif self.current_screen == "menu":
-                self.main_menu.draw()
             elif self.current_screen == "pet_selection":
                 self.my_pet_screen.main_frames()
                 scan_clicked_pet = self.my_pet_screen.handle_events()
                 if scan_clicked_pet is not None and scan_clicked_pet.get_pet_id() == self.my_rock.get_pet_id():
                     self.current_screen = "rock_house"
-                    self.pet_rock_house = RockHouse(screen)
+                    self.pet_rock_house = RockHouse(screen, self.game_music)
                 if scan_clicked_pet is not None and scan_clicked_pet.get_pet_id() == self.my_raccoon.get_pet_id():
                     self.current_screen = "raccoon_house"
                     self.pet_raccoon_house = RaccoonHouse(screen)
@@ -168,13 +195,17 @@ class Game:
                     self.current_screen = "mudskipper_house"
                     self.pet_raccoon_house = MudskipperHouse(screen)
             elif self.current_screen == "rock_house":
-                self.pet_rock_house.main_frames()    
+                self.pet_rock_house.main_frames() 
             elif self.current_screen== "raccoon_house":
                 self.pet_raccoon_house.main_frames()
             elif self.current_screen == "mudskipper_house":
                 self.pet_mudskipper_house.main_frames()
-            else:
-                self.main_menu.draw()
+            elif self.current_screen == "load_name":
+                self.load_name_screen.main_frames()
+                if self.load_name_screen.handle_events() == "back":
+                    self.current_screen = "menu"
+                
+            pygame.display.update()
 
 game = Game()
 game.run()

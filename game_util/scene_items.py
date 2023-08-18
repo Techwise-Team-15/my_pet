@@ -1,6 +1,8 @@
 import pygame, pygame.freetype
+from pygame.locals import *
 from .sprite_sheet import SpriteSheet as SpriteSheet
 from .pet_config import PetConfig as config
+import os
 
 class StatusBar:
     def __init__(self, x, y, w, h, max_hp, color, bg_color):
@@ -18,10 +20,27 @@ class StatusBar:
         pygame.draw.rect(surface, self.bg_color, (self.x, self.y, self.w, self.h))
         pygame.draw.rect(surface, self.color, (self.x, self.y, self.w * ratio, self.h))
 
-    def bar_drain(self):
+    def bar_drain_thirst(self):
         if self.hp > 0:
             pygame.time.delay(config.HP_DRAIN_TIME)
-            self.hp -= 20 
+            self.hp = max(self.hp - 5, 0)
+            
+    def bar_drain_hunger(self):
+        if self.hp > 0:
+            pygame.time.delay(config.HP_DRAIN_TIME)
+            self.hp = max(self.hp - 3, 0)
+
+    def bar_drain_happy(self):
+        if self.hp > 0:
+            pygame.time.delay(config.HP_DRAIN_TIME)
+            self.hp = max(self.hp - 7, 0)
+
+    def bar_drain_health(self):
+        if self.hp > 0:
+            pygame.time.delay(config.HP_DRAIN_TIME)
+            self.hp = max(self.hp - 10, 0)
+        
+    
     
     def bar_fill(self):
         self.hp = self.max_hp
@@ -56,6 +75,26 @@ class Icons:
         self.screen.blit(self.broccoli, (config.SCREEN_WIDTH - 250, 130))
         self.screen.blit(self.ball, (config.SCREEN_WIDTH - 250, 180))
 
+class Buttons:
+    def __init__(self, screen, location, button_text,text_size = 36, button_text_color=config.WHITE):
+        self.screen = screen
+        self.location = location
+        self.font = pygame.font.Font(config.FONT, text_size)
+        self.text = self.font.render(button_text, True, button_text_color)
+        self.item_rect = self.text.get_rect(topleft=location)
+        self.is_mouse_hovering = False
+        self.is_mouse_clicking = False
+        self.button_width = self.item_rect.width
+        self.button_height = self.item_rect.height
+    
+    def draw(self):
+        self.screen.blit(self.text, self.location)
+
+    def is_mouse_selection(self, mouse_pos):
+        if mouse_pos[0] >= self.location[0] and mouse_pos[0] <= (self.location[0] + self.button_width):
+            if mouse_pos[1] >= self.location[1] and mouse_pos[1] <= (self.location[1] + self.button_height):
+                return True
+        return False
 
 
 class RaccoonIcons:
@@ -89,10 +128,10 @@ class RaccoonIcons:
         self.screen.blit(self.wand, (config.SCREEN_WIDTH - 250, 180))       
 
 class PetStats:
-    health_bar = StatusBar(950, 50, 200, 40, 1000, config.GREEN, config.RED)
-    thirst_bar = StatusBar(950, 100, 200, 40, 1000, config.BLUE, config.RED)
-    hunger_bar = StatusBar(950, 150, 200, 40, 1000, config.ORANGE, config.RED)
-    happiness_bar = StatusBar(950, 200, 200, 40, 1000, config.YELLOW, config.RED)
+    health_bar = StatusBar(950, 50, 200, 25, 1000, config.LIGHT_PINK, config.LIGHT_ORANGE)
+    thirst_bar = StatusBar(950, 100, 200, 25, 1000, config.LIGHT_BLUE, config.LIGHT_ORANGE)
+    hunger_bar = StatusBar(950, 150, 200, 25, 1000, config.LIGHT_GREEN, config.LIGHT_ORANGE)
+    happiness_bar = StatusBar(950, 200, 200, 25, 1000, config.LIGHT_PURPLE, config.LIGHT_ORANGE)
 
     def get_pet_health(self):
         return self.health_bar.hp
@@ -125,11 +164,11 @@ class PetStats:
         self.happiness_bar.draw(surface)
 
     def update(self):
-        self.thirst_bar.bar_drain()
-        self.hunger_bar.bar_drain()
-        self.happiness_bar.bar_drain()
+        self.thirst_bar.bar_drain_thirst()
+        self.hunger_bar.bar_drain_hunger()
+        self.happiness_bar.bar_drain_happy()
         if self.hunger_bar.hp == 0 and self.thirst_bar.hp == 0:
-            self.health_bar.bar_drain()
+            self.health_bar.bar_drain_health()
 
 class Item:
     def __init__(self, item_id, pygame, screen, image, pet, x, y, is_movable = True):
@@ -182,8 +221,50 @@ class Item:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = self.pygame.mouse.get_pos()
                 if self.is_mouse_selection(mouse_pos) and  is_rock_dirty == False:
-                    self.interacting_pet.set_location(self.item_location[0],self.item_location[1]+ self.item_rect.height/2.5)
-                    self.interacting_pet.set_current_animation(config.RockActions.sleeping.value, True)
+                    if self.interacting_pet.get_pet_id() == "rock":
+                        self.interacting_pet.set_location(self.item_location[0],self.item_location[1]+ self.item_rect.height/2.5)
+                        self.interacting_pet.set_current_animation(config.RockActions.sleeping.value, True)
+                    elif self.interacting_pet.get_pet_id() == "raccoon":
+                        self.interacting_pet.set_location(self.item_location[0]-50,self.item_location[1]-75)
+                        self.interacting_pet.set_current_animation(config.RaccoonActions.sleeping.value, True)
+                   # elif self.interacting_pet.get_pet_id() == "mudskipper":
+                      #  self.interacting_pet.set_current_animation(config.MudskipperActions.sleeping.value, True)
+
+
+class Score:
+    def __init__(self, pygame, screen):
+        self.font = pygame.font.Font(None,36)
+        self.pygame = pygame
+        self.screen  = screen
+        self.score_value = 0
+        self.score_increment = 10
+        self.time_to_add_score = 5
+        self.time_to_add_score_start = pygame.time.get_ticks()
+        
+    
+    def add_score(self):
+        current_time = self.pygame.time.get_ticks()
+        if current_time >= self.time_to_add_score_start + self.time_to_add_score * 1000:
+            self.time_to_add_score_start = current_time + (self.time_to_add_score * 1000)
+            self.score_value += self.score_increment
+            return self.score_value
+
+    def draw_score_text(self):
+        self.score_text = self.font.render(f'Score: {self.score_value}', True, config.BLACK)
+        self.screen.blit(self.score_text, (10,10))
+
+class PlayerName():
+    def __init__(self, pygame, screen, player_name):
+        self.pygame = pygame
+        self.screen = screen
+        self.player_name = player_name
+        self.player_name_font = pygame.font.Font(config.FONT, 36)
+        self.player_name_text = self.player_name_font.render(f'{self.player_name}', True, config.BLACK)
+        self.player_name_rect = self.player_name_text.get_rect(topleft=(10, 50))
+        self.is_player_name_entered = False
+
+    def draw_player_name_text(self):
+        self.screen.blit(self.player_name_text, (10,50))
 
 class ThoughtBubble:
     def __init__(self, pet_stats):

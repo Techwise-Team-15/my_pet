@@ -15,7 +15,6 @@ class PetRock():
         self.rock_screen = screen
         self.rock_sprites =  self.my_pygame.image.load(Config.ROCK_SPRITES_PATH).convert_alpha()
         self.rock_img = sprite.SpriteSheet(self.rock_sprites)
-        self.run = True
         self.current_frame = 0
         self.pet_location = [0,0]
         # The current animation to play
@@ -25,6 +24,8 @@ class PetRock():
         self.current_animation_list = self.get_animation_lists(self.current_selected_animation)
         self.is_play_once = False
         self.last_frame = self.current_animation_list[-1]
+        # Pet state
+        self.is_rock_dirty = False
 
     def get_mask(self):
         return self.my_pygame.mask.from_surface(self.get_current_frame())
@@ -84,6 +85,11 @@ class PetRock():
     
     def did_overlap_with(self, item):
         if self.get_mask().overlap(item.get_mask(), (item.get_item_location()[0] - self.get_location()[0], item.get_item_location()[1] - self.get_location()[1])):
+            return True
+        return False
+    
+    def has_animation_ended(self):
+        if self.current_frame == self.FRAME[self.current_selected_animation] - 1:
             return True
         return False
     

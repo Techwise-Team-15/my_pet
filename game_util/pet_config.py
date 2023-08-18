@@ -1,12 +1,12 @@
 from enum import Enum
-import game_config
+from game_config import GameConfig as gc
 import os
 class PetConfig:
-    SCREEN_WIDTH = game_config.SCREEN_WIDTH
-    SCREEN_HEIGHT = game_config.SCREEN_HEIGHT
-    HP_DRAIN_TIME = game_config.HP_DRAIN_TIME
+    SCREEN_WIDTH = gc.SCREEN_WIDTH
+    SCREEN_HEIGHT = gc.SCREEN_HEIGHT
+    HP_DRAIN_TIME = gc.HP_DRAIN_TIME
 
-    FPS = game_config.FPS
+    FPS = gc.FPS
 
     #theme items
     BACKGROUND1 = '../my_pet/theme_items/general_background1.PNG'
@@ -26,6 +26,12 @@ class PetConfig:
     YELLOW = (255, 255, 0)
     ORANGE = (255, 165, 0)
     INDIGO = (75, 0, 130)
+    LIGHT_GREEN = (21,242,143)
+    LIGHT_BLUE = (143,240,238)
+    LIGHT_PINK = (252,213,233)
+    LIGHT_PURPLE = (196,149,222)
+    LIGHT_ORANGE = (218,87,0)
+
 
 
 
@@ -43,6 +49,18 @@ class PetConfig:
     RACCOON_COLORED_PATH = '../my_pet/sprites/raccoon.png' if os.path.exists('../my_pet/sprites/raccoon.png') else 'my_pet/sprites/raccoon.png'
     ROCK_COLORED_PATH = '../my_pet/sprites/rock.png' if os.path.exists('../my_pet/sprites/rock.png') else 'my_pet/sprites/rock.png'
     MUDSKIPPER_COLORED_PATH = '../my_pet/sprites/mudskipper.png' if os.path.exists('../my_pet/sprites/mudskipper.png') else 'my_pet/sprites/mudskipper.png'
+
+
+    #Sound Effects path
+    braking_lamp ='../my_pet/assets/rock_sound_effects/braking_lamp.mp3'
+    fire_sound ='../my_pet/assets/rock_sound_effects/fire_sound.mp3'
+    background_music = '../my_pet/assets/rock_sound_effects/game_music.mp3'
+    game_over ='../my_pet/assets/rock_sound_effects/game_over.mp3'
+    misc_sound_effect ='../my_pet/assets/rock_sound_effects/misc_sound_effect.mp3'
+    pet_mad_sound_effect ='../my_pet/assets/rock_sound_effects/pet_mad.mp3'
+    rock_in_bucket ='../my_pet/assets/rock_sound_effects/rock_in_bucket.mp3'
+    sleeping ='../my_pet/assets/rock_sound_effects/sleeping.mp3'
+    watering_can ='../my_pet/assets/rock_sound_effects/watering_can.mp3'
 
     # Pet names and descriptions
     
@@ -99,16 +117,18 @@ class PetConfig:
         drinking = 26
 
     class MudskipperActions(Enum):
-        walking = 0
+        swiming = 0
         eating = 1
-        fighting = 2
+        flipping = 2
         idle = 3
         jumping = 4
         shooting = 5
         dirty = 6
         playing = 7
-        bubble = 8
+        sleeping = 8
         clean = 9
+        drinking = 10
+        dying = 11
 
     # Table actions
     class TableActions(Enum):
@@ -131,6 +151,10 @@ class PetConfig:
         wand = 16
         sword = 17
         soap = 18
+        pillow =19
+        table = 20
+        short_table = 21
+        broken_vase = 22
 
 
 
@@ -140,5 +164,8 @@ class PetConfig:
         ball = "ball"
         watering_can = "watering_can"
         full_cup = "full_cup"
+        half_cup = "half_cup"
         soap = "soap"
+        pillow = "pillow"
         wand = "wand"
+        

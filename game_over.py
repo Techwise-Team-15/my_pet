@@ -1,5 +1,5 @@
-
-from game_util import PetConfig as config
+from game_config import GameConfig as gc
+from game_util import PetConfig as config, scene_items as scene_item
 
 
 
@@ -8,9 +8,12 @@ class GameOver():
         self.screen = in_screen
         self.game_over_pygame = in_pygame
         self.font = config.FONT
+        self.player_name = gc.SAVED_PET_NAMES[0] if len(gc.SAVED_PET_NAMES) > 0 else ''
+        self.player_board = scene_item.PlayerName(pygame=in_pygame, screen=in_screen, player_name=self.player_name)
+        self.score_board = scene_item.Score(pygame=in_pygame, screen=in_screen)
         self.background = self.game_over_pygame.image.load('../my_pet/theme_items/StartBackground.png')
         self.bg = self.game_over_pygame.transform.scale(self.background, [config.SCREEN_WIDTH, config.SCREEN_HEIGHT])
-        self.game_over_pygame.display.set_caption('Game Over')
+        
         self.last_update = self.game_over_pygame.time.get_ticks()
         self.animation_cooldown = config.PET_ANIMATION_COOLDOWN 
         self.loser_pet = lost_pet 
@@ -36,9 +39,14 @@ class GameOver():
         self.screen.blit(text_surface, text_rect)
         
 
-    def main_frames(self):
+    def main_frames(self,score):
+        self.game_over_pygame.display.set_caption('Game Over')
+        self.score_board.score_value = score
         self.screen.blit(self.bg, (0,0))
         self.display_game_over_message()
+        self.score_board.draw_score_text()
+        if self.player_name != '':
+            self.player_board.draw_player_name_text()
         self.screen.blit(self.loser_pet.get_current_frame(), self.loser_pet.get_location())
         self.loser_pet.updated_frame()
         self.game_over_pygame.display.flip()
