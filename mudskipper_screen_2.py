@@ -110,6 +110,14 @@ class MudskipperHouse:
                 self.started_game_time = pygame.time.get_ticks()
                 self.my_mudskipper.set_current_animation(Config.MudskipperActions.drinking.value, True)
                 self.pet_stats.fill_thirst()
+            
+            if(self.my_mudskipper.current_selected_animation == config.RockActions.very_dirty_shower.value and self.my_mudskipper.has_animation_ended()):
+                self.my_mudskipper.set_current_animation(Config.RockActions.idle.value)
+                self.my_mudskipper.set_location(900, 1100)
+                self.is_rock_dirty = False
+                self.not_interacted = False
+                self.started_game_time = pygame.time.get_ticks()
+                self.dirtiness_start   = pygame.time.get_ticks()
 
     
     
