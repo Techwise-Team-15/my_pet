@@ -15,7 +15,7 @@ import os
 class RockHouse:
     def __init__(self,screen,music):
         self.house_screen = screen
-        self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
+        self.screen = screen
         self.player_name = gc.SAVED_PET_NAMES[0] if len(gc.SAVED_PET_NAMES) > 0 else ''
         self.player_board = scene_item.PlayerName(pygame=pygame, screen=screen, player_name=self.player_name)
         self.score_board = scene_item.Score(pygame=pygame, screen=screen)
