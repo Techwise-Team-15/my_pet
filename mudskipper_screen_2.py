@@ -16,16 +16,15 @@ import os
 class MudskipperHouse:
     def __init__(self,screen,music):
         self.house_screen = screen
-        self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
+        self.screen = screen
         self.score_board = scene_item.Score(pygame=pygame, screen=screen)
         self.initialize_house()
         self.pet_stats = scene_item.PetStats()
         self.pet_stats_bar_icon = scene_item.RaccoonIcons(pygame, self.screen)
         self.sprite_sheet_img = pygame.image.load(config.ITEM_PATH).convert_alpha() #SpriteSheet('../my_pet/assets/items_sheet.png')
         self.sprite_sheet = SpriteSheet(self.sprite_sheet_img)
-        self.main_music=music
+        self.main_music= music
         
-      
 
 
         self.last_update = pygame.time.get_ticks()  
@@ -34,7 +33,9 @@ class MudskipperHouse:
         self.my_mudskipper = PetMudskipper(pygame, self.screen)
         self.my_mudskipper.set_location(900, 1100)
         self.my_mudskipper.set_current_animation(config.MudskipperActions.idle.value)
-
+        self.x_location = config.SCREEN_WIDTH // 2 - self.my_mudskipper.get_current_frame().get_width() // 2
+        self.y_location = config.SCREEN_HEIGHT // 2 + self.my_mudskipper.get_current_frame().get_height() // 3
+      
         self.broccoli = self.sprite_sheet.get_image(0,384,96,96,1,config.BG_BLACK)
         self.broccoli_location = [475, 650]
         self.broccoli_item = scene_item.Item(config.ItemID.broccoli, pygame, self.screen, self.broccoli,self.my_mudskipper, self.broccoli_location[0], self.broccoli_location[1])
@@ -58,6 +59,8 @@ class MudskipperHouse:
         self.not_interacted = False
         self.mudskipper_misbehaving_time = 10 #seconds time before raccoon misbehaves
         self.dirtiness_time = 30 #seconds time before raccoon starts getting dirty
+        self.sleep_start = pygame.time.get_ticks()
+        self.sleep_time = 10
         self.game_over = GameOver(pygame, self.screen, self.my_mudskipper)
 
         # Thought bubble
@@ -68,6 +71,7 @@ class MudskipperHouse:
         self.is_hungry = False
         self.is_thirsty = False
         self.is_sad = False
+        self.is_sleeping = False
 
     def initialize_house(self):
         self.house_screen.fill(config.BLACK)
@@ -102,6 +106,7 @@ class MudskipperHouse:
                 self.my_mudskipper.set_current_animation(Config.MudskipperActions.playing.value, True)
                 self.pet_stats.fill_happiness()
             elif(self.my_mudskipper.did_overlap_with(self.bed_item) and not self.is_mudskipper_dirty):
+                self.is_sleeping = True
                 self.started_game_time = pygame.time.get_ticks()
                 
             elif(self.my_mudskipper.did_overlap_with(self.full_cup_item) and not self.is_mudskipper_dirty):
@@ -109,6 +114,13 @@ class MudskipperHouse:
                 self.my_mudskipper.set_current_animation(Config.MudskipperActions.drinking.value, True)
                 self.pet_stats.fill_thirst()
 
+            if (self.is_sleeping == True) and self.sleep_start + self.sleep_time * 1000 < pygame.time.get_ticks():
+                self.my_mudskipper.set_location(self.x_location, self.y_location)
+                self.my_mudskipper.set_current_animation(Config.MudskipperActions.idle.value, True)
+                self.sleep_start = pygame.time.get_ticks()
+                self.started_game_time = pygame.time.get_ticks()
+                self.is_sleeping = False
+                
     
     
     def update_pet_stats(self):
@@ -174,7 +186,8 @@ class MudskipperHouse:
         if not self.pet_died:
             self.initialize_house()
             self.pet_stats_bar_icon.draw()
-            self.pet_stats.update()
+            if self.is_sleeping == False:
+                self.pet_stats.update()
             self.pet_stats.draw(self.screen)
             
             self.display_house_to_screen()
