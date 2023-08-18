@@ -13,6 +13,7 @@ class PetConfig:
     BACKGROUND2 = '../my_pet/theme_items/general_background2.png'
     RACCOON_BACKGROUND = '../my_pet/theme_items/raccoon_scene.png'
     FONT = '../my_pet/theme_items/Starborn.ttf'
+    MUDSKIPPER_BACKGROUND='../my_pet/assets/mudskipper_img/mudskipper_outside.png'
 
     # Colors
     BLACK = (0, 0, 0)
@@ -169,4 +170,5 @@ class PetConfig:
         pillow = "pillow"
         wand = "wand"
         broken_vase = "broken_vase"
+        gray_cloud = "gray_cloud"
         
