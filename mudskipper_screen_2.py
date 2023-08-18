@@ -43,7 +43,7 @@ class MudskipperHouse:
         self.ball = self.sprite_sheet.get_image(0, 1248, 96, 96, 2, config.BG_BLACK)
         self.ball_location = [300,400]
         self.ball_item = scene_item.Item( config.ItemID.ball,pygame, self.screen, self.ball,self.my_mudskipper, self.ball_location[0], self.ball_location[1])
-        self.gray_cloud_item = scene_item.Item(config.ItemID.wand, pygame, self.screen, self.gray_cloud, self.my_mudskipper, self.gray_cloud_location[0], self.gray_cloud_location[1])
+        self.gray_cloud_item = scene_item.Item(config.ItemID.gray_cloud, pygame, self.screen, self.gray_cloud, self.my_mudskipper, self.gray_cloud_location[0], self.gray_cloud_location[1])
         self.bed = self.sprite_sheet.get_image(0,480,96,96,2,config.BG_BLACK)
         self.bed_location = [1100, 600]
         self.bed_item = scene_item.Item(config.ItemID.bed, pygame, self.screen,self.bed,self.my_mudskipper, self.bed_location[0],self.bed_location[1],False)

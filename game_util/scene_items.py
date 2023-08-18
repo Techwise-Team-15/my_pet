@@ -56,6 +56,7 @@ class Icons:
         self.broccoli = self.sprite_sheet.get_image(0,384,96,96,.75,config.BG_BLACK)
         self.full_cup = self.sprite_sheet.get_image(0,864,96,96,.75,config.BG_BLACK)
         self.ball = self.sprite_sheet.get_image(0, 1248, 96, 96, .75, config.BG_BLACK)
+        self.gray_cloud = self.sprite_sheet.get_image(0, 1440, 96, 96, .75, config.BG_BLACK)
 
     def get_broccoli_icon(self):
         return self.broccoli
@@ -68,6 +69,9 @@ class Icons:
     
     def get_watering_can_icon(self):
         return self.watering_can
+    
+    def get_gray_cloud_icon(self):
+        return self.gray_cloud
 
     def draw(self):
         self.screen.blit(self.heart_img, (config.SCREEN_WIDTH - 240, 45))
@@ -108,6 +112,7 @@ class RaccoonIcons:
         self.broccoli = self.sprite_sheet.get_image(0,384,96,96,.75,config.BG_BLACK)
         self.full_cup = self.sprite_sheet.get_image(0,864,96,96,.75,config.BG_BLACK)
         self.wand = self.sprite_sheet.get_image(0, 1536, 96, 96, .75, config.BG_BLACK)
+        self.gray_cloud = self.sprite_sheet.get_image(0, 1440, 96, 96, .75, config.BG_BLACK)
 
     def get_broccoli_icon(self):
         return self.broccoli
@@ -120,6 +125,9 @@ class RaccoonIcons:
     
     def get_soap_icon(self):
         return self.soap
+    
+    def get_gray_cloud_icon(self):
+        return self.gray_cloud
 
     def draw(self):
         self.screen.blit(self.heart_img, (config.SCREEN_WIDTH - 240, 45))
