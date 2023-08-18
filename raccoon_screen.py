@@ -81,11 +81,14 @@ class RaccoonHouse:
         self.raccoon_thought = scene_item.ThoughtBubble(self.pet_stats)
         self.raccoon_made_a_mess = False
         self.pet_died = False
+        # raccoon properties
         self.is_raccoon_dirty = False
         self.is_hungry = False
         self.is_thirsty = False
         self.is_sad = False
         self.is_sleeping = False
+        # vase property 
+        self.has_touched_vase = False
 
     def initialize_house(self):
         self.house_screen.fill(config.BLACK)
@@ -207,12 +210,18 @@ class RaccoonHouse:
             self.dirtiness_start = pygame.time.get_ticks() + (self.dirtiness_time*1000)
             
         if self.broken_vase.did_overlap_with(self.my_raccoon):
+            # self.broken_vase.update()
+            self.has_touched_vase = True
+        if self.has_touched_vase and self.broken_vase.get_location()[1] < 490:
+            self.broken_vase.set_location(self.broken_vase.get_location()[0],self.broken_vase.get_location()[1]+10)
             self.broken_vase.update()
+
         if not self.is_raccoon_dirty and self.started_game_time + self.raccoon_misbehaving_time * 1000 < pygame.time.get_ticks():
             self.my_raccoon.set_location(800,350)
             self.my_raccoon.set_current_animation(Config.RaccoonActions.fighting.value, True)
             self.started_game_time = pygame.time.get_ticks() + (self.raccoon_misbehaving_time*1000)
             self.not_interacted = True
+        
 
     def main_frames(self):
         if self.pet_stats.get_pet_health() == 0 and not self.pet_died:
