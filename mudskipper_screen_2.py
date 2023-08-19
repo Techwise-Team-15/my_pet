@@ -77,6 +77,15 @@ class MudskipperHouse:
         self.is_sad = False
         self.is_sleeping = False
 
+    def reset(self):
+        self.my_mudskipper.set_current_animation(config.MudskipperActions.idle.value)
+        
+        self.not_interacted = False
+        self.started_game_time = pygame.time.get_ticks()
+        self.dirtiness_start = pygame.time.get_ticks()
+        self.pet_stats.reset()
+        self.pet_died = False
+    
     def initialize_house(self):
         self.house_screen.fill(config.BLACK)
         screen_background = pygame.image.load(config.MUDSKIPPER_BACKGROUND)

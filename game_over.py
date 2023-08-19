@@ -50,6 +50,7 @@ class GameOver():
                 mouse_pos = pygame.mouse.get_pos()
                 if self.home_button.is_mouse_selection(mouse_pos):
                     self.gm.game_music.load_track(config.background_music)
+                    self.gm.game_music.play()
                     self.gm.current_screen = "menu"
 
     def main_frames(self,score):

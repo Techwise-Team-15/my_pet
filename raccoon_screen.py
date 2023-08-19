@@ -91,6 +91,15 @@ class RaccoonHouse:
         # vase property 
         self.has_touched_vase = False
 
+    def reset(self):
+        self.my_raccoon.set_current_animation(config.RaccoonActions.idle.value)
+        self.my_raccoon.set_location(self.x_location, self.y_location)
+        self.not_interacted = False
+        self.started_game_time = pygame.time.get_ticks()
+        self.dirtiness_start = pygame.time.get_ticks()
+        self.pet_stats.reset()
+        self.pet_died = False
+    
     def initialize_house(self):
         self.house_screen.fill(config.BLACK)
         screen_background = pygame.image.load(config.RACCOON_BACKGROUND)

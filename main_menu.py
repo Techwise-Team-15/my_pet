@@ -141,7 +141,7 @@ class Game:
         self.load_name_screen = LoadName(screen)
         self.current_screen = "start"
         self.pet_rock_house = None
-        self.pet_raccon_house = None
+        self.pet_raccoon_house = None
         self.pet_mudskipper_house = None
         #self.background_music = pygame.mixer.Sound('../my_pet/assets/rock_sound_effects/Game_Background_music.mp3')
         #self.background_music.play(-1)
@@ -151,6 +151,11 @@ class Game:
             self.game_music.play(loop=True)
         else:
             self.game_music.stop()
+
+    def reset_game(self):
+        self.pet_rock_house = None
+        self.pet_raccoon_house = None
+        self.pet_mudskipper_house = None
 
     def run(self):
         running = True
@@ -191,14 +196,20 @@ class Game:
                 if scan_clicked_pet == "home":
                     self.current_screen = "menu"
                 elif scan_clicked_pet is not None and scan_clicked_pet.get_pet_id() == self.my_rock.get_pet_id():
-                    self.current_screen = "rock_house"
                     self.pet_rock_house = RockHouse(screen,self,self.game_music)
+                    self.pet_rock_house.reset()
+                    self.current_screen = "rock_house"
+                    
                 elif scan_clicked_pet is not None and scan_clicked_pet.get_pet_id() == self.my_raccoon.get_pet_id():
-                    self.current_screen = "raccoon_house"
                     self.pet_raccoon_house = RaccoonHouse(screen,self, self.game_music)
+                    self.pet_raccoon_house.reset()
+                    self.current_screen = "raccoon_house"
+                    
                 elif scan_clicked_pet is not None and scan_clicked_pet.get_pet_id()==self.my_mudskipper.get_pet_id():
-                    self.current_screen="mudskipper_house"
                     self.pet_mudskipper_house=MudskipperHouse(screen,self, self.game_music)
+                    self.pet_mudskipper_house.reset()
+                    self.current_screen = "mudskipper_house"
+                    
                 
             elif self.current_screen == "rock_house":
                 self.pet_rock_house.main_frames() 
