@@ -41,6 +41,7 @@ class PetRaccoon():
         
     def set_location(self, x,y):
         self.pet_location = [x,y]
+        print(self.pet_location)
 
     def get_location(self):
         return self.pet_location

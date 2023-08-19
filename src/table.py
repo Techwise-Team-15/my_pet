@@ -9,7 +9,8 @@ class Table:
         self.table_img = self.my_pygame.image.load(Config.ITEM_PATH).convert_alpha()
        
         #Frame and Animation Height have to be the same
-        
+        # These are the animations with 2 frames per frame
+        self.double_frame_actions = [Config.TableActions.spray_flower_pink.value, Config.TableActions.spray_tulip.value]
         self.FRAME = [11,11,1,1,1,1,6,6,1,1,1,1,1,1,1,1,1,1,1,1,1,1,11]
         self.ANIMATION_HEIGHT = [0,96,192,288,384,480,576,672,768,864,960,1056,1152,1248,1344,1440,1536,1632,1728,1824,1920,2016,2112,2208]
         self.animation_cooldown = 100
@@ -73,7 +74,11 @@ class Table:
     def get_animation_lists(self,action):
         self.animation_lists = []
         for x in range(self.FRAME[action]):
-            self.animation_lists.append(self.table_sprites.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BG_BLACK))
+            #self.animation_lists.append(self.table_sprites.get_image(x,self.ANIMATION_HEIGHT[action] ,96, 96, 2, Config.BG_BLACK))
+            if action in self.double_frame_actions:
+                self.animation_lists.append(self.table_sprites.get_image(x,self.ANIMATION_HEIGHT[action], 192, 96,2,Config.BG_BLACK))
+            else:
+                self.animation_lists.append(self.table_sprites.get_image(x,self.ANIMATION_HEIGHT[action], 96, 96, 2, Config.BG_BLACK))
         self.last_frame = self.animation_lists[-1]
 
         return self.animation_lists
