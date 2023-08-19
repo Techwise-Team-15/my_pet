@@ -139,7 +139,6 @@ class Game:
         self.my_rock.set_location(x_location, y_location)
         self.my_mudskipper.set_location(mudskipper_x_location,mudskipper_y_location)
         self.load_name_screen = LoadName(screen)
-        self.game_over_screen = GameOver(pygame, screen, self.my_rock)
         self.current_screen = "start"
         self.pet_rock_house = None
         self.pet_raccon_house = None
@@ -176,6 +175,7 @@ class Game:
                         gc.IS_SOUND_ON = False
                         self.main_menu.menu_items[2].change_text("Sound: Off")
                     else:
+                        self.game_music.load_track(config.background_music)
                         self.game_music.play(loop=True)
                         gc.IS_SOUND_ON = True
                         self.main_menu.menu_items[2].change_text("Sound: On")
@@ -192,13 +192,13 @@ class Game:
                     self.current_screen = "menu"
                 elif scan_clicked_pet is not None and scan_clicked_pet.get_pet_id() == self.my_rock.get_pet_id():
                     self.current_screen = "rock_house"
-                    self.pet_rock_house = RockHouse(screen, self.game_music)
+                    self.pet_rock_house = RockHouse(screen,self,self.game_music)
                 elif scan_clicked_pet is not None and scan_clicked_pet.get_pet_id() == self.my_raccoon.get_pet_id():
                     self.current_screen = "raccoon_house"
-                    self.pet_raccoon_house = RaccoonHouse(screen, self.game_music)
+                    self.pet_raccoon_house = RaccoonHouse(screen,self, self.game_music)
                 elif scan_clicked_pet is not None and scan_clicked_pet.get_pet_id()==self.my_mudskipper.get_pet_id():
                     self.current_screen="mudskipper_house"
-                    self.pet_mudskipper_house=MudskipperHouse(screen,self.game_music)
+                    self.pet_mudskipper_house=MudskipperHouse(screen,self, self.game_music)
                 
             elif self.current_screen == "rock_house":
                 self.pet_rock_house.main_frames() 

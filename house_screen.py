@@ -13,9 +13,10 @@ import os
 
 
 class RockHouse:
-    def __init__(self,screen,music):
+    def __init__(self,screen,game_menu, music):
         self.house_screen = screen
         self.screen = screen
+        self.gm = game_menu
         self.player_name = gc.SAVED_PET_NAMES[0] if len(gc.SAVED_PET_NAMES) > 0 else ''
         self.player_board = scene_item.PlayerName(pygame=pygame, screen=screen, player_name=self.player_name)
         self.score_board = scene_item.Score(pygame=pygame, screen=screen)
@@ -63,7 +64,7 @@ class RockHouse:
         self.not_interacted = False
         self.rock_misbehaving_time = 10 #seconds time before rock misbehaves
         self.dirtiness_time = 30 #seconds time before rock starts getting dirty
-        self.game_over = GameOver(pygame, self.screen, self.my_rock)
+        self.game_over = GameOver(pygame, self.screen, self.gm, self.my_rock)
         self.item_timer_start = pygame.time.get_ticks()
         self.item_timer = 10
         self.item_on_cooldown = False
