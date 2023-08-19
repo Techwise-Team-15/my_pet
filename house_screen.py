@@ -19,7 +19,7 @@ class RockHouse:
         self.player_name = gc.SAVED_PET_NAMES[0] if len(gc.SAVED_PET_NAMES) > 0 else ''
         self.player_board = scene_item.PlayerName(pygame=pygame, screen=screen, player_name=self.player_name)
         self.score_board = scene_item.Score(pygame=pygame, screen=screen)
-        self.kill_pet_button = scene_item.Buttons(self.screen,[50,100],"Kill")
+        self.kill_pet_button = scene_item.Buttons(self.screen,[50,100],"Kill",button_text_color=config.RED)
         self.pet_stats = scene_item.PetStats()
         self.pet_stats_bar_icon = scene_item.Icons(pygame, self.screen)
         self.sprite_sheet_img = pygame.image.load(config.ITEM_PATH).convert_alpha() #SpriteSheet('../my_pet/assets/items_sheet.png')
