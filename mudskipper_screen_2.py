@@ -34,13 +34,13 @@ class MudskipperHouse:
         self.animation_cooldown = 100
 
         self.my_mudskipper = PetMudskipper(pygame, self.screen)
-        self.my_mudskipper.set_location(900, 1100)
+        self.my_mudskipper.set_location(50, 50) #900 1100
         self.my_mudskipper.set_current_animation(config.MudskipperActions.idle.value)
         self.x_location = config.SCREEN_WIDTH // 2 - self.my_mudskipper.get_current_frame().get_width() // 2
         self.y_location = config.SCREEN_HEIGHT // 2 + self.my_mudskipper.get_current_frame().get_height() // 3
       
         self.broccoli = self.sprite_sheet.get_image(0,384,96,96,1,config.BG_BLACK)
-        self.broccoli_location = [475, 650]
+        self.broccoli_location = [475, 250]
         self.broccoli_item = scene_item.Item(config.ItemID.broccoli, pygame, self.screen, self.broccoli,self.my_mudskipper, self.broccoli_location[0], self.broccoli_location[1])
         self.gray_cloud = self.sprite_sheet.get_image(0, 1440, 96, 96, 2, config.BG_BLACK)
         self.gray_cloud_location = [480,0]
@@ -51,8 +51,9 @@ class MudskipperHouse:
         self.bed = self.sprite_sheet.get_image(0,1056,96,96,2,config.BG_BLACK)
         self.bed_location = [1100, 600]
         self.bed_item = scene_item.Item(config.ItemID.bed, pygame, self.screen,self.bed,self.my_mudskipper, self.bed_location[0],self.bed_location[1],False)
-        self.lamp_table_location = [800, 350]
-        self.lamp_table = Table.Table(pygame, self.screen, self.lamp_table_location[0], self.lamp_table_location[1])
+        self.flower_location = [700, 300]
+        self.flower = Table.Table(pygame, self.screen, self.flower_location[0], self.flower_location[1])
+        self.flower.set_current_selected_animation(config.TableActions.spray_flower_pink.value)
         self.full_cup = self.sprite_sheet.get_image(0,864,96,96,2, config.BG_BLACK)
         self.cup_item_location = [70, 400]
         self.full_cup_item = scene_item.Item(config.ItemID.full_cup, pygame, self.screen, self.full_cup, self.my_mudskipper, self.cup_item_location[0], self.cup_item_location[1])
@@ -76,6 +77,8 @@ class MudskipperHouse:
         self.is_thirsty = False
         self.is_sad = False
         self.is_sleeping = False
+        self.locationset = False
+        self.has_touched_flower = False
 
     def reset(self):
         self.my_mudskipper.set_current_animation(config.MudskipperActions.idle.value)
@@ -132,10 +135,10 @@ class MudskipperHouse:
                 self.my_mudskipper.set_current_animation(Config.MudskipperActions.drinking.value, True)
                 self.pet_stats.fill_thirst()
             
-            if(self.my_mudskipper.current_selected_animation == config.MudskipperActions.dirty.value and self.my_mudskipper.has_animation_ended()):
-                self.my_mudskipper.set_current_animation(Config.RockActions.idle.value)
-                self.my_mudskipper.set_location(900, 1100)
-                self.is_rock_dirty = False
+            if(self.my_mudskipper.current_selected_animation == config.MudskipperActions.clean.value and self.my_mudskipper.has_animation_ended()):
+                self.my_mudskipper.set_current_animation(Config.MudskipperActions.idle.value)
+                self.my_mudskipper.set_location(500, 500)
+                self.is_mudskipper_dirty = False
                 self.not_interacted = False
                 self.started_game_time = pygame.time.get_ticks()
                 self.dirtiness_start   = pygame.time.get_ticks()
@@ -147,8 +150,8 @@ class MudskipperHouse:
                 self.started_game_time = pygame.time.get_ticks()
                 self.is_sleeping = False
                
-                
-    
+    def fixlocation(self):
+        self.my_mudskipper.set_location(500, 500)     
     
     def update_pet_stats(self):
         if self.pet_stats.get_pet_hunger()  < 50:
@@ -176,6 +179,7 @@ class MudskipperHouse:
 
     def display_house_to_screen(self):
         self.screen.blit(self.my_mudskipper.get_current_frame(), self.my_mudskipper.get_location())
+        self.screen.blit(self.flower.get_current_frame(), self.flower.get_location())
         for item in self.list_of_items:
             if not self.my_mudskipper.did_overlap_with(item):
                 self.screen.blit(item.image, item.get_item_location())
@@ -194,8 +198,18 @@ class MudskipperHouse:
             self.is_mudskipper_dirty = True
             self.dirtiness_start = pygame.time.get_ticks() + (self.dirtiness_time*1000)
             
-        if self.lamp_table.did_overlap_with(self.my_mudskipper):
-            self.lamp_table.update()
+        if self.flower.did_overlap_with(self.my_mudskipper):
+            # self.broken_vase.update()
+            self.has_touched_flower = True
+        if self.has_touched_flower and self.flower.get_location()[1] < 350:
+            self.flower.set_location(self.flower.get_location()[0],self.flower.get_location()[1]+10)
+            self.flower.update()
+
+        if not self.is_mudskipper_dirty and self.started_game_time + self.mudskipper_misbehaving_time * 1000 < pygame.time.get_ticks():
+            self.my_mudskipper.set_location(700, 300)
+            self.my_mudskipper.set_current_animation(Config.MudskipperActions.dirty.value, True)
+            self.started_game_time = pygame.time.get_ticks() + (self.mudskipper_misbehaving_time*1000)
+            self.not_interacted = True
      
     def main_frames(self):
         if self.pet_stats.get_pet_health() == 0 and not self.pet_died:
@@ -212,6 +226,9 @@ class MudskipperHouse:
             
 
         if not self.pet_died:
+            if self.locationset == False:
+                self.fixlocation()
+                self.locationset = True
             self.initialize_house()
             self.pet_stats_bar_icon.draw_mudskipper_icons()
             if self.is_sleeping == False:
