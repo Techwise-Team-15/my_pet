@@ -113,6 +113,7 @@ class RaccoonIcons:
         self.full_cup = self.sprite_sheet.get_image(0,864,96,96,.75,config.BG_BLACK)
         self.wand = self.sprite_sheet.get_image(0, 1536, 96, 96, .75, config.BG_BLACK)
         self.gray_cloud = self.sprite_sheet.get_image(0, 1440, 96, 96, .75, config.BG_BLACK)
+        self.ball = self.sprite_sheet.get_image(0, 1248, 96, 96, .75, config.BG_BLACK)
 
     def get_broccoli_icon(self):
         return self.broccoli
@@ -128,12 +129,22 @@ class RaccoonIcons:
     
     def get_gray_cloud_icon(self):
         return self.gray_cloud
+    
+    def get_ball_icon(self):
+        return self.ball 
 
     def draw(self):
         self.screen.blit(self.heart_img, (config.SCREEN_WIDTH - 240, 45))
         self.screen.blit(self.full_cup, (config.SCREEN_WIDTH - 260, 80))
         self.screen.blit(self.broccoli, (config.SCREEN_WIDTH - 250, 130))
-        self.screen.blit(self.wand, (config.SCREEN_WIDTH - 250, 180))       
+        self.screen.blit(self.wand, (config.SCREEN_WIDTH - 250, 180))    
+
+    def draw_mudskipper_icons(self):
+        self.screen.blit(self.heart_img, (config.SCREEN_WIDTH - 240, 45))
+        self.screen.blit(self.full_cup, (config.SCREEN_WIDTH - 260, 80))
+        self.screen.blit(self.broccoli, (config.SCREEN_WIDTH - 250, 130))
+        self.screen.blit(self.ball, (config.SCREEN_WIDTH - 250, 180))    
+       
 
 class PetStats:
     health_bar = StatusBar(950, 50, 200, 25, 1000, config.LIGHT_PINK, config.LIGHT_ORANGE)
