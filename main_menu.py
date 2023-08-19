@@ -188,15 +188,18 @@ class Game:
             elif self.current_screen == "pet_selection":
                 self.my_pet_screen.main_frames()
                 scan_clicked_pet = self.my_pet_screen.handle_events()
-                if scan_clicked_pet is not None and scan_clicked_pet.get_pet_id() == self.my_rock.get_pet_id():
+                if scan_clicked_pet == "home":
+                    self.current_screen = "menu"
+                elif scan_clicked_pet is not None and scan_clicked_pet.get_pet_id() == self.my_rock.get_pet_id():
                     self.current_screen = "rock_house"
                     self.pet_rock_house = RockHouse(screen, self.game_music)
-                if scan_clicked_pet is not None and scan_clicked_pet.get_pet_id() == self.my_raccoon.get_pet_id():
+                elif scan_clicked_pet is not None and scan_clicked_pet.get_pet_id() == self.my_raccoon.get_pet_id():
                     self.current_screen = "raccoon_house"
                     self.pet_raccoon_house = RaccoonHouse(screen, self.game_music)
-                if scan_clicked_pet is not None and scan_clicked_pet.get_pet_id()==self.my_mudskipper.get_pet_id():
+                elif scan_clicked_pet is not None and scan_clicked_pet.get_pet_id()==self.my_mudskipper.get_pet_id():
                     self.current_screen="mudskipper_house"
                     self.pet_mudskipper_house=MudskipperHouse(screen,self.game_music)
+                
             elif self.current_screen == "rock_house":
                 self.pet_rock_house.main_frames() 
             elif self.current_screen== "raccoon_house":
@@ -207,7 +210,7 @@ class Game:
                 self.load_name_screen.main_frames()
                 if self.load_name_screen.handle_events() == "back":
                     self.current_screen = "menu"
-                
+
             pygame.display.update()
 
 game = Game()
