@@ -13,9 +13,10 @@ import os
 
 
 class RaccoonHouse:
-    def __init__(self,screen,music):
+    def __init__(self,screen,game_menu, music):
         self.house_screen = screen
         self.screen = screen
+        self.gm = game_menu
         self.player_name = gc.SAVED_PET_NAMES[0] if len(gc.SAVED_PET_NAMES) > 0 else ''
         self.player_board = scene_item.PlayerName(pygame=pygame, screen=screen, player_name=self.player_name)
         self.score_board = scene_item.Score(pygame=pygame, screen=screen)
@@ -66,7 +67,7 @@ class RaccoonHouse:
         self.not_interacted = False
         self.raccoon_misbehaving_time = 10 #seconds time before raccoon misbehaves
         self.dirtiness_time = 30 #seconds time before raccoon starts getting dirty
-        self.game_over = GameOver(pygame, self.screen, self.my_raccoon)
+        self.game_over = GameOver(pygame, self.screen, self.gm, self.my_raccoon)
         self.half_full_cup = self.sprite_sheet.get_image(0,960,96,96,1, config.BG_BLACK)
         self.half_full_cup_location = [795, 600]
         self.half_full_cup_item = scene_item.Item(config.ItemID.half_cup,pygame, self.screen, self.half_full_cup, self.my_raccoon, self.half_full_cup_location[0],self.half_full_cup_location[1])
