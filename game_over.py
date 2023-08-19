@@ -1,12 +1,15 @@
+import pygame
 from game_config import GameConfig as gc
 from game_util import PetConfig as config, scene_items as scene_item
 
 
 
 class GameOver():
-    def __init__(self,in_pygame,in_screen,lost_pet) -> None:
+    def __init__(self,in_pygame,in_screen,game_menu, lost_pet) -> None:
+        self.gm = game_menu
         self.screen = in_screen
         self.game_over_pygame = in_pygame
+        self.home_button = scene_item.Buttons(self.screen,[50,120],"Menu")
         self.font = config.FONT
         self.player_name = gc.SAVED_PET_NAMES[0] if len(gc.SAVED_PET_NAMES) > 0 else ''
         self.player_board = scene_item.PlayerName(pygame=in_pygame, screen=in_screen, player_name=self.player_name)
@@ -37,12 +40,23 @@ class GameOver():
         text_rect = text_surface.get_rect()
         text_rect.center = (config.SCREEN_WIDTH/2, config.SCREEN_HEIGHT/2+y_offset)
         self.screen.blit(text_surface, text_rect)
-        
+
+    def handle_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                if self.home_button.is_mouse_selection(mouse_pos):
+                    self.gm.game_music.load_track(config.background_music)
+                    self.gm.current_screen = "menu"
 
     def main_frames(self,score):
         self.game_over_pygame.display.set_caption('Game Over')
         self.score_board.score_value = score
         self.screen.blit(self.bg, (0,0))
+        self.home_button.draw()
         self.display_game_over_message()
         self.score_board.draw_score_text()
         if self.player_name != '':
@@ -50,6 +64,7 @@ class GameOver():
         self.screen.blit(self.loser_pet.get_current_frame(), self.loser_pet.get_location())
         self.loser_pet.updated_frame()
         self.game_over_pygame.display.flip()
+        self.handle_events()
         #self.game_over_pygame.time.delay(1000 * self.game_over_delay)
         #self.game_over_pygame.quit()
         #quit()

@@ -14,9 +14,10 @@ import os
 
 
 class MudskipperHouse:
-    def __init__(self,screen,music):
+    def __init__(self,screen,game_menu,music):
         self.house_screen = screen
         self.screen = screen
+        self.gm = game_menu
         self.score_board = scene_item.Score(pygame=pygame, screen=screen)
         self.player_name = gc.SAVED_PET_NAMES[0] if len(gc.SAVED_PET_NAMES) > 0 else ''
         self.player_board = scene_item.PlayerName(pygame=pygame, screen=screen, player_name=self.player_name)
@@ -65,7 +66,7 @@ class MudskipperHouse:
         self.dirtiness_time = 30 #seconds time before raccoon starts getting dirty
         self.sleep_start = pygame.time.get_ticks()
         self.sleep_time = 10
-        self.game_over = GameOver(pygame, self.screen, self.my_mudskipper)
+        self.game_over = GameOver(pygame, self.screen, self.gm, self.my_mudskipper)
 
         # Thought bubble
         self.mudskipper_thought = scene_item.ThoughtBubble(self.pet_stats)
