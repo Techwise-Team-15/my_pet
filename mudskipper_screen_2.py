@@ -41,7 +41,7 @@ class MudskipperHouse:
         self.y_location = config.SCREEN_HEIGHT // 2 + self.my_mudskipper.get_current_frame().get_height() // 3
       
         self.broccoli = self.sprite_sheet.get_image(0,384,96,96,1,config.BG_BLACK)
-        self.broccoli_location = [475, 650]
+        self.broccoli_location = [475, 250]
         self.broccoli_item = scene_item.Item(config.ItemID.broccoli, pygame, self.screen, self.broccoli,self.my_mudskipper, self.broccoli_location[0], self.broccoli_location[1])
         self.gray_cloud = self.sprite_sheet.get_image(0, 1440, 96, 96, 2, config.BG_BLACK)
         self.gray_cloud_location = [480,0]
