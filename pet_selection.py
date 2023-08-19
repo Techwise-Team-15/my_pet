@@ -1,6 +1,6 @@
 import pygame
-from game_util import PetConfig as Config
 from pets import PetRaccoon, PetRock, PetMudskipper
+from game_util import PetConfig as Config, scene_items as si
 
 
 
@@ -16,7 +16,7 @@ class PetSelection():
         self.pets_to_display = []
         self.font = pygame.font.Font(Config.FONT, 36)
         self.headline = "Click on the pet you want to play with today! 😊"
-        
+        self.home_button = si.Buttons(self.screen,[50,50],"Back")
         self.pet_description = Config.PET_DESCRIPTIONS
 
         # Pets:
@@ -40,9 +40,9 @@ class PetSelection():
         text_surface = self.font.render(self.headline, True, (255, 255, 255)) 
         text_surface = self.pet_pygame.transform.scale(text_surface, [Config.SCREEN_WIDTH/1.1, Config.SCREEN_HEIGHT/10])
         text_rect = text_surface.get_rect()
-        text_rect.center = (Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/10)
+        text_rect.center = (Config.SCREEN_WIDTH/2, Config.SCREEN_HEIGHT/10+60)
         self.screen.blit(text_surface, text_rect)
-
+        self.home_button.draw()
     def display_pet_names(self):
         y_offset = 10
         x_offset = -160
@@ -115,4 +115,7 @@ class PetSelection():
                     if pet.is_mouse_selection(mouse_pos):
                         print("You selected the " + pet.get_name() + "!")
                         return pet
+                    
+                if self.home_button.is_mouse_selection(mouse_pos):
+                    return "home"
         return None

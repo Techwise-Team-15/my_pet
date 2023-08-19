@@ -15,7 +15,9 @@ import os
 class RaccoonHouse:
     def __init__(self,screen,music):
         self.house_screen = screen
-        self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
+        self.screen = screen
+        self.player_name = gc.SAVED_PET_NAMES[0] if len(gc.SAVED_PET_NAMES) > 0 else ''
+        self.player_board = scene_item.PlayerName(pygame=pygame, screen=screen, player_name=self.player_name)
         self.score_board = scene_item.Score(pygame=pygame, screen=screen)
         self.initialize_house()
         self.pet_stats = scene_item.PetStats()
@@ -52,8 +54,9 @@ class RaccoonHouse:
         self.table = self.sprite_sheet.get_image(0,2016,96,96,4,config.BG_BLACK)
         self.table_location = [700, 400]
         self.pillow_item = scene_item.Item(config.ItemID.pillow, pygame, self.screen, self.pillow, self.my_raccoon, self.pillow_location[0],self.pillow_location[1],False)
-        self.lamp_table_location = [800, 350]
-        self.lamp_table = Table.Table(pygame, self.screen, self.lamp_table_location[0], self.lamp_table_location[1])
+        self.broken_vase_location = [1150, 390]
+        self.broken_vase = Table.Table(pygame, self.screen, self.broken_vase_location[0], self.broken_vase_location[1])
+        self.broken_vase.set_current_selected_animation(config.TableActions.broken_vase.value)
         self.full_cup = self.sprite_sheet.get_image(0,864,96,96,1, config.BG_BLACK)
         self.cup_item_location = [795, 600]
         self.full_cup_item = scene_item.Item(config.ItemID.full_cup, pygame, self.screen, self.full_cup, self.my_raccoon, self.cup_item_location[0], self.cup_item_location[1])
@@ -78,11 +81,14 @@ class RaccoonHouse:
         self.raccoon_thought = scene_item.ThoughtBubble(self.pet_stats)
         self.raccoon_made_a_mess = False
         self.pet_died = False
+        # raccoon properties
         self.is_raccoon_dirty = False
         self.is_hungry = False
         self.is_thirsty = False
         self.is_sad = False
         self.is_sleeping = False
+        # vase property 
+        self.has_touched_vase = False
 
     def initialize_house(self):
         self.house_screen.fill(config.BLACK)
@@ -175,11 +181,10 @@ class RaccoonHouse:
     def display_house_to_screen(self):
         self.screen.blit(self.pillow, self.pillow_item.get_item_location())
         self.screen.blit(self.my_raccoon.get_current_frame(), self.my_raccoon.get_location())
-       # self.screen.blit(self.pet_pygame.transform.flip(My_rock.get_current_frame(),True,False), My_rock.get_location())
-        
+            
         self.screen.blit(self.bowl_table,self.bowl_table_location)
         self.screen.blit(self.table,self.table_location)
-       # self.screen.blit(self.lamp_table.get_current_frame(), self.lamp_table.get_location())
+        self.screen.blit(self.broken_vase.get_current_frame(), self.broken_vase.get_location())
         for item in self.list_of_items:
             if not self.my_raccoon.did_overlap_with(item):
                 self.screen.blit(item.image, item.get_item_location())      
@@ -204,13 +209,19 @@ class RaccoonHouse:
             self.is_raccoon_dirty = True
             self.dirtiness_start = pygame.time.get_ticks() + (self.dirtiness_time*1000)
             
-        if self.lamp_table.did_overlap_with(self.my_raccoon):
-            self.lamp_table.update()
-     #   if not self.is_raccoon_dirty and self.started_game_time + self.raccoon_misbehaving_time * 1000 < pygame.time.get_ticks():
-      #      self.my_raccoon.set_location(600,350)
-       #     self.my_raccoon.set_current_animation(Config.RaccoonActions.fighting.value, True)
-        #    self.started_game_time = pygame.time.get_ticks() + (self.raccoon_misbehaving_time*1000)
-         #   self.not_interacted = True
+        if self.broken_vase.did_overlap_with(self.my_raccoon):
+            # self.broken_vase.update()
+            self.has_touched_vase = True
+        if self.has_touched_vase and self.broken_vase.get_location()[1] < 490:
+            self.broken_vase.set_location(self.broken_vase.get_location()[0],self.broken_vase.get_location()[1]+10)
+            self.broken_vase.update()
+
+        if not self.is_raccoon_dirty and self.started_game_time + self.raccoon_misbehaving_time * 1000 < pygame.time.get_ticks():
+            self.my_raccoon.set_location(800,350)
+            self.my_raccoon.set_current_animation(Config.RaccoonActions.fighting.value, True)
+            self.started_game_time = pygame.time.get_ticks() + (self.raccoon_misbehaving_time*1000)
+            self.not_interacted = True
+        
 
     def main_frames(self):
         if self.pet_stats.get_pet_health() == 0 and not self.pet_died:
@@ -236,12 +247,14 @@ class RaccoonHouse:
             self.display_house_to_screen()
             self.update_pet_stats()
             self.draw_pet_thought()
-            #self.manage_pet_dirtiness()
+            self.manage_pet_dirtiness()
 
             self.my_raccoon.updated_frame()
             self.handle_event(self.is_raccoon_dirty)
             self.score_board.draw_score_text()
             self.score_board.add_score()
+            if self.player_name != '':
+                self.player_board.draw_player_name_text()
             pygame.display.flip()
             
         else:

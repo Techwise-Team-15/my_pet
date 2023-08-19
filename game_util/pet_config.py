@@ -169,5 +169,6 @@ class PetConfig:
         soap = "soap"
         pillow = "pillow"
         wand = "wand"
+        broken_vase = "broken_vase"
         gray_cloud = "gray_cloud"
         
