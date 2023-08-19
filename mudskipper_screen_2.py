@@ -21,8 +21,7 @@ class MudskipperHouse:
         self.score_board = scene_item.Score(pygame=pygame, screen=screen)
         self.player_name = gc.SAVED_PET_NAMES[0] if len(gc.SAVED_PET_NAMES) > 0 else ''
         self.player_board = scene_item.PlayerName(pygame=pygame, screen=screen, player_name=self.player_name)
-
-        self.initialize_house()
+        self.kill_pet_button = scene_item.Buttons(self.screen,[50,100],"Kill")
         self.pet_stats = scene_item.PetStats()
         self.pet_stats_bar_icon = scene_item.RaccoonIcons(pygame, self.screen)
         self.sprite_sheet_img = pygame.image.load(config.ITEM_PATH).convert_alpha() #SpriteSheet('../my_pet/assets/items_sheet.png')
@@ -83,12 +82,18 @@ class MudskipperHouse:
         screen_background = pygame.image.load(config.MUDSKIPPER_BACKGROUND)
         screen_background = pygame.transform.scale(screen_background, (config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
         self.house_screen.blit(screen_background, (0, 0))
+        self.kill_pet_button.draw()
     
     def handle_event(self, is_mudskipper_dirty):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                if self.kill_pet_button.is_mouse_selection(mouse_pos):
+                    self.pet_stats.health_bar.drain_health_fully()
+                    
             if not is_mudskipper_dirty:
                 self.broccoli_item.handle_event(event,self.broccoli_location, is_mudskipper_dirty)
                 self.bed_item.handle_event(event, self.bed_location, is_mudskipper_dirty)

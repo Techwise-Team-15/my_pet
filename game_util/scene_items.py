@@ -39,7 +39,9 @@ class StatusBar:
         if self.hp > 0:
             pygame.time.delay(config.HP_DRAIN_TIME)
             self.hp = max(self.hp - 10, 0)
-        
+
+    def drain_health_fully(self):
+        self.hp = 0 
     
     
     def bar_fill(self):
