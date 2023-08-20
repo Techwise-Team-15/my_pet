@@ -88,6 +88,7 @@ class MudskipperHouse:
         self.dirtiness_start = pygame.time.get_ticks()
         self.pet_stats.reset()
         self.pet_died = False
+        gc.DISPLAY_KILL_BUTTON = False
     
     def initialize_house(self):
         self.house_screen.fill(config.BLACK)
