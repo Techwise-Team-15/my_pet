@@ -171,4 +171,4 @@ class PetConfig:
         wand = "wand"
         broken_vase = "broken_vase"
         gray_cloud = "gray_cloud"
-        
+        spray_pink_flower = "flower"
