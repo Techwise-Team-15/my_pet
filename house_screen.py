@@ -94,7 +94,9 @@ class RockHouse:
         screen_background = pygame.image.load(config.ROCK_HOUSE_BG_PATH)
         screen_background = pygame.transform.scale(screen_background, (config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
         self.house_screen.blit(screen_background, (0, 0))
-        self.kill_pet_button.draw()
+        if gc.DISPLAY_KILL_BUTTON == True:
+            self.kill_pet_button.draw()
+        
     
     def handle_event(self, is_rock_dirty):
         for event in pygame.event.get():
@@ -105,6 +107,10 @@ class RockHouse:
                 mouse_pos = pygame.mouse.get_pos()
                 if self.kill_pet_button.is_mouse_selection(mouse_pos):
                     self.pet_stats.health_bar.drain_health_fully()
+                    
+
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                gc.DISPLAY_KILL_BUTTON = True
                     
             if not is_rock_dirty:
                 self.broccoli_item.handle_event(event,self.broccoli_location, is_rock_dirty)

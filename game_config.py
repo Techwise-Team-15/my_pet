@@ -12,3 +12,5 @@ class GameConfig:
 
     # Added Pet Names
     SAVED_PET_NAMES = []
+
+    DISPLAY_KILL_BUTTON = False
