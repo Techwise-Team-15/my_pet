@@ -39,7 +39,9 @@ class StatusBar:
         if self.hp > 0:
             pygame.time.delay(config.HP_DRAIN_TIME)
             self.hp = max(self.hp - 10, 0)
-        
+
+    def drain_health_fully(self):
+        self.hp = 0 
     
     
     def bar_fill(self):
@@ -188,6 +190,12 @@ class PetStats:
         self.happiness_bar.bar_drain_happy()
         if self.hunger_bar.hp == 0 and self.thirst_bar.hp == 0:
             self.health_bar.bar_drain_health()
+
+    def reset(self):
+        self.health_bar.bar_fill()
+        self.thirst_bar.bar_fill()
+        self.hunger_bar.bar_fill()
+        self.happiness_bar.bar_fill()
 
 class Item:
     def __init__(self, item_id, pygame, screen, image, pet, x, y, is_movable = True):

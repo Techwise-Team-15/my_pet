@@ -1,6 +1,7 @@
 import pygame
 from game_config import GameConfig as gc
 from game_util import PetConfig as config, scene_items as scene_item
+from game_config import GameConfig as gc
 
 
 
@@ -50,6 +51,7 @@ class GameOver():
                 mouse_pos = pygame.mouse.get_pos()
                 if self.home_button.is_mouse_selection(mouse_pos):
                     self.gm.game_music.load_track(config.background_music)
+                    self.gm.game_music.play() if gc.IS_SOUND_ON else self.gm.game_music.stop()
                     self.gm.current_screen = "menu"
 
     def main_frames(self,score):

@@ -20,7 +20,7 @@ class RaccoonHouse:
         self.player_name = gc.SAVED_PET_NAMES[0] if len(gc.SAVED_PET_NAMES) > 0 else ''
         self.player_board = scene_item.PlayerName(pygame=pygame, screen=screen, player_name=self.player_name)
         self.score_board = scene_item.Score(pygame=pygame, screen=screen)
-        self.initialize_house()
+        self.kill_pet_button = scene_item.Buttons(self.screen,[50,100],"Kill",button_text_color=config.RED)
         self.pet_stats = scene_item.PetStats()
         self.pet_stats_bar_icon = scene_item.RaccoonIcons(pygame, self.screen)
         self.sprite_sheet_img = pygame.image.load(config.ITEM_PATH).convert_alpha() #SpriteSheet('../my_pet/assets/items_sheet.png')
@@ -91,17 +91,37 @@ class RaccoonHouse:
         # vase property 
         self.has_touched_vase = False
 
+    def reset(self):
+        self.my_raccoon.set_current_animation(config.RaccoonActions.idle.value)
+        self.my_raccoon.set_location(self.x_location, self.y_location)
+        self.not_interacted = False
+        self.started_game_time = pygame.time.get_ticks()
+        self.dirtiness_start = pygame.time.get_ticks()
+        self.pet_stats.reset()
+        self.pet_died = False
+    
     def initialize_house(self):
         self.house_screen.fill(config.BLACK)
         screen_background = pygame.image.load(config.RACCOON_BACKGROUND)
         screen_background = pygame.transform.scale(screen_background, (config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
         self.house_screen.blit(screen_background, (0, 0))
+        if gc.DISPLAY_KILL_BUTTON == True:
+            self.kill_pet_button.draw()
+        
     
     def handle_event(self, is_raccoon_dirty):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
 
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                if self.kill_pet_button.is_mouse_selection(mouse_pos):
+                    self.pet_stats.health_bar.drain_health_fully()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                gc.DISPLAY_KILL_BUTTON = True
+                
+                   
             if not is_raccoon_dirty:
                 self.broccoli_item.handle_event(event,self.broccoli_location, is_raccoon_dirty)
                 self.wand_item.handle_event(event, self.wand_location, is_raccoon_dirty)
